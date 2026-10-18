@@ -27,7 +27,7 @@
 ## Adding OCR test cases
 
 1. Put a tooltip image somewhere local (a real in-game crop or `pnpm fixtures:tooltips` output). Do not commit screenshots that contain game UI textures; the sample tooltips are rendered by `scripts/render-tooltip-fixtures.ts` with Grimtome's own styling.
-2. Record the engine output: `cargo run --release -p grimtome --bin grimtome-ocr -- path/to/tooltip.png en-US > tests/fixtures/ocr/<id>.json`
+2. Record the engine output: `cargo run --release -p grimtome --features dev-tools --bin grimtome-ocr -- path/to/tooltip.png en-US > tests/fixtures/ocr/<id>.json`
 3. Add the ground truth (`tests/fixtures/tooltips.ts`, same `<id>`), with bullet glyphs and the colors that matter.
 4. `pnpm test:integration`. If the parse differs because of a systematic misreading, fix it in `repairOcr` (`src/domain/items/text.ts`) with a unit test — never special-case a fixture.
 

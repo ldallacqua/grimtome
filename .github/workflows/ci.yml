@@ -35,8 +35,8 @@ jobs:
       - run: pnpm test
       - run: pnpm check:assets
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
-      - run: cargo test --workspace
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+      - run: cargo test --workspace --all-features
 
   web:
     name: E2E and visual regression

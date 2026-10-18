@@ -15,9 +15,14 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 name = "grimtome"
 path = "src/main.rs"
 
+# Developer tool for recording OCR fixtures; kept out of release bundles.
 [[bin]]
 name = "grimtome-ocr"
 path = "src/bin/grimtome-ocr.rs"
+required-features = ["dev-tools"]
+
+[features]
+dev-tools = []
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }

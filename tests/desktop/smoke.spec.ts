@@ -1,5 +1,5 @@
 import { spawn, type ChildProcess } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chromium, expect, test, type Browser, type Page } from '@playwright/test';
 
@@ -68,7 +68,14 @@ test.beforeAll(async () => {
 
 test.afterAll(async () => {
   await browser?.close().catch(() => {});
-  app?.kill();
+  if (app && app.exitCode === null) {
+    // Wait for a full exit: Grimtome is single-instance, so a lingering process
+    // would swallow the next launch.
+    const exited = new Promise((r) => app!.once('exit', r));
+    app.kill();
+    await Promise.race([exited, new Promise((r) => setTimeout(r, 5000))]);
+    await new Promise((r) => setTimeout(r, 1000));
+  }
 });
 
 test('desktop host answers and reads a tooltip from the screen', async () => {
@@ -109,13 +116,27 @@ test('desktop host answers and reads a tooltip from the screen', async () => {
     width: Math.round(shown.w * shown.dpr),
     height: Math.round(shown.h * shown.dpr),
   };
-  const payload = await invoke<{ ocr: { lines: { text: string; color?: string }[] }; captureMs: number }>(
-    page,
-    'scan_capture',
-    {
+  type Payload = {
+    ocr: { lines: { text: string; color?: string }[] };
+    captureMs: number;
+    image: string | null;
+  };
+  // The capture reads real screen pixels, so the window must be painted and on
+  // top. Give it a moment and retry if another window was in front.
+  let payload: Payload | undefined;
+  for (let attempt = 0; attempt < 3 && !payload?.ocr.lines.length; attempt++) {
+    await page.waitForTimeout(600);
+    payload = await invoke<Payload>(page, 'scan_capture', {
       settings: { mode: 'region', region, language: 'en-US' },
-    },
-  );
+    });
+  }
+  if (!payload) throw new Error('no capture');
+  if (payload.image) {
+    writeFileSync(
+      'test-results/desktop/capture.png',
+      Buffer.from(payload.image.split(',')[1] ?? '', 'base64'),
+    );
+  }
   const texts = payload.ocr.lines.map((l) => l.text);
   expect(texts[0]).toContain('Gauntlets of Earthquakes');
   expect(texts.join('\n')).toMatch(/800 Item Power/);

@@ -50,9 +50,9 @@ pnpm test:e2e            # Playwright vs vite preview
 pnpm test:visual         # screenshot comparison; :update to regenerate (review diffs!)
 pnpm test:desktop        # drives the built exe over WebView2 CDP (Windows)
 pnpm check:assets
-cargo fmt --all && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace
+cargo fmt --all && cargo clippy --workspace --all-targets --all-features -- -D warnings && cargo test --workspace --all-features
 cargo run --release -p d4data --bin grimtome-extract -- export          # refresh local asset cache
-cargo run --release -p grimtome --bin grimtome-ocr -- image.png en-US   # record OCR output
+cargo run --release -p grimtome --features dev-tools --bin grimtome-ocr -- image.png en-US   # record OCR output
 ```
 
 Rust needs `%USERPROFILE%\.cargo\bin` on PATH in some shells.
