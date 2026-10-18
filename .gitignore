@@ -1,0 +1,38 @@
+# Dependencies & build output
+node_modules/
+dist/
+dist-ssr/
+target/
+coverage/
+*.tsbuildinfo
+
+# Local scratch / exploration data (may contain proprietary game data — never commit)
+.scratch/
+.toolchain-install.log
+*.log
+
+# Game assets must never enter the repository (see docs/ASSETS.md)
+**/game-assets/
+**/*.casc
+**/*.tex
+**/*.dat
+!tests/fixtures/**/*.synthetic.dat
+local-assets/
+assets-cache/
+
+# Test output
+test-results/
+playwright-report/
+blob-report/
+tests/visual/__diff__/
+e2e/.artifacts/
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.local
+.env
+.env.*
