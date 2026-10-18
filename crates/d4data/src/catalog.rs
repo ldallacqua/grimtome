@@ -246,9 +246,11 @@ fn slot_from_tokens(name: &str) -> Option<&'static str> {
 
 /// Strips markup from a display name and rejects placeholders / work-in-progress entries.
 fn clean_name(raw: &str) -> Option<String> {
-    let name = strings::strip_markup(raw);
+    let name = strings::strip_markup(raw).replace('\u{a0}', " ");
+    let name = name.split_whitespace().collect::<Vec<_>>().join(" ");
     let lower = name.to_ascii_lowercase();
-    if name.is_empty() || lower.contains("wip") || lower.starts_with("[ph]") || lower.contains("placeholder") {
+    const REJECT: &[&str] = &["wip", "(ph)", "[ph]", "(nyi)", "placeholder", "(crucible)", "upgrade a", "upgrade b"];
+    if name.is_empty() || REJECT.iter().any(|r| lower.contains(r)) {
         return None;
     }
     Some(name)
@@ -435,9 +437,8 @@ impl GameData {
                     .iter()
                     .filter_map(|(k, v)| {
                         let idx = k.strip_prefix("Mod")?.strip_suffix("_Name")?.parse::<usize>().ok()?;
-                        Some((idx, v.trim().to_string()))
+                        Some((idx, clean_name(v)?))
                     })
-                    .filter(|(_, v)| !v.is_empty())
                     .collect();
                 upgrades.sort();
                 SkillEntry {
@@ -477,7 +478,7 @@ impl GameData {
             .par_iter()
             .filter_map(|(sno, sno_name)| {
                 let strings = self.string_list(&format!("Item_{sno_name}"))?;
-                let name = strings.get("Name").filter(|n| !n.trim().is_empty())?.trim().to_string();
+                let name = clean_name(strings.get("Name")?)?;
                 let slot = slot_from_tokens(sno_name)?;
                 let class = sno_name
                     .split("_Unique_")
@@ -683,5 +684,7 @@ mod tests {
         assert_eq!(clean_name("{c_red}WIP Shield Charge{/c}"), None);
         assert_eq!(clean_name(" Bash "), Some("Bash".into()));
         assert_eq!(clean_name("{c_important}Blood Lance{/c}"), Some("Blood Lance".into()));
+        assert_eq!(clean_name("(PH) Clobber"), None);
+        assert_eq!(clean_name("Bane of\u{a0}Ahjad-Den"), Some("Bane of Ahjad-Den".into()));
     }
 }

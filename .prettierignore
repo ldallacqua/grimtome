@@ -1,0 +1,14 @@
+node_modules
+dist
+target
+src-tauri/gen
+src-tauri/icons
+pnpm-lock.yaml
+Cargo.lock
+tests/visual/**/*-snapshots
+tests/fixtures/**/*.png
+coverage
+playwright-report
+test-results
+.scratch
+*.md
