@@ -3,6 +3,8 @@
 //! ```text
 //! grimtome-extract detect
 //! grimtome-extract export [--game <dir>] [--out <dir>] [--locale enUS]
+//! grimtome-extract textures [substring...]          # list UI textures (name, size, frames)
+//! grimtome-extract dump <out-dir> <texture-name...> # write whole textures + frames for inspection
 //! ```
 //!
 //! The desktop app runs the same pipeline from Settings → Game Assets.
@@ -80,11 +82,61 @@ fn main() {
                 eprintln!("    ! {f}");
             }
         }
+        Some("textures") => {
+            let game = open_game(&args);
+            let filters: Vec<String> = args[2..].iter().map(|f| f.to_ascii_lowercase()).collect();
+            let mut rows: Vec<(String, u32)> = game
+                .toc
+                .group(d4data::groups::TEXTURE)
+                .filter(|(_, n)| {
+                    let l = n.to_ascii_lowercase();
+                    filters.is_empty() || filters.iter().any(|f| l.contains(f.as_str()))
+                })
+                .map(|(id, n)| (n.to_string(), id))
+                .collect();
+            rows.sort();
+            for (name, id) in rows {
+                if let Some(def) = game.texture_def(id) {
+                    println!("{name}	{}x{}	{} frames	fmt {}", def.width, def.height, def.frames.len(), def.format);
+                }
+            }
+        }
+        Some("dump") => {
+            let game = open_game(&args);
+            let out = PathBuf::from(args.get(2).expect("out dir"));
+            std::fs::create_dir_all(&out).unwrap();
+            for name in &args[3..] {
+                let Some(id) = game.texture_id(name) else {
+                    eprintln!("  ? {name} not found");
+                    continue;
+                };
+                let def = game.texture_def(id).expect("definition");
+                let payload = game.storage.read_payload(id).unwrap_or_else(|e| fail(e));
+                let img = def.decode(&payload).unwrap_or_else(|e| fail(e));
+                img.save(out.join(format!("{name}.png"))).unwrap();
+                for (i, f) in def.frames.iter().enumerate() {
+                    let (x, y, w, h) = f.rect(def.width, def.height);
+                    println!("{name}.{i}	{x},{y}	{w}x{h}");
+                    if w > 0 && h > 0 {
+                        f.crop(&img).save(out.join(format!("{name}.{i}.png"))).unwrap();
+                    }
+                }
+            }
+        }
         _ => {
             eprintln!("usage: grimtome-extract detect | export [--game <dir>] [--out <dir>] [--locale enUS]");
             std::process::exit(1);
         }
     }
+}
+
+fn open_game(_args: &[String]) -> GameData {
+    let inst = install::detect().into_iter().find(|i| i.is_supported()).unwrap_or_else(|| {
+        eprintln!("No supported Diablo IV installation found.");
+        std::process::exit(2);
+    });
+    let storage = StaticStorage::open(&inst.data_dir).unwrap_or_else(|e| fail(e));
+    GameData::open(storage, "enUS").unwrap_or_else(|e| fail(e))
 }
 
 fn fail(e: d4data::Error) -> ! {

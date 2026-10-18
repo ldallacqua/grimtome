@@ -100,6 +100,31 @@ textarea,
   background-color: rgba(214, 174, 107, 0.32);
 }
 
+/* Native skin: the game's scroll rail and stone handle (needs the standard properties unset). */
+:root[data-skin='game'] * {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+:root[data-skin='game'] ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+:root[data-skin='game'] ::-webkit-scrollbar-track {
+  background: var(--d4-scroll-track) center / 100% 100% no-repeat;
+}
+:root[data-skin='game'] ::-webkit-scrollbar-thumb {
+  border: 0 solid transparent;
+  border-radius: 0;
+  background: none;
+  border-image: var(--d4-scroll-thumb) 22 fill / 6px stretch;
+}
+:root[data-skin='game'] ::-webkit-scrollbar-thumb:hover {
+  border-image-source: var(--d4-scroll-thumb-hover);
+}
+:root[data-skin='game'] ::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .gt-visually-hidden {
   position: absolute;
   width: 1px;

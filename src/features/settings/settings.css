@@ -68,3 +68,20 @@
   gap: 10px;
   line-height: 1.5;
 }
+
+/* Native skin: the hotkey recorder is a game input field. */
+:root[data-skin='game'] .gt-hotkey {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-input) 20 fill / 7px stretch;
+}
+:root[data-skin='game'] .gt-hotkey:hover {
+  border-image-source: var(--d4-input-hover);
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-hotkey.is-recording {
+  border-image-source: var(--d4-input-focus);
+  box-shadow: 0 0 16px -4px rgba(255, 90, 50, 0.55);
+}

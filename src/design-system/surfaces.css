@@ -1,0 +1,47 @@
+/*
+ * Shared surfaces for feature screens.
+ *
+ * `.gt-card`  — a small card (list rows, fit cards, choices). Without the native
+ *               skin each feature keeps its own styling; with it every card is the
+ *               game's tooltip panel, and the current/selected one gets the game's
+ *               glowing selection corners.
+ * `.gt-well`  — a sunken field (stat boxes, drop zones, read-only values).
+ */
+:root[data-skin='game'] .gt-card {
+  position: relative;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-panel) 76 fill / 24px stretch;
+}
+:root[data-skin='game'] :is(button, a, [role='button']).gt-card:hover:not(:disabled) {
+  background: none;
+  box-shadow: none;
+  filter: brightness(1.14);
+}
+:root[data-skin='game'] .gt-card:is(.is-selected, .is-current, .is-next, .is-active)::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: 2;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-selection) 31 / 14px stretch;
+  opacity: 0.85;
+}
+:root[data-skin='game'] .gt-card:is(.is-done, .is-complete) {
+  filter: saturate(0.75) brightness(0.85);
+}
+
+:root[data-skin='game'] .gt-well {
+  border-radius: 0;
+  background:
+    linear-gradient(rgba(4, 3, 3, 0.78), rgba(4, 3, 3, 0.78)),
+    var(--d4-bg-stone) 0 0 / 192px 192px repeat;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.95),
+    inset 0 0 0 2px rgba(140, 130, 115, 0.13),
+    inset 0 4px 14px rgba(0, 0, 0, 0.7);
+  border: 0;
+}

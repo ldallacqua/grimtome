@@ -40,7 +40,7 @@ export function ReasonList({ reasons }: { reasons: StructuredReason[] }) {
 
 export function FitCard({ fit, active }: { fit: BuildFit; active: boolean }) {
   return (
-    <div className={clsx('gt-fit', `is-${fit.role}`, active && 'is-active')}>
+    <div className={clsx('gt-fit gt-card', `is-${fit.role}`, active && 'is-active')}>
       <div className="gt-fit__head">
         <div>
           <div className="gt-fit__role">

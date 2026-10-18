@@ -169,3 +169,110 @@
   color: var(--gt-gold-1);
   background: rgba(214, 174, 107, 0.1);
 }
+
+/*
+ * Native skin: Diablo IV's own button textures (see skin.ts), drawn as 9-slice
+ * border images so the ornate corners keep their proportions at any width.
+ */
+:root[data-skin='game'] .gt-btn {
+  --bi: var(--d4-btn);
+  --bi-hover: var(--d4-btn);
+  --bi-active: var(--d4-btn-active);
+  --bi-slice: 48;
+  --bi-w: 10px;
+  border-radius: 0;
+  color: #e6dccb;
+  text-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.95),
+    0 0 8px rgba(0, 0, 0, 0.6);
+}
+:root[data-skin='game'] .gt-btn--sm {
+  --bi-w: 8px;
+}
+:root[data-skin='game'] .gt-btn--lg {
+  --bi-w: 13px;
+}
+:root[data-skin='game'] .gt-btn .gt-btn__face {
+  color: inherit;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  border: 0 solid transparent;
+  border-image-source: var(--bi);
+  border-image-slice: var(--bi-slice) fill;
+  border-image-width: var(--bi-w);
+  border-image-repeat: stretch;
+  text-shadow: inherit;
+}
+:root[data-skin='game'] .gt-btn:hover:not(:disabled) {
+  --bi: var(--bi-hover);
+  filter: none;
+}
+:root[data-skin='game'] .gt-btn:active:not(:disabled) {
+  --bi: var(--bi-active);
+}
+:root[data-skin='game'] .gt-btn--secondary:hover:not(:disabled),
+:root[data-skin='game'] .gt-btn--arcane:hover:not(:disabled) {
+  filter: brightness(1.3);
+  color: #fff6e6;
+}
+:root[data-skin='game'] .gt-btn--primary {
+  --bi: var(--d4-btn-primary);
+  --bi-hover: var(--d4-btn-primary-hover);
+  --bi-active: var(--d4-btn-primary-active);
+  color: #fbeee0;
+}
+:root[data-skin='game'] .gt-btn--primary.gt-btn--lg {
+  --bi: var(--d4-btn-hero);
+  --bi-hover: var(--d4-btn-hero-hover);
+  --bi-active: var(--d4-btn-hero-active);
+  --bi-slice: 64;
+  --bi-w: 16px;
+}
+:root[data-skin='game'] .gt-btn--danger {
+  --bi: var(--d4-btn-danger);
+  --bi-hover: var(--d4-btn-danger-hover);
+  --bi-active: var(--d4-btn-danger-active);
+  --bi-slice: 40;
+  color: #ffe9e2;
+}
+:root[data-skin='game'] .gt-btn--arcane {
+  color: #d9c8ff;
+}
+:root[data-skin='game'] .gt-btn--ghost {
+  color: #b9ad99;
+}
+:root[data-skin='game'] .gt-btn--ghost .gt-btn__face {
+  border-image: none;
+}
+:root[data-skin='game'] .gt-btn--ghost:hover:not(:disabled) .gt-btn__face {
+  background: var(--d4-nav-hover) left center / 100% 100% no-repeat;
+  color: #f4ead8;
+}
+
+:root[data-skin='game'] .gt-icon-btn {
+  color: #a99e8b;
+  border-radius: 0;
+}
+:root[data-skin='game'] .gt-icon-btn:hover {
+  color: #f4ead8;
+  background: none;
+  filter: drop-shadow(0 0 6px rgba(255, 120, 60, 0.45));
+}
+:root[data-skin='game'] .gt-icon-btn.is-active {
+  color: #ffd9a8;
+  background: none;
+}
+:root[data-skin='game'] .gt-icon-btn--secondary {
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-btn-square) 40 fill / 9px stretch;
+}
+:root[data-skin='game'] .gt-icon-btn--secondary:hover {
+  border-image-source: var(--d4-btn-square-hover);
+  filter: none;
+}
+:root[data-skin='game'] .gt-icon-btn--secondary:active {
+  border-image-source: var(--d4-btn-square-active);
+}

@@ -247,3 +247,71 @@
   color: var(--gt-text-4);
   font-size: var(--gt-text-xs);
 }
+
+/*
+ * Native skin: the onboarding card is a game modal (panel, spiked frame, header
+ * ornament); step markers are inline diamonds; feature icons sit in iron rings.
+ */
+:root[data-skin='game'] .gt-ob__card {
+  position: relative;
+  border-radius: 0;
+  backdrop-filter: none;
+  background: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-panel) 76 fill / 38px stretch;
+  box-shadow: 0 40px 100px -30px #000;
+}
+:root[data-skin='game'] .gt-ob__card::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-frame-modal) 52 / 24px stretch;
+}
+:root[data-skin='game'] .gt-ob__steps {
+  position: relative;
+  padding-bottom: 22px;
+}
+:root[data-skin='game'] .gt-ob__steps::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 220px;
+  height: 26px;
+  transform: translateX(-50%);
+  background: var(--d4-header-ornament) center / contain no-repeat;
+}
+:root[data-skin='game'] .gt-ob__steps li.is-current {
+  color: #f1e6d2;
+}
+:root[data-skin='game'] .gt-ob__stepdot {
+  width: 18px;
+  height: 18px;
+  border-radius: 0;
+  font-size: 0;
+  box-shadow: none;
+  background: var(--d4-pip-planned) center / 12px no-repeat;
+  opacity: 0.7;
+}
+:root[data-skin='game'] .gt-ob__steps li.is-done .gt-ob__stepdot {
+  background-image: var(--d4-pip);
+}
+:root[data-skin='game'] .gt-ob__steps li.is-current .gt-ob__stepdot {
+  background: var(--d4-pip-on) center / 14px no-repeat;
+  box-shadow: none;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(255, 130, 50, 0.8));
+}
+:root[data-skin='game'] .gt-ob__stepdot > * {
+  display: none;
+}
+:root[data-skin='game'] .gt-ob-feature__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  color: #eadcc2;
+  background: var(--d4-ring-frame) center / 100% 100% no-repeat;
+  box-shadow: none;
+}

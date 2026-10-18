@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import type { CSSProperties } from 'react';
 import { hotkeyParts } from '@/app/settings';
 import { evaluate, readiness, selectActiveBuild, useApp, useEvalState } from '@/app/store';
-import { useScanController } from '@/app/useScan';
+import { uniqueIconId, useScanController } from '@/app/useScan';
 import { CLASS_NAMES, MAX_CHARACTER_LEVEL, MAX_PARAGON_LEVEL } from '@/domain/shared/ids';
 import { currentParagonObjective, paragonProgress } from '@/domain/progression/paragon';
 import { nextSkillPoint } from '@/domain/progression/skills';
@@ -223,6 +223,7 @@ function QuickScan() {
   const { scanNow } = useScanController();
   const latest = scans[0];
   const ev = latest ? evaluate(state, latest.item) : null;
+  const catalog = useApp((s) => s.catalog);
   return (
     <Panel variant="ornate" className="gt-quickscan" padding="lg">
       <div className="gt-quickscan__grid">
@@ -245,14 +246,14 @@ function QuickScan() {
           {latest && ev ? (
             <button
               type="button"
-              className="gt-latest"
+              className="gt-latest gt-card"
               data-verdict={ev.verdict}
               onClick={() => {
                 selectScan(latest.id);
                 navigate('advisor');
               }}
             >
-              <ItemIcon slot={latest.item.slot} rarity={latest.item.rarity} size={58} />
+              <ItemIcon id={uniqueIconId(catalog, latest.item)} slot={latest.item.slot} rarity={latest.item.rarity} size={58} />
               <div className="gt-latest__text">
                 <div className="gt-section-label">Last scan · {timeAgo(latest.at)}</div>
                 <div className="gt-latest__name" data-rarity={latest.item.rarity ?? 'common'}>
@@ -275,6 +276,7 @@ function RecentScans() {
   const state = useEvalState();
   const selectScan = useApp((s) => s.selectScan);
   const navigate = useApp((s) => s.navigate);
+  const catalog = useApp((s) => s.catalog);
   if (scans.length < 2) return null;
   return (
     <Panel title="Recent verdicts" eyebrow="History" padding="sm">
@@ -285,12 +287,13 @@ function RecentScans() {
             <li key={sc.id}>
               <button
                 type="button"
+                className="gt-card"
                 onClick={() => {
                   selectScan(sc.id);
                   navigate('advisor');
                 }}
               >
-                <ItemIcon slot={sc.item.slot} rarity={sc.item.rarity} size={36} />
+                <ItemIcon id={uniqueIconId(catalog, sc.item)} slot={sc.item.slot} rarity={sc.item.rarity} size={36} />
                 <span className="gt-recent__name" data-rarity={sc.item.rarity ?? 'common'}>
                   {sc.item.name ?? 'Unknown item'}
                 </span>

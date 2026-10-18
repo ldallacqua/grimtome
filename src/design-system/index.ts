@@ -8,4 +8,5 @@ export { Field, Segmented, Select, Slider, Stepper, TextArea, TextField, Toggle 
 export { ClassEmblem, GlyphIcon, ItemIcon, RarityGlyph, SkillIcon } from './components/GameIcon';
 export { ItemCard, type AffixAnnotation } from './components/ItemCard';
 export { Corner, Divider, PageHeader, Panel } from './components/Panel';
-export { VERDICT_META, VerdictBadge, VerdictBanner } from './components/Verdict';
+export { VERDICT_META, VerdictBadge, VerdictBanner, VerdictIcon } from './components/Verdict';
+export { SKIN_TEXTURES, skinVariables, useGameSkin, type SkinTexture } from './skin';

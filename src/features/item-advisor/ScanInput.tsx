@@ -90,7 +90,7 @@ export function SampleGallery({ compact }: { compact?: boolean }) {
           <button
             key={s.id}
             type="button"
-            className="gt-samples__item"
+            className="gt-samples__item gt-card"
             onClick={async () => {
               const { bytes, dataUrl } = await sampleBytes(s);
               await scanImage(bytes, 'sample', dataUrl);
@@ -118,7 +118,7 @@ export function DropZone() {
   };
   return (
     <div
-      className={clsx('gt-dropzone', over && 'is-over')}
+      className={clsx('gt-dropzone gt-well', over && 'is-over')}
       onDragOver={(e) => {
         e.preventDefault();
         setOver(true);

@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { hotkeyParts } from '@/app/settings';
+import { refreshAssets } from '@/app/assets';
 import { useApp } from '@/app/store';
 import { SAMPLE_BUILDS } from '@/domain/builds/samples';
 import { parseTooltip } from '@/domain/items/parser';
 import { evaluateItem } from '@/domain/recommendations/engine';
 import type { Verdict } from '@/domain/recommendations/types';
-import { BrandMark, Icon, IconButton, KeyCap, VERDICT_META } from '@/design-system';
+import { BrandMark, Icon, IconButton, KeyCap, useGameSkin, VERDICT_META, VerdictIcon } from '@/design-system';
 import { isTauri, platform, type OverlayMessage } from '@/services/platform';
 import './overlay.css';
 
@@ -42,24 +43,23 @@ export function OverlayApp() {
   const [message, setMessage] = useState<OverlayMessage | null>(() =>
     !isTauri && new URLSearchParams(window.location.search).has('demo') ? demoMessage() : null,
   );
-  const [expanded, setExpanded] = useState(false);
+  const [expandedOverride, setExpanded] = useState<boolean | null>(null);
   const [visible, setVisible] = useState(true);
   const settings = useApp((s) => s.settings);
-  const ready = useApp((s) => s.ready);
+  const resolver = useApp((s) => s.resolver);
+  const expanded = expandedOverride ?? settings.overlay.mode === 'expanded';
+  useGameSkin(resolver, settings.assets.useGameAssets && resolver.hasGameAssets);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     void useApp.getState().hydrate();
+    void refreshAssets();
     return platform.windows.onOverlayMessage((m) => {
       void useApp.getState().hydrate();
       setMessage(m);
       setVisible(true);
     });
   }, []);
-
-  useEffect(() => {
-    if (ready) setExpanded(settings.overlay.mode === 'expanded');
-  }, [ready, settings.overlay.mode]);
 
   useEffect(() => {
     if (!message || !settings.overlay.autoHideSeconds) return;
@@ -90,14 +90,14 @@ export function OverlayApp() {
           <span className="gt-ov__build" data-tauri-drag-region>
             {message?.activeBuild ?? 'Grimtome'}
           </span>
-          <IconButton icon={expanded ? 'minus' : 'plus'} label={expanded ? 'Compact' : 'Expand'} size="sm" onClick={() => setExpanded((v) => !v)} />
+          <IconButton icon={expanded ? 'minus' : 'plus'} label={expanded ? 'Compact' : 'Expand'} size="sm" onClick={() => setExpanded(!expanded)} />
           <IconButton icon="close" label="Hide overlay" size="sm" onClick={() => void platform.windows.hideCurrent()} />
         </div>
         {message && meta ? (
           <div className="gt-ov__body">
             <div className="gt-ov__verdict">
               <span className="gt-ov__sigil">
-                <Icon name={meta.icon} size={18} strokeWidth={2} />
+                <VerdictIcon verdict={verdict!} size={18} />
               </span>
               <div className="gt-ov__vtext">
                 <div className="gt-ov__vlabel">{meta.label}</div>

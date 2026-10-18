@@ -332,3 +332,235 @@
     padding: var(--gt-space-6) var(--gt-space-6) var(--gt-space-8);
   }
 }
+
+.gt-nav__glyph {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/*
+ * Native skin: the game's hell-gothic backdrop, its top menu bar (with the
+ * ember under-glow), a centered title plate, an iron edge for the sidebar, menu
+ * glyphs and the red list banner for hover and selection.
+ */
+:root[data-skin='game'] .gt-shell {
+  background:
+    radial-gradient(1200px 600px at 78% -10%, rgba(140, 30, 18, 0.16), transparent 60%),
+    linear-gradient(rgba(6, 5, 5, 0.35), rgba(6, 5, 5, 0.35)),
+    var(--d4-bg-app) 0 0 / 800px 800px repeat,
+    #080706;
+}
+:root[data-skin='game'] .gt-titlebar {
+  height: 44px;
+  background:
+    var(--d4-titlebar-l) left top / auto 100% no-repeat,
+    var(--d4-titlebar-r) right top / auto 100% no-repeat,
+    var(--d4-titlebar-mid) center top / 100% 100% no-repeat,
+    #0b0a09;
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.9);
+}
+:root[data-skin='game'] .gt-titlebar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 7px;
+  background: var(--d4-titlebar-fire) center bottom / 100% 300% no-repeat;
+  opacity: 0.55;
+  pointer-events: none;
+}
+:root[data-skin='game'] .gt-titlebar__crumb {
+  position: absolute;
+  left: 50%;
+  top: 2px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  min-width: 300px;
+  height: 38px;
+  padding: 0 70px 4px;
+  background: var(--d4-title-plate) center / 100% 100% no-repeat;
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e3d8c4;
+  text-shadow: 0 1px 2px #000;
+  pointer-events: none;
+}
+:root[data-skin='game'] .gt-titlebar__sep {
+  display: none;
+}
+:root[data-skin='game'] .gt-titlebar__controls {
+  gap: 2px;
+  padding-right: 10px;
+  align-items: center;
+}
+:root[data-skin='game'] .gt-titlebar__controls button {
+  width: 30px;
+  height: 30px;
+  background: var(--wc) center / 16px no-repeat;
+  filter: drop-shadow(0 1px 1px #000);
+}
+:root[data-skin='game'] .gt-titlebar__controls button > svg {
+  display: none;
+}
+:root[data-skin='game'] .gt-titlebar__controls button.is-min {
+  --wc: var(--d4-win-min);
+  background-size: 13px;
+}
+:root[data-skin='game'] .gt-titlebar__controls button.is-max {
+  --wc: var(--d4-win-max);
+}
+:root[data-skin='game'] .gt-titlebar__controls button.is-max:hover {
+  --wc: var(--d4-win-max-hover);
+}
+:root[data-skin='game'] .gt-titlebar__controls button.is-close {
+  --wc: var(--d4-win-close);
+}
+:root[data-skin='game'] .gt-titlebar__controls button:hover {
+  background-color: transparent;
+  filter: drop-shadow(0 0 6px rgba(255, 90, 50, 0.8));
+}
+:root[data-skin='game'] .gt-titlebar__controls button.is-close:hover {
+  --wc: var(--d4-win-close-hover);
+  background-color: transparent;
+}
+
+:root[data-skin='game'] .gt-sidebar {
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(4, 3, 3, 0.75), rgba(4, 3, 3, 0.55)),
+    var(--d4-bg-stone) 0 0 / 256px 256px repeat;
+  box-shadow: none;
+  padding-right: 18px;
+}
+:root[data-skin='game'] .gt-sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  pointer-events: none;
+  background:
+    var(--d4-edge-v-top) center top / 100% auto no-repeat,
+    var(--d4-edge-v-bottom) center bottom / 100% auto no-repeat,
+    var(--d4-edge-v) center / 100% 210px repeat-y;
+}
+:root[data-skin='game'] .gt-charcard {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-panel) 76 fill / 30px stretch;
+  padding: 14px 12px;
+}
+:root[data-skin='game'] .gt-charcard:hover {
+  box-shadow: none;
+  filter: brightness(1.12);
+}
+:root[data-skin='game'] .gt-charcard__class {
+  color: #e9dcc2;
+}
+:root[data-skin='game'] .gt-nav__section {
+  color: #7a6f60;
+}
+:root[data-skin='game'] .gt-nav__item {
+  border-radius: 0;
+  color: #b8ad9a;
+  text-shadow: 0 1px 1px #000;
+}
+:root[data-skin='game'] .gt-nav__item:hover {
+  background: var(--d4-nav-hover) left center / 100% 100% no-repeat;
+  color: #f1e7d6;
+}
+:root[data-skin='game'] .gt-nav__item:hover:not(.is-active)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 7, 6, 0.45);
+  pointer-events: none;
+}
+:root[data-skin='game'] .gt-nav__item.is-active {
+  color: #fff3e2;
+  background: var(--d4-nav-hover) left center / 100% 100% no-repeat;
+}
+:root[data-skin='game'] .gt-nav__item.is-active::before {
+  display: none;
+}
+:root[data-skin='game'] .gt-nav__item > span {
+  position: relative;
+  z-index: 1;
+}
+:root[data-skin='game'] .gt-nav__glyph {
+  width: 26px;
+  height: 26px;
+  background: var(--ng) center / contain no-repeat;
+  filter: drop-shadow(0 1px 2px #000);
+}
+:root[data-skin='game'] .gt-nav__glyph > svg {
+  display: none;
+}
+:root[data-skin='game'] .gt-nav__item:hover .gt-nav__glyph,
+:root[data-skin='game'] .gt-nav__item.is-active .gt-nav__glyph {
+  background-image: var(--ng-on);
+}
+.gt-nav__glyph[data-nav='dashboard'] {
+  --ng: var(--d4-nav-dashboard);
+  --ng-on: var(--d4-nav-dashboard-on);
+}
+.gt-nav__glyph[data-nav='advisor'] {
+  --ng: var(--d4-nav-advisor);
+  --ng-on: var(--d4-nav-advisor-on);
+}
+.gt-nav__glyph[data-nav='skills'] {
+  --ng: var(--d4-nav-skills);
+  --ng-on: var(--d4-nav-skills-on);
+}
+.gt-nav__glyph[data-nav='paragon'] {
+  --ng: var(--d4-nav-paragon);
+  --ng-on: var(--d4-nav-paragon-on);
+}
+.gt-nav__glyph[data-nav='builds'] {
+  --ng: var(--d4-nav-builds);
+  --ng-on: var(--d4-nav-builds-on);
+}
+.gt-nav__glyph[data-nav='settings'] {
+  --ng: var(--d4-nav-settings);
+  --ng-on: var(--d4-nav-settings-on);
+}
+
+:root[data-skin='game'] .gt-scan-cta {
+  border-radius: 0;
+  background: none;
+  box-shadow: 0 16px 30px -18px rgba(255, 50, 30, 0.6);
+  border: 0 solid transparent;
+  border-image: var(--d4-btn-hero) 64 fill / 18px stretch;
+  padding: 14px 16px;
+}
+:root[data-skin='game'] .gt-scan-cta:hover:not(:disabled) {
+  filter: none;
+  border-image-source: var(--d4-btn-hero-hover);
+}
+:root[data-skin='game'] .gt-scan-cta:active:not(:disabled) {
+  border-image-source: var(--d4-btn-hero-active);
+}
+:root[data-skin='game'] .gt-scan-cta__icon {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 0 6px rgba(255, 140, 90, 0.7));
+}
+:root[data-skin='game'] .gt-scan-cta__label {
+  text-shadow: 0 1px 2px #000;
+}
+:root[data-skin='game'] .gt-scan-cta .gt-key {
+  border-image: var(--d4-keycap) 14 fill / 5px stretch;
+  background: rgba(0, 0, 0, 0.4);
+}

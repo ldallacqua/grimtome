@@ -17,6 +17,15 @@ const NAV: { route: Route; icon: IconName; key: MessageKey; section: 'play' | 'p
   { route: 'builds', icon: 'builds', key: 'nav.builds', section: 'plan' },
 ];
 
+/** Menu icon: the game's own menu glyph with the native skin, a line icon otherwise. */
+function NavGlyph({ route, icon }: { route: Route; icon: IconName }) {
+  return (
+    <span className="gt-nav__glyph" data-nav={route} aria-hidden>
+      <Icon name={icon} size={18} />
+    </span>
+  );
+}
+
 function TitleBar() {
   const route = useApp((s) => s.route);
   const t = useT();
@@ -34,10 +43,10 @@ function TitleBar() {
       <div className="gt-titlebar__spacer" data-tauri-drag-region />
       {isTauri ? (
         <div className="gt-titlebar__controls">
-          <button type="button" aria-label="Minimize" onClick={() => void platform.windows.minimize()}>
+          <button type="button" aria-label="Minimize" className="is-min" onClick={() => void platform.windows.minimize()}>
             <Icon name="minimize" size={14} />
           </button>
-          <button type="button" aria-label="Maximize" onClick={() => void platform.windows.toggleMaximize()}>
+          <button type="button" aria-label="Maximize" className="is-max" onClick={() => void platform.windows.toggleMaximize()}>
             <Icon name="maximize" size={12} />
           </button>
           <button type="button" aria-label="Close" className="is-close" onClick={() => void platform.windows.close()}>
@@ -91,7 +100,7 @@ function Sidebar() {
       onClick={() => navigate(n.route)}
       aria-current={route === n.route ? 'page' : undefined}
     >
-      <Icon name={n.icon} size={18} />
+      <NavGlyph route={n.route} icon={n.icon} />
       <span>{t(n.key)}</span>
     </button>
   );
@@ -130,7 +139,7 @@ function Sidebar() {
           />
         </div>
         <button type="button" className={clsx('gt-nav__item', route === 'settings' && 'is-active')} onClick={() => navigate('settings')}>
-          <Icon name="settings" size={18} />
+          <NavGlyph route="settings" icon="settings" />
           <span>{t('nav.settings')}</span>
         </button>
       </div>

@@ -35,7 +35,7 @@ export function normalizeLabel(text: string): string {
     .replace(/\[[^\]]*\]%?/g, ' ')
     .replace(/\([^)]*\)/g, ' ')
     .replace(/\bx\s*(?=\d)/g, ' ')
-    .replace(/[+\-]?\d+(?:[.,]\d+)*/g, ' ')
+    .replace(/[+-]?\d+(?:[.,]\d+)*/g, ' ')
     .replace(/[%+:;!?#|]/g, ' ')
     .replace(/[^a-z0-9'\s-]/g, ' ')
     .replace(/\s+-\s+/g, ' ')
@@ -48,7 +48,7 @@ export function normalizeLabel(text: string): string {
  * Returns the value and whether it is a percentage.
  */
 export function firstNumber(text: string): { value: number; percent: boolean } | null {
-  const m = /([+\-]?)(\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d+)?)\s*(%)?/.exec(text.replace(/\[[^\]]*\]%?/g, ''));
+  const m = /([+-]?)(\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d+)?)\s*(%)?/.exec(text.replace(/\[[^\]]*\]%?/g, ''));
   if (!m) return null;
   const sign = m[1] === '-' ? -1 : 1;
   const raw = m[2] ?? '';

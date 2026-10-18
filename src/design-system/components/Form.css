@@ -253,3 +253,139 @@
   outline: none;
   color: var(--gt-gold-1);
 }
+
+/*
+ * Native skin: the options-menu controls from the game (stone fields, iron
+ * checkbox, slider rail and handle, stone/red tabs). Toggles render as the
+ * game's checkbox because Diablo IV has no switch control.
+ */
+:root[data-skin='game'] .gt-field__label {
+  color: #ddd3c1;
+}
+:root[data-skin='game'] .gt-field__hint {
+  color: #8a7f6f;
+}
+:root[data-skin='game'] .gt-toggle {
+  width: 26px;
+  height: 26px;
+  border-radius: 0;
+  background: var(--d4-checkbox) center / contain no-repeat;
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-toggle:hover:not(:disabled) {
+  background-image: var(--d4-checkbox-hover);
+}
+:root[data-skin='game'] .gt-toggle.is-on {
+  background-image: var(--d4-checkbox-on);
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-toggle.is-on:hover:not(:disabled) {
+  background-image: var(--d4-checkbox-on-hover);
+}
+:root[data-skin='game'] .gt-toggle__thumb {
+  display: none;
+}
+
+:root[data-skin='game'] .gt-slider input::-webkit-slider-runnable-track {
+  height: 9px;
+  border-radius: 0;
+  box-shadow: none;
+  background:
+    var(--d4-slider-fill) left center / var(--pct) 100% no-repeat,
+    var(--d4-slider-track) center / 100% 100% no-repeat;
+}
+:root[data-skin='game'] .gt-slider input::-webkit-slider-thumb {
+  width: 11px;
+  height: 22px;
+  margin-top: -7px;
+  transform: none;
+  border-radius: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  background: var(--d4-slider-thumb) center / 100% 100% no-repeat;
+}
+
+:root[data-skin='game'] .gt-select select,
+:root[data-skin='game'] .gt-input,
+:root[data-skin='game'] .gt-stepper {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-input) 20 fill / 7px stretch;
+  color: #e6ddcd;
+}
+:root[data-skin='game'] .gt-select select:hover,
+:root[data-skin='game'] .gt-input:hover,
+:root[data-skin='game'] .gt-stepper:hover {
+  border-image-source: var(--d4-input-hover);
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-input:focus-visible,
+:root[data-skin='game'] .gt-select select:focus-visible {
+  border-image-source: var(--d4-input-focus);
+  box-shadow: 0 0 14px -4px rgba(255, 90, 50, 0.45);
+}
+:root[data-skin='game'] .gt-select svg {
+  display: none;
+}
+:root[data-skin='game'] .gt-select::after {
+  content: '';
+  position: absolute;
+  right: 6px;
+  width: 22px;
+  height: 18px;
+  pointer-events: none;
+  background: var(--d4-select-arrow) center / contain no-repeat;
+}
+:root[data-skin='game'] .gt-select select option {
+  background: #0f0d0b;
+}
+
+:root[data-skin='game'] .gt-segmented {
+  padding: 0;
+  gap: 4px;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+:root[data-skin='game'] .gt-segmented__opt {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 0;
+  color: #b5aa97;
+  text-shadow: 0 1px 1px #000;
+  border: 0 solid transparent;
+  border-image: var(--d4-tab) 24 fill / 8px stretch;
+}
+:root[data-skin='game'] .gt-segmented--sm .gt-segmented__opt {
+  height: 26px;
+  border-image-width: 6px;
+}
+:root[data-skin='game'] .gt-segmented__opt:hover {
+  color: #f1e8d9;
+  border-image-source: var(--d4-tab-hover);
+  filter: brightness(1.35);
+}
+:root[data-skin='game'] .gt-segmented__opt.is-active:hover {
+  filter: brightness(1.1);
+}
+:root[data-skin='game'] .gt-segmented__opt.is-active {
+  color: #fff1e4;
+  background: none;
+  box-shadow: none;
+  border-image-source: var(--d4-tab-active);
+}
+
+:root[data-skin='game'] .gt-stepper button > svg {
+  display: none;
+}
+:root[data-skin='game'] .gt-stepper button {
+  background: var(--d4-step-plus) center / 13px auto no-repeat;
+}
+:root[data-skin='game'] .gt-stepper button:first-child {
+  background-image: var(--d4-step-minus);
+}
+:root[data-skin='game'] .gt-stepper button:hover:not(:disabled) {
+  background-color: transparent;
+  filter: drop-shadow(0 0 4px rgba(255, 120, 60, 0.7));
+}

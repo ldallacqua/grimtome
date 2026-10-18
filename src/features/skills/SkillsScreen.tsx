@@ -108,7 +108,7 @@ export function SkillsScreen() {
               {summary.map((s) => {
                 const cs = catalogSkill(s.id);
                 return (
-                  <div key={s.name} className={clsx('gt-skill-card', s.rank >= s.plannedRank && s.plannedRank > 0 && 'is-complete')}>
+                  <div key={s.name} className={clsx('gt-skill-card gt-card', s.rank >= s.plannedRank && s.plannedRank > 0 && 'is-complete')}>
                     <SkillIcon id={s.id ?? null} name={s.name} size={56} state={s.rank > 0 ? 'learned' : 'locked'} />
                     <div className="gt-skill-card__text">
                       <div className="gt-skill-card__name">{s.name}</div>
@@ -136,7 +136,7 @@ export function SkillsScreen() {
                 <li key={i}>
                   <button
                     type="button"
-                    className={clsx('gt-plan__step', i < allocated && 'is-done', i === allocated && 'is-next')}
+                    className={clsx('gt-plan__step gt-card', i < allocated && 'is-done', i === allocated && 'is-next')}
                     onClick={() => setSteps(effectiveRole, i + 1)}
                     title="Mark everything up to this step as allocated"
                   >

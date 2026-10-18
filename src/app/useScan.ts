@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { parseTooltip } from '@/domain/items/parser';
 import type { OcrResult, ParsedItem } from '@/domain/items/types';
+import type { GameCatalog } from '@/services/assets/types';
 import { isTauri, platform, type OverlayMessage, type ScanPayload } from '@/services/platform';
 import type { ScanRecord } from './persistence';
 import { evaluate, useApp } from './store';
@@ -11,8 +12,8 @@ import { evaluate, useApp } from './store';
  * OCR lines → parse → store → evaluate → notify overlay.
  */
 
-function uniqueIconFor(item: ParsedItem): string | null {
-  const { catalog } = useApp.getState();
+/** Catalog icon id for a unique/mythic item, matched by its exact name. */
+export function uniqueIconId(catalog: GameCatalog | null, item: Pick<ParsedItem, 'name' | 'rarity'>): string | null {
   if (!catalog || !item.name || (item.rarity !== 'unique' && item.rarity !== 'mythic')) return null;
   const n = item.name.toLowerCase();
   return catalog.uniques.find((u) => u.name.toLowerCase() === n)?.icon ?? null;
@@ -22,7 +23,7 @@ export function overlayMessageFor(record: ScanRecord): OverlayMessage {
   const s = useApp.getState();
   const ev = evaluate(s, record.item);
   const active = s.builds[s.transition.phase];
-  const iconId = uniqueIconFor(record.item);
+  const iconId = uniqueIconId(s.catalog, record.item);
   return {
     kind: 'evaluation',
     verdict: ev.verdict,

@@ -49,7 +49,7 @@ export function ParagonScreen() {
                   <div className="gt-board__node" aria-hidden>
                     <span className="gt-num">{m.order}</span>
                   </div>
-                  <div className="gt-board__card">
+                  <div className="gt-board__card gt-card">
                     <div className="gt-board__head">
                       <div>
                         <div className="gt-board__name">{m.board.name}</div>

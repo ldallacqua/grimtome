@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react';
-import { useAssets } from '../assets-context';
 import './Panel.css';
 
 /** Original gold filigree corner (drawn for Grimtome). */
@@ -15,18 +14,8 @@ export function Corner({ className, style }: { className?: string; style?: CSSPr
   );
 }
 
+/** Section rule. With the native skin it is drawn with the game's divider textures. */
 export function Divider({ variant = 'line', className }: { variant?: 'line' | 'ornate'; className?: string }) {
-  const { resolver, enhanced } = useAssets();
-  const tex = enhanced && variant === 'ornate' ? resolver.url('ui.horizontaldividerspiked.3') : null;
-  if (tex) {
-    return (
-      <div className={clsx('gt-divider gt-divider--ornate-tex', className)} role="separator">
-        <span className="gt-divider__line" />
-        <span className="gt-divider__tex" style={{ backgroundImage: `url("${tex}")` }} />
-        <span className="gt-divider__line" />
-      </div>
-    );
-  }
   return (
     <div className={clsx('gt-divider', `gt-divider--${variant}`, className)} role="separator">
       <span className="gt-divider__line" />
@@ -58,12 +47,9 @@ export function Panel({
   children,
   ...rest
 }: PanelProps) {
-  const { resolver, enhanced } = useAssets();
-  const stone = enhanced ? resolver.url('ui.tiled-stonebasetile') : null;
   const hasHeader = title || eyebrow || actions || subtitle;
   return (
     <Tag className={clsx('gt-panel', `gt-panel--${variant}`, `gt-panel--pad-${padding}`, className)} {...rest}>
-      {stone && variant !== 'inset' ? <div className="gt-panel__texture" style={{ backgroundImage: `url("${stone}")` }} aria-hidden /> : null}
       {variant === 'ornate' ? (
         <>
           <Corner className="gt-panel__corner gt-panel__corner--tl" />

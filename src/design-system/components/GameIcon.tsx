@@ -76,7 +76,10 @@ export function ItemIcon({
       {url ? (
         <img src={url} alt="" draggable={false} />
       ) : (
-        <Icon name={slot ?? 'gem'} size={Math.round(size * 0.46)} strokeWidth={1.3} className="gt-item-icon__glyph" />
+        <>
+          <span className="gt-item-icon__slot" data-slot={slot ?? 'none'} aria-hidden />
+          <Icon name={slot ?? 'gem'} size={Math.round(size * 0.46)} strokeWidth={1.3} className="gt-item-icon__glyph" />
+        </>
       )}
     </span>
   );

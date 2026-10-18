@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { SAMPLE_BUILDS } from '@/domain/builds/samples';
 import type { Build } from '@/domain/builds/schema';
-import { AffixDictionary, defaultAffixDictionary } from '@/domain/items/affixes';
+import { defaultAffixDictionary, type AffixDictionary } from '@/domain/items/affixes';
 import { markVerified } from '@/domain/items/parser';
 import type { ParsedItem } from '@/domain/items/types';
 import { transition, transitionReadiness, type CharacterProgress } from '@/domain/progression/transition';

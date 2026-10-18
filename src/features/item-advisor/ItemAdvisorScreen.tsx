@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 import { evaluate, useApp, useEvalState } from '@/app/store';
-import { useScanController } from '@/app/useScan';
+import { useScanController, uniqueIconId } from '@/app/useScan';
 import type { ParsedItem } from '@/domain/items/types';
 import { SLOT_NAMES } from '@/domain/shared/ids';
 import type { BuildRole } from '@/domain/shared/ids';
@@ -45,6 +45,7 @@ function HistoryStrip() {
   const remove = useApp((s) => s.removeScan);
   const clear = useApp((s) => s.clearScans);
   const ctx = useEvalState();
+  const catalog = useApp((s) => s.catalog);
   if (!scans.length) return null;
   const current = selected ?? scans[0]?.id;
   return (
@@ -58,8 +59,8 @@ function HistoryStrip() {
           const ev = evaluate(ctx, sc.item);
           return (
             <li key={sc.id} data-verdict={ev.verdict}>
-              <button type="button" className={clsx('gt-strip__item', sc.id === current && 'is-selected')} onClick={() => select(sc.id)}>
-                <ItemIcon slot={sc.item.slot} rarity={sc.item.rarity} size={34} />
+              <button type="button" className={clsx('gt-strip__item gt-card', sc.id === current && 'is-selected')} onClick={() => select(sc.id)}>
+                <ItemIcon id={uniqueIconId(catalog, sc.item)} slot={sc.item.slot} rarity={sc.item.rarity} size={34} />
                 <span className="gt-strip__text">
                   <span className="gt-strip__name" data-rarity={sc.item.rarity ?? 'common'}>
                     {sc.item.name ?? 'Unknown item'}
@@ -95,10 +96,7 @@ function Result() {
   const ev = useMemo(() => (scan ? evaluate(ctx, scan.item) : null), [ctx, scan]);
   if (!scan || !ev) return null;
   const item = scan.item;
-  const iconId =
-    catalog && item.name && (item.rarity === 'unique' || item.rarity === 'mythic')
-      ? (catalog.uniques.find((u) => u.name.toLowerCase() === item.name!.toLowerCase())?.icon ?? null)
-      : null;
+  const iconId = uniqueIconId(catalog, item);
   const fits = (['leveling', 'endgame'] as const).map((r) => ev.fits[r]).filter((f) => !!f);
   const ownedName = ev.fits.endgame?.unique?.name ?? ev.fits.leveling?.unique?.name ?? ev.fits.endgame?.aspect?.name ?? ev.fits.leveling?.aspect?.name;
   const ownedKind = ev.fits.endgame?.unique || ev.fits.leveling?.unique ? 'unique' : 'aspect';

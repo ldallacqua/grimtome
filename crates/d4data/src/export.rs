@@ -3,7 +3,8 @@
 //! The export goes to a sibling staging folder first and is swapped into place
 //! only when complete, so a cancelled or failed import never leaves a half cache.
 
-use crate::catalog::{AssetJob, Catalog, GameData};
+use crate::catalog::{AssetJob, Catalog, Compose, GameData};
+use crate::texture::Frame;
 use crate::error::{Error, Result};
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -115,6 +116,37 @@ pub fn key_out_black_background(img: &mut image::RgbaImage) {
     }
 }
 
+/// Assembles atlas frames into one grid image (see [`Compose`]). Returns `None`
+/// when a requested frame is missing.
+pub fn compose_frames(compose: &Compose, frames: &[Frame], atlas: &image::RgbaImage) -> Option<image::RgbaImage> {
+    let cols = compose.cols.max(1);
+    let rows = compose.frames.len().div_ceil(cols);
+    let mut cells: Vec<Option<image::RgbaImage>> = Vec::with_capacity(compose.frames.len());
+    for want in &compose.frames {
+        cells.push(match want {
+            Some(i) => Some(frames.get(*i)?.crop(atlas)),
+            None => None,
+        });
+    }
+    let mut col_w = vec![0u32; cols];
+    let mut row_h = vec![0u32; rows];
+    for (i, img) in cells.iter().enumerate().filter_map(|(i, c)| c.as_ref().map(|c| (i, c))) {
+        col_w[i % cols] = col_w[i % cols].max(img.width());
+        row_h[i / cols] = row_h[i / cols].max(img.height());
+    }
+    let (w, h) = (col_w.iter().sum::<u32>(), row_h.iter().sum::<u32>());
+    if w == 0 || h == 0 {
+        return None;
+    }
+    let mut out = image::RgbaImage::new(w, h);
+    for (i, img) in cells.iter().enumerate().filter_map(|(i, c)| c.as_ref().map(|c| (i, c))) {
+        let x: u32 = col_w[..i % cols].iter().sum();
+        let y: u32 = row_h[..i / cols].iter().sum();
+        image::imageops::replace(&mut out, img, x as i64, y as i64);
+    }
+    Some(out)
+}
+
 /// Exports every job to `out_dir` (replaced atomically) and returns the manifest.
 pub fn export(
     game: &GameData,
@@ -165,12 +197,16 @@ pub fn export(
             };
             let mut out = Vec::with_capacity(tex_jobs.len());
             for job in tex_jobs {
-                let mut img = match job.frame {
-                    Some(i) => match def.frames.get(i) {
+                let mut img = match (&job.compose, job.frame) {
+                    (Some(c), _) => match compose_frames(c, &def.frames, &atlas) {
+                        Some(img) => img,
+                        None => continue,
+                    },
+                    (None, Some(i)) => match def.frames.get(i) {
                         Some(f) => f.crop(&atlas),
                         None => continue,
                     },
-                    None => atlas.clone(),
+                    (None, None) => atlas.clone(),
                 };
                 if job.category == "items" {
                     key_out_black_background(&mut img);
@@ -260,6 +296,23 @@ mod tests {
         let mut transparent = image::RgbaImage::from_pixel(4, 4, image::Rgba([0, 0, 0, 0]));
         key_out_black_background(&mut transparent);
         assert_eq!(transparent.get_pixel(1, 1)[3], 0);
+    }
+
+    #[test]
+    fn composes_frames_into_a_grid() {
+        let mut atlas = image::RgbaImage::new(4, 2);
+        atlas.put_pixel(0, 0, image::Rgba([255, 0, 0, 255]));
+        atlas.put_pixel(2, 0, image::Rgba([0, 255, 0, 255]));
+        let frame = |u0: f32, u1: f32| Frame { hash: 1, u0, v0: 0.0, u1, v1: 1.0 };
+        let frames = [frame(0.0, 0.5), frame(0.5, 1.0)];
+        let grid = Compose { cols: 2, frames: vec![Some(1), None, None, Some(0)] };
+        let out = compose_frames(&grid, &frames, &atlas).unwrap();
+        assert_eq!(out.dimensions(), (4, 4));
+        assert_eq!(out.get_pixel(0, 0)[1], 255);
+        assert_eq!(out.get_pixel(2, 2)[0], 255);
+        assert_eq!(out.get_pixel(2, 0)[3], 0);
+        let missing = Compose { cols: 1, frames: vec![Some(9)] };
+        assert!(compose_frames(&missing, &frames, &atlas).is_none());
     }
 
     #[test]

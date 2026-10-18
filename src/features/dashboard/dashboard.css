@@ -298,3 +298,22 @@
   color: var(--gt-text-4);
   font-size: var(--gt-text-xs);
 }
+
+/* Native skin: the hero banner is framed in iron like the game's screen headers. */
+:root[data-skin='game'] .gt-hero {
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: 0 30px 70px -30px #000;
+}
+:root[data-skin='game'] .gt-hero::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  z-index: 3;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-frame-iron) 64 / 24px stretch;
+}
+:root[data-skin='game'] .gt-hero__sigil {
+  display: none;
+}

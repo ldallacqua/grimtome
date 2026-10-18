@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { AssetsContext, BrandMark, Spinner } from '@/design-system';
+import { AssetsContext, BrandMark, Spinner, useGameSkin } from '@/design-system';
 import { BuildsScreen } from '@/features/builds/BuildsScreen';
 import { DashboardScreen } from '@/features/dashboard/DashboardScreen';
 import { ItemAdvisorScreen } from '@/features/item-advisor/ItemAdvisorScreen';
@@ -86,6 +86,7 @@ export function App() {
     () => ({ resolver, enhanced: useGame && resolver.hasGameAssets, showArt: showArt && useGame && resolver.hasGameAssets }),
     [resolver, useGame, showArt],
   );
+  useGameSkin(resolver, assets.enhanced);
 
   if (!ready) {
     return (

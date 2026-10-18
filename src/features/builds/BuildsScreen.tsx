@@ -51,16 +51,16 @@ function BuildSlot({ role, onImport }: { role: BuildRole; onImport: (r: BuildRol
       </div>
       {build.summary ? <p className="gt-buildslot__summary">{build.summary}</p> : null}
       <div className="gt-buildslot__stats">
-        <div>
+        <div className="gt-well">
           <span className="gt-num">{build.skills.length}</span>skill points
         </div>
-        <div>
+        <div className="gt-well">
           <span className="gt-num">{aspects}</span>aspects
         </div>
-        <div>
+        <div className="gt-well">
           <span className="gt-num">{uniques}</span>uniques
         </div>
-        <div>
+        <div className="gt-well">
           <span className="gt-num">{build.paragon.length}</span>boards
         </div>
       </div>
@@ -144,7 +144,7 @@ function TransitionPanel() {
           </div>
           <ul className="gt-criteria">
             {r.criteria.map((c) => (
-              <li key={c.id} className={clsx(c.met && 'is-met')}>
+              <li key={c.id} className={clsx('gt-card', c.met && 'is-met')}>
                 <span className="gt-criteria__icon">
                   <Icon name={c.met ? 'check' : c.required ? 'lock' : 'info'} size={14} strokeWidth={2} />
                 </span>

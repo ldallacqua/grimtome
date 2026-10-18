@@ -31,12 +31,6 @@
     inset 0 1px 0 color-mix(in srgb, var(--rc) 70%, white),
     inset 0 -1px 0 color-mix(in srgb, var(--rc) 25%, transparent);
 }
-.gt-item-card.has-textures .gt-item-card__header {
-  background: var(--tt-header);
-  box-shadow: none;
-  min-height: 104px;
-  padding: 22px 26px 18px;
-}
 .gt-item-card__titles {
   min-width: 0;
 }
@@ -63,10 +57,6 @@
   position: relative;
   padding: 14px 22px 20px;
   background: linear-gradient(180deg, #110e0c, #0b0908);
-}
-.gt-item-card.has-textures .gt-item-card__body {
-  background: var(--tt-body);
-  padding: 12px 28px 26px;
 }
 .gt-item-card__power {
   font-size: var(--gt-text-md);
@@ -98,17 +88,6 @@
   transform: rotate(45deg);
   border: 1px solid rgba(214, 174, 107, 0.65);
 }
-.gt-item-card__sep--tex {
-  gap: 0;
-}
-.gt-item-card__sep--tex > span {
-  height: 14px;
-  background: none;
-  background-repeat: no-repeat;
-  background-size: auto 100%;
-  background-position: right center;
-  opacity: 0.9;
-}
 
 .gt-item-card__affixes {
   list-style: none;
@@ -133,7 +112,7 @@
   height: 14px;
   object-fit: contain;
 }
-.gt-affix__bullet--css {
+.gt-affix__bullet--plain {
   width: 7px;
   height: 7px;
   transform: rotate(45deg);
@@ -141,11 +120,6 @@
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
 }
 .gt-affix__bullet--ga {
-  width: 17px;
-  height: 17px;
-  filter: drop-shadow(0 0 4px rgba(255, 150, 40, 0.8));
-}
-.gt-affix__bullet--ga-css {
   width: auto;
   height: auto;
   font-size: 15px;
@@ -262,4 +236,99 @@
 .gt-affix__dot--future {
   background: var(--gt-verdict-stash);
   box-shadow: 0 0 8px rgba(173, 145, 255, 0.7);
+}
+
+/*
+ * Native skin: the game's rarity tooltip (9-slice composite over a dark base),
+ * its diamond separators, affix glyphs and socket ring.
+ */
+:root[data-skin='game'] .gt-item-card {
+  --tt: var(--d4-tooltip-common);
+  border-radius: 0;
+  overflow: visible;
+  background: rgba(8, 7, 6, 0.97);
+  border: 0 solid transparent;
+  border-image: var(--tt) 128 fill / 64px stretch;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.85),
+    0 30px 70px -30px rgba(0, 0, 0, 0.95);
+}
+:root[data-skin='game'] .gt-item-card[data-rarity='magic'] {
+  --tt: var(--d4-tooltip-magic);
+}
+:root[data-skin='game'] .gt-item-card[data-rarity='rare'] {
+  --tt: var(--d4-tooltip-rare);
+}
+:root[data-skin='game'] .gt-item-card[data-rarity='legendary'] {
+  --tt: var(--d4-tooltip-legendary);
+}
+:root[data-skin='game'] .gt-item-card[data-rarity='unique'] {
+  --tt: var(--d4-tooltip-unique);
+}
+:root[data-skin='game'] .gt-item-card[data-rarity='mythic'] {
+  --tt: var(--d4-tooltip-mythic);
+}
+:root[data-skin='game'] .gt-item-card__header {
+  background: none;
+  box-shadow: none;
+  padding: 24px 26px 12px;
+}
+:root[data-skin='game'] .gt-item-card__body {
+  background: none;
+  padding: 6px 26px 24px;
+}
+:root[data-skin='game'] .gt-item-card__sep {
+  height: 10px;
+  margin: 10px -6px 9px;
+  background:
+    var(--d4-divider-half-l) right calc(50% - 8px) center / auto 100% no-repeat,
+    var(--d4-divider-half-r) left calc(50% - 8px) center / auto 100% no-repeat;
+}
+:root[data-skin='game'] .gt-item-card__sep > * {
+  display: none;
+}
+:root[data-skin='game'] .gt-affix__bullet--plain {
+  width: 11px;
+  height: 10px;
+  transform: none;
+  box-shadow: none;
+  background: var(--d4-bullet) center / contain no-repeat;
+}
+:root[data-skin='game'] .gt-affix__bullet--ga {
+  width: 16px;
+  height: 16px;
+  background: var(--d4-bullet-ga) center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgba(255, 130, 40, 0.65));
+}
+:root[data-skin='game'] .gt-affix__bullet--ga > span {
+  display: none;
+}
+:root[data-skin='game'] .gt-affix__bullet--tempered {
+  width: 13px;
+  height: 13px;
+  background: var(--d4-bullet-tempered) center / contain no-repeat;
+  filter: none;
+}
+:root[data-skin='game'] .gt-affix__bullet--tempered > svg {
+  display: none;
+}
+:root[data-skin='game'] .gt-affix__value,
+:root[data-skin='game'] .gt-affix__label {
+  color: #d6cebf;
+}
+:root[data-skin='game'] .gt-affix.is-greater .gt-affix__value {
+  color: #ffa44c;
+}
+:root[data-skin='game'] .gt-item-card__power {
+  color: #f0e9dc;
+}
+:root[data-skin='game'] .gt-item-card__lore {
+  color: color-mix(in srgb, var(--rc) 70%, #cfc4b0);
+}
+:root[data-skin='game'] .gt-item-card__socket {
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--d4-socket) center / contain no-repeat;
 }

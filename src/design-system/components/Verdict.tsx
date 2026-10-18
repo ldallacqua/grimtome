@@ -12,11 +12,20 @@ export const VERDICT_META: Record<Verdict, { label: string; icon: IconName; shor
   review: { label: 'Needs review', icon: 'review', short: 'Review' },
 };
 
+/** Verdict glyph: the game's own icon with the native skin, Grimtome's line icon otherwise. */
+export function VerdictIcon({ verdict, size = 14, strokeWidth = 2 }: { verdict: Verdict; size?: number; strokeWidth?: number }) {
+  return (
+    <span className="gt-verdict-icon" data-verdict={verdict} style={{ width: size, height: size }} aria-hidden>
+      <Icon name={VERDICT_META[verdict].icon} size={size} strokeWidth={strokeWidth} />
+    </span>
+  );
+}
+
 export function VerdictBadge({ verdict, size = 'md', short }: { verdict: Verdict; size?: 'sm' | 'md'; short?: boolean }) {
   const m = VERDICT_META[verdict];
   return (
     <span className={clsx('gt-verdict-badge', `gt-verdict-badge--${size}`)} data-verdict={verdict}>
-      <Icon name={m.icon} size={size === 'sm' ? 12 : 14} strokeWidth={2} />
+      <VerdictIcon verdict={verdict} size={size === 'sm' ? 12 : 14} />
       {short ? m.short : m.label}
     </span>
   );
@@ -41,7 +50,7 @@ export function VerdictBanner({
     <div className={clsx('gt-verdict', compact && 'gt-verdict--compact')} data-verdict={verdict} role="status" aria-live="polite">
       <div className="gt-verdict__sigil" aria-hidden>
         <span className="gt-verdict__ring" />
-        <Icon name={m.icon} size={compact ? 20 : 26} strokeWidth={1.8} />
+        <VerdictIcon verdict={verdict} size={compact ? 22 : 30} strokeWidth={1.8} />
       </div>
       <div className="gt-verdict__text">
         <div className="gt-verdict__label">{m.label}</div>

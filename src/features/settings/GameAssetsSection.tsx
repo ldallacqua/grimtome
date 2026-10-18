@@ -83,7 +83,7 @@ export function GameAssetsSection() {
           <Field label="Detected installations" hint={installs === null ? 'Searching…' : installs.length ? undefined : 'None found automatically. You can choose the folder yourself.'}>
             <div className="gt-installs">
               {(installs ?? []).map((i) => (
-                <div key={i.root} className="gt-install">
+                <div key={i.root} className="gt-install gt-card">
                   <div>
                     <div className="gt-install__path">{i.root}</div>
                     <div className="gt-row" style={{ marginTop: 4 }}>

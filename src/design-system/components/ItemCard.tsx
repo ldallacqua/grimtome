@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { ParsedAffix } from '@/domain/items/types';
 import type { Rarity, Slot } from '@/domain/shared/ids';
-import { useAssets } from '../assets-context';
 import { Icon } from '../icons';
 import { ItemIcon, RarityGlyph } from './GameIcon';
 import './ItemCard.css';
@@ -43,28 +42,6 @@ export interface ItemCardProps {
   className?: string;
 }
 
-function useTooltipTextures(rarity: Rarity | null): CSSProperties | undefined {
-  const { resolver, enhanced } = useAssets();
-  if (!enhanced || !rarity) return undefined;
-  const base = `ui.tooltipbackgroundrarity-${rarity}`;
-  const u = (n: number) => resolver.url(`${base}.${n}`);
-  const [b0, b1, b2, b3, b4, b5, h6, h7, h8] = [0, 1, 2, 3, 4, 5, 6, 7, 8].map(u);
-  if (!h6 || !h7 || !h8 || !b4) return undefined;
-  return {
-    '--tt-header': `url("${h7}") left top / auto 100% no-repeat, url("${h8}") right top / auto 100% no-repeat, url("${h6}") center top / 100% 100% no-repeat`,
-    '--tt-body': [
-      b1 && `url("${b1}") left bottom / 64px 64px no-repeat`,
-      b2 && `url("${b2}") right bottom / 64px 64px no-repeat`,
-      b0 && `url("${b0}") center bottom / 100% 64px no-repeat`,
-      b3 && `url("${b3}") left top / 64px 100% no-repeat`,
-      b5 && `url("${b5}") right top / 64px 100% no-repeat`,
-      `url("${b4}") center / 100% 100% no-repeat`,
-    ]
-      .filter(Boolean)
-      .join(', '),
-  } as CSSProperties;
-}
-
 function Separator() {
   return (
     <div className="gt-item-card__sep" role="separator">
@@ -75,12 +52,12 @@ function Separator() {
   );
 }
 
+/** Affix bullet: game glyphs with the native skin, CSS shapes otherwise. */
 function Bullet({ affix }: { affix: ParsedAffix }) {
-  const { resolver, enhanced } = useAssets();
   if (affix.greater) {
     return (
-      <span className="gt-affix__bullet gt-affix__bullet--ga-css" title="Greater Affix" aria-label="Greater Affix">
-        ✦
+      <span className="gt-affix__bullet gt-affix__bullet--ga" title="Greater Affix" aria-label="Greater Affix">
+        <span aria-hidden>✦</span>
       </span>
     );
   }
@@ -91,12 +68,7 @@ function Bullet({ affix }: { affix: ParsedAffix }) {
       </span>
     );
   }
-  const diamond = enhanced ? resolver.url('ui.tooltip.11') : null;
-  return diamond ? (
-    <img className="gt-affix__bullet" src={diamond} alt="" />
-  ) : (
-    <span className="gt-affix__bullet gt-affix__bullet--css" aria-hidden />
-  );
+  return <span className="gt-affix__bullet gt-affix__bullet--plain" aria-hidden />;
 }
 
 function formatValue(a: ParsedAffix): string | null {
@@ -126,13 +98,11 @@ export function ItemCard({
   compact,
   className,
 }: ItemCardProps) {
-  const textures = useTooltipTextures(rarity);
   const typeLine = [ancestral ? 'Ancestral' : null, rarity ? RARITY_LABEL[rarity] : null, itemType].filter(Boolean).join(' ');
   return (
     <article
-      className={clsx('gt-item-card', textures && 'has-textures', compact && 'gt-item-card--compact', className)}
+      className={clsx('gt-item-card', compact && 'gt-item-card--compact', className)}
       data-rarity={rarity ?? 'common'}
-      style={textures}
       aria-label={name ?? 'Unnamed item'}
     >
       <header className="gt-item-card__header">

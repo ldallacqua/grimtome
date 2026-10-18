@@ -160,7 +160,7 @@ export function SettingsScreen() {
 
         <Panel title="Data & privacy" variant="raised">
           <Field label="Stored at" hint="Builds, progress, settings and scan history.">
-            <code className="gt-path">{location}</code>
+            <code className="gt-path gt-well">{location}</code>
           </Field>
           <Field label="Keep tooltip images" hint="Off by default: screenshots are discarded after recognition." inline>
             <Toggle label="Keep tooltip images" checked={settings.privacy.keepScanImages} onChange={(v) => patch('privacy', { keepScanImages: v })} />

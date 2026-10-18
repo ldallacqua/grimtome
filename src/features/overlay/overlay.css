@@ -149,3 +149,35 @@
   color: var(--gt-text-2);
   font-size: var(--gt-text-sm);
 }
+
+/* Native skin: a compact game tooltip panel with the menu bar strip on top. */
+:root[data-skin='game'] .gt-ov__card {
+  border-radius: 0;
+  overflow: visible;
+  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--v) 14%, transparent), transparent 60%);
+  box-shadow: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-panel) 76 fill / 26px stretch;
+}
+:root[data-skin='game'] .gt-ov__bar {
+  margin: 3px 3px 0;
+  background: var(--d4-titlebar-mid) center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-ov__build {
+  color: #b9ad99;
+  text-shadow: 0 1px 1px #000;
+}
+:root[data-skin='game'] .gt-ov__sigil {
+  position: relative;
+  border-radius: 0;
+  transform: none;
+  background: var(--d4-verdict-ring) center / contain no-repeat;
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-ov__sigil > * {
+  transform: none;
+}
+:root[data-skin='game'] .gt-ov__summary {
+  color: #c9bfad;
+}

@@ -173,3 +173,23 @@
 .gt-plan__check {
   color: var(--gt-gold-2);
 }
+
+/* Native skin: rank pips are the game's inline diamond glyphs. */
+:root[data-skin='game'] .gt-pips i {
+  width: 11px;
+  height: 11px;
+  transform: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--d4-pip) center / contain no-repeat;
+  opacity: 0.6;
+}
+:root[data-skin='game'] .gt-pips i.is-planned {
+  background-image: var(--d4-pip-planned);
+  opacity: 0.85;
+}
+:root[data-skin='game'] .gt-pips i.is-on {
+  background-image: var(--d4-pip-on);
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(255, 140, 60, 0.7));
+}

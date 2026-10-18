@@ -103,7 +103,8 @@ pub struct Catalog {
     pub affix_templates: Vec<AffixTemplate>,
 }
 
-/// One icon/texture to write to the cache. `frame: None` exports the whole texture.
+/// One icon/texture to write to the cache. `frame: None` exports the whole texture;
+/// `compose` assembles several frames of the texture into one image instead.
 #[derive(Debug, Clone)]
 pub struct AssetJob {
     pub id: String,
@@ -111,6 +112,16 @@ pub struct AssetJob {
     pub texture: u32,
     pub frame: Option<usize>,
     pub max_px: Option<u32>,
+    pub compose: Option<Compose>,
+}
+
+/// Frames laid out row-major in a grid of `cols` columns (`None` leaves the cell
+/// transparent). Column widths and row heights are the largest frame in each.
+/// Used to turn the game's split panel pieces into one CSS `border-image` source.
+#[derive(Debug, Clone)]
+pub struct Compose {
+    pub cols: usize,
+    pub frames: Vec<Option<usize>>,
 }
 
 /// Class key, display name, frame in `2DUI_ClassIcons`, frame in `2DUI_ClassIcons_Rendered`.
@@ -125,8 +136,35 @@ const CLASSES: &[(&str, &str, usize, Option<usize>)] = &[
     ("warlock", "Warlock", 22, None),
 ];
 
-/// Whole textures exported for the enhanced UI theme (frames are exported too).
+/// UI atlases exported for the native theme: every frame, plus the whole texture
+/// when it is a single image.
 pub const UI_TEXTURES: &[&str] = &[
+    "2DUIControls",
+    "2DUIFontIcon",
+    "2DUI_Breaklines",
+    "2DUI_GameOptions",
+    "2DUI_HorizontalSpikedDivider",
+    "2DUI_InventoryGrid",
+    "2DUI_ListBanner",
+    "2DUI_MenuNav",
+    "2DUI_MiniToasts",
+    "2DUI_Paragon_transparentElements",
+    "2DUI_PaperDoll_EmptySlotIcons",
+    "2DUI_ProgressBar",
+    "2DUI_ProgressBars",
+    "2DUI_RadioButtons_Fancy",
+    "2DUI_SelectionHighlight",
+    "2DUI_SkillTree_ABCDFrames",
+    "2DUI_Skills",
+    "2DUI_SmallTabs",
+    "2DUI_Social_Frame",
+    "2DUI_Social_Header",
+    "2DUI_TitleLaurels",
+    "2DUI_TooltipBaseBackground",
+    "2DUI_Tooltip_Icons",
+    "2DUI_Vendor",
+    "2DUI_cursor_small",
+    "2DUITiled_HorizontalFrameDivider",
     "2DUI_TooltipBackgroundRarity_Common",
     "2DUI_TooltipBackgroundRarity_Magic",
     "2DUI_TooltipBackgroundRarity_Rare",
@@ -162,6 +200,35 @@ pub const UI_TEXTURES: &[&str] = &[
     "2DUI_TalentSkill_Nodes",
     "2DUI_Aspect_Tab_Icons",
     "2DUI_InventoryTabIcons",
+];
+
+const NINE_SLICE: &[Option<usize>] = &[Some(7), Some(6), Some(8), Some(3), Some(4), Some(5), Some(1), Some(0), Some(2)];
+
+/// Split panel pieces assembled into single 9-slice images:
+/// (asset id, texture, expected frame count, columns, frames).
+/// The expected count guards against atlas layout changes in a future patch.
+pub const COMPOSITES: &[(&str, &str, usize, usize, &[Option<usize>])] = &[
+    ("ui.nine.panel", "2DUI_TooltipBaseBackground", 9, 3, NINE_SLICE),
+    (
+        "ui.nine.frame-iron",
+        "2DUI_Social_Frame",
+        15,
+        3,
+        &[Some(10), Some(11), Some(12), Some(7), None, Some(6), Some(1), Some(2), Some(3)],
+    ),
+    (
+        "ui.nine.selection",
+        "2DUI_SelectionHighlight",
+        12,
+        3,
+        &[Some(5), Some(6), Some(7), Some(3), None, Some(4), Some(0), Some(1), Some(2)],
+    ),
+    ("ui.nine.tooltip-common", "2DUI_TooltipBackgroundRarity_Common", 9, 3, NINE_SLICE),
+    ("ui.nine.tooltip-magic", "2DUI_TooltipBackgroundRarity_Magic", 9, 3, NINE_SLICE),
+    ("ui.nine.tooltip-rare", "2DUI_TooltipBackgroundRarity_Rare", 9, 3, NINE_SLICE),
+    ("ui.nine.tooltip-legendary", "2DUI_TooltipBackgroundRarity_Legendary", 9, 3, NINE_SLICE),
+    ("ui.nine.tooltip-unique", "2DUI_TooltipBackgroundRarity_Unique", 9, 3, NINE_SLICE),
+    ("ui.nine.tooltip-mythic", "2DUI_TooltipBackgroundRarity_Mythic", 9, 3, NINE_SLICE),
 ];
 
 /// Large illustrations exported (downscaled) for hero banners.
@@ -386,12 +453,12 @@ impl GameData {
                 // Frame positions are only trusted for the atlas shapes they were verified on.
                 let icon = (icon_frames == 24).then(|| {
                     let id = format!("class.{key}");
-                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: icons.unwrap(), frame: Some(*frame), max_px: None });
+                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: icons.unwrap(), frame: Some(*frame), max_px: None, compose: None });
                     id
                 });
                 let emblem = emblem_frame.filter(|_| rendered_frames == 7).map(|f| {
                     let id = format!("class.{key}.emblem");
-                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: rendered.unwrap(), frame: Some(f), max_px: Some(768) });
+                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: rendered.unwrap(), frame: Some(f), max_px: Some(768), compose: None });
                     id
                 });
                 ClassEntry { id: format!("class.{key}"), key: key.to_string(), name: name.to_string(), icon, emblem }
@@ -432,7 +499,7 @@ impl GameData {
         best.into_iter()
             .map(|((class, name_slug), (sno, _, frame, strings))| {
                 let id = format!("skill.{class}.{name_slug}");
-                jobs.push(AssetJob { id: id.clone(), category: "skills", texture: frame.0, frame: Some(frame.1), max_px: None });
+                jobs.push(AssetJob { id: id.clone(), category: "skills", texture: frame.0, frame: Some(frame.1), max_px: None, compose: None });
                 let mut upgrades: Vec<(usize, String)> = strings
                     .iter()
                     .filter_map(|(k, v)| {
@@ -525,7 +592,7 @@ impl GameData {
         best.into_values()
             .map(|(mut entry, icon, _)| {
                 if let Some((tex, frame)) = icon {
-                    jobs.push(AssetJob { id: entry.id.clone(), category: "items", texture: tex, frame: Some(frame), max_px: None });
+                    jobs.push(AssetJob { id: entry.id.clone(), category: "items", texture: tex, frame: Some(frame), max_px: None, compose: None });
                     entry.icon = Some(entry.id.clone());
                 }
                 entry
@@ -589,7 +656,7 @@ impl GameData {
             .map(|(mut g, icon)| {
                 if let Some((tex, frame)) = icon {
                     if !jobs.iter().any(|j| j.id == g.id) {
-                        jobs.push(AssetJob { id: g.id.clone(), category: "paragon", texture: tex, frame: Some(frame), max_px: None });
+                        jobs.push(AssetJob { id: g.id.clone(), category: "paragon", texture: tex, frame: Some(frame), max_px: None, compose: None });
                     }
                     g.icon = Some(g.id.clone());
                 }
@@ -640,17 +707,32 @@ impl GameData {
             let Some(tex) = self.texture_id(name) else { continue };
             let Some(def) = self.texture_def(tex) else { continue };
             let base = format!("ui.{}", slug(name.trim_start_matches("2DUI").trim_start_matches('_')));
-            jobs.push(AssetJob { id: base.clone(), category: "ui", texture: tex, frame: None, max_px: None });
-            if def.frames.len() > 1 {
+            if def.frames.len() <= 1 {
+                jobs.push(AssetJob { id: base.clone(), category: "ui", texture: tex, frame: None, max_px: None, compose: None });
+            } else {
                 for i in 0..def.frames.len() {
-                    jobs.push(AssetJob { id: format!("{base}.{i}"), category: "ui", texture: tex, frame: Some(i), max_px: None });
+                    jobs.push(AssetJob { id: format!("{base}.{i}"), category: "ui", texture: tex, frame: Some(i), max_px: None, compose: None });
                 }
             }
+        }
+        for (id, name, expected, cols, frames) in COMPOSITES {
+            let Some(tex) = self.texture_id(name) else { continue };
+            if self.texture_def(tex).map(|d| d.frames.len()) != Some(*expected) {
+                continue;
+            }
+            jobs.push(AssetJob {
+                id: id.to_string(),
+                category: "ui",
+                texture: tex,
+                frame: None,
+                max_px: None,
+                compose: Some(Compose { cols: *cols, frames: frames.to_vec() }),
+            });
         }
         for name in ART_TEXTURES {
             if let Some(tex) = self.texture_id(name) {
                 let id = format!("art.{}", slug(name.trim_start_matches("2DUI_")));
-                jobs.push(AssetJob { id, category: "art", texture: tex, frame: None, max_px: Some(2048) });
+                jobs.push(AssetJob { id, category: "art", texture: tex, frame: None, max_px: Some(2048), compose: None });
             }
         }
     }

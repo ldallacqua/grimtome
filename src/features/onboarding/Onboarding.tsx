@@ -12,7 +12,7 @@ const STEPS = ['Welcome', 'Builds', 'Game assets', 'Ready'] as const;
 
 function Feature({ icon, title, body }: { icon: IconName; title: string; body: string }) {
   return (
-    <div className="gt-ob-feature">
+    <div className="gt-ob-feature gt-card">
       <span className="gt-ob-feature__icon">
         <Icon name={icon} size={20} />
       </span>
@@ -74,12 +74,12 @@ export function Onboarding() {
             <h2 className="gt-ob__title">Bring your builds</h2>
             <p className="gt-ob__lede">Grimtome follows two builds: one for leveling and the endgame build you are aiming for.</p>
             <div className="gt-ob__choices">
-              <button type="button" className={clsx('gt-ob__choice', hasBuilds && builds.leveling?.source.kind === 'sample' && 'is-selected')} onClick={loadSamples}>
+              <button type="button" className={clsx('gt-ob__choice gt-card', hasBuilds && builds.leveling?.source.kind === 'sample' && 'is-selected')} onClick={loadSamples}>
                 <Icon name="sparkle" size={22} />
                 <strong>Try the sample builds</strong>
                 <span>Barbarian · Whirlwind leveling → Earthquake Hammer endgame</span>
               </button>
-              <button type="button" className="gt-ob__choice" onClick={() => setImportOpen(true)}>
+              <button type="button" className="gt-ob__choice gt-card" onClick={() => setImportOpen(true)}>
                 <Icon name="paste" size={22} />
                 <strong>Paste from a guide</strong>
                 <span>Copy sections from the guide you follow (Maxroll or any site) and paste them</span>
@@ -127,7 +127,7 @@ export function Onboarding() {
               <KeyCap keys={hotkeyParts(settings.hotkeys.scan)} />
             </div>
             <div className="gt-ob__options">
-              <div className="gt-ob__option">
+              <div className="gt-ob__option gt-card">
                 <span>
                   <strong>In-game overlay</strong>
                   <small>Show verdicts on top of the game</small>
@@ -138,7 +138,7 @@ export function Onboarding() {
                   onChange={(v) => update((s) => ({ ...s, overlay: { ...s.overlay, enabled: v } }))}
                 />
               </div>
-              <div className="gt-ob__option">
+              <div className="gt-ob__option gt-card">
                 <span>
                   <strong>Capture</strong>
                   <small>Smart mode finds the tooltip for you</small>

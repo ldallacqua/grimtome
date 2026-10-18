@@ -151,3 +151,37 @@
 .gt-glyph-row.is-done span {
   color: var(--gt-text-3);
 }
+
+/* Native skin: board milestones use the skill tree's spiked diamond frames. */
+:root[data-skin='game'] .gt-paragon-path::before {
+  background: linear-gradient(180deg, rgba(160, 40, 25, 0.8), rgba(90, 80, 70, 0.15));
+}
+:root[data-skin='game'] .gt-board__node::before {
+  inset: -6px;
+  transform: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--d4-skill-frame-diamond-off) center / 100% 100% no-repeat;
+}
+:root[data-skin='game'] .gt-board.is-done .gt-board__node::before {
+  background: var(--d4-skill-frame-diamond) center / 100% 100% no-repeat;
+  box-shadow: none;
+}
+:root[data-skin='game'] .gt-board.is-current .gt-board__node::before {
+  background: var(--d4-skill-frame-diamond-on) center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(255, 60, 30, 0.6));
+}
+:root[data-skin='game'] .gt-board.is-current .gt-board__card::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: var(--d4-selection) 31 / 14px stretch;
+  opacity: 0.85;
+}
+:root[data-skin='game'] .gt-board.is-done .gt-board__card {
+  opacity: 1;
+  filter: saturate(0.7) brightness(0.82);
+}
