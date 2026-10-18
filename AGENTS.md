@@ -31,7 +31,7 @@ Also:
 
 ## Asset and licensing restrictions
 
-- No Blizzard file, texture, extracted image or screenshot containing game textures may be committed or packaged. Imported assets live only in `%LOCALAPPDATA%\Grimtome\assets\current`.
+- No Blizzard file, texture, extracted image or screenshot containing game textures may be committed or packaged. Imported assets live only in `%LOCALAPPDATA%\app.grimtome.desktop\assets\current`.
 - `pnpm check:assets` must pass (it also compares committed images with the local import cache).
 - Visual baselines and README images are taken without game assets (`vite preview`).
 - Scratch work (texture dumps, contact sheets) goes in `.scratch/` (git-ignored).

@@ -39,7 +39,7 @@ Users decide whether to use the importer. If Blizzard objects, the importer can 
 ## Assets and the repository
 
 - Blizzard-owned files must not be indiscriminately copied into the public GitHub repository or distributed with the application. Grimtome ships **no** game files: the installer contains only Grimtome's code, original artwork (logo, line icons) and open-source fonts.
-- Imported textures live in `%LOCALAPPDATA%\Grimtome\assets\current` and are never uploaded. Never upload imported assets, telemetry, or screenshots automatically — Grimtome uploads nothing at all.
+- Imported textures live in `%LOCALAPPDATA%\app.grimtome.desktop\assets\current` and are never uploaded. Never upload imported assets, telemetry, or screenshots automatically — Grimtome uploads nothing at all.
 - `pnpm check:assets` (run in CI and before releases) fails if game data file types, cache folders, or any image byte-identical to an asset in the local import cache would be committed.
 - Screenshots in the repository (README, visual baselines) are taken **without** game assets.
 - Item, skill and class **names** appear as factual references (sample builds, tests). They remain Blizzard's trademarks.

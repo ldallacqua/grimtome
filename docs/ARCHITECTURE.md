@@ -25,7 +25,7 @@ Grimtome is a Tauri 2 desktop app: a React/TypeScript UI in WebView2 and a Rust 
                                                 │
                      crates/d4data — read-only reader for the Steam "static container" layout:
                      keys/tvfs/storage/blte → CoreTOC, packed SNO files, StringLists, textures
-                     → catalog.json + PNGs in %LOCALAPPDATA%\Grimtome\assets\current
+                     → catalog.json + PNGs in %LOCALAPPDATA%\app.grimtome.desktop\assets\current
 ```
 
 ## Module boundaries

@@ -14,7 +14,7 @@ const root = path.dirname(fileURLToPath(import.meta.url));
  * disabled with GRIMTOME_DEV_ASSETS=0 (visual tests do this to stay asset-free).
  */
 function localGameAssets(): Plugin {
-  const cache = path.join(process.env.LOCALAPPDATA ?? '', 'Grimtome', 'assets', 'current');
+  const cache = path.join(process.env.LOCALAPPDATA ?? '', 'app.grimtome.desktop', 'assets', 'current');
   return {
     name: 'grimtome-local-game-assets',
     apply: 'serve',

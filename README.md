@@ -1,5 +1,7 @@
 # Grimtome
 
+[![CI](https://github.com/ldallacqua/grimtome/actions/workflows/ci.yml/badge.svg)](https://github.com/ldallacqua/grimtome/actions/workflows/ci.yml)
+
 **A Diablo IV build companion for Windows.** Hover an item in game, press a hotkey, and Grimtome reads the tooltip and tells you whether to equip it, keep it, stash it for your endgame build or salvage it — with the reasons spelled out. It also walks you through your skill point order, your Paragon boards and the moment to switch from your leveling build to your endgame build.
 
 > Unofficial fan project. Not affiliated with, endorsed or sponsored by Blizzard Entertainment. Diablo is a trademark of Blizzard Entertainment, Inc.
@@ -31,7 +33,7 @@ Grimtome only looks at what is on your screen, like a screenshot would. It does 
 2. Run it. The installer is **not code-signed**, so Windows SmartScreen will warn "Windows protected your PC" — choose _More info → Run anyway_. Verify the file against `SHA256SUMS.txt` from the release if you want to be sure it is the published build.
 3. It installs per user (no administrator rights). Microsoft Edge WebView2 is required; it is preinstalled on Windows 11 and the installer fetches it if missing.
 
-Uninstall from _Settings → Apps_. Your data lives in `%APPDATA%\app.grimtome.desktop` (builds, progress, settings) and `%LOCALAPPDATA%\Grimtome` (optional imported game textures); delete those folders to remove everything.
+Uninstall from _Settings → Apps_. Your data lives in `%APPDATA%\app.grimtome.desktop` (builds, progress, settings) and `%LOCALAPPDATA%\app.grimtome.desktop` (optional imported game textures); the uninstaller's _Delete the application data_ option removes both, or delete them yourself.
 
 ## Using Grimtome
 
@@ -58,7 +60,7 @@ Toggle with **Ctrl+Shift+O**, or from the sidebar. **Ctrl+Shift+X** toggles clic
 
 ### Optional: use the game's own textures
 
-Settings → **Game assets** → _Import_. Grimtome finds your Diablo IV installation (Steam installs are supported; Battle.net installs are detected but their storage format is not supported yet), shows what it will do and asks for consent. It then reads the game's files read-only and writes decoded textures and names to `%LOCALAPPDATA%\Grimtome\assets\current` on your PC (≈1,900 images, a few seconds). The interface switches to the native look immediately; _Clear_ removes the cache. See [docs/ASSETS.md](docs/ASSETS.md) and the gray-area note in [docs/COMPLIANCE.md](docs/COMPLIANCE.md).
+Settings → **Game assets** → _Import_. Grimtome finds your Diablo IV installation (Steam installs are supported; Battle.net installs are detected but their storage format is not supported yet), shows what it will do and asks for consent. It then reads the game's files read-only and writes decoded textures and names to `%LOCALAPPDATA%\app.grimtome.desktop\assets\current` on your PC (≈1,900 images, a few seconds). The interface switches to the native look immediately; _Clear_ removes the cache. See [docs/ASSETS.md](docs/ASSETS.md) and the gray-area note in [docs/COMPLIANCE.md](docs/COMPLIANCE.md).
 
 ## Development
 

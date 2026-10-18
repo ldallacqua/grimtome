@@ -7,14 +7,14 @@ Grimtome works fully without any Diablo IV files. Optionally, a player can impor
 `AssetResolver` (`src/services/assets/resolver.ts`) resolves a semantic id to a URL:
 
 1. A locally imported game asset (only when the user enabled game assets).
-2. A user-provided asset pack (`%LOCALAPPDATA%\Grimtome\assets\user\manifest.json`, same format).
+2. A user-provided asset pack (`%LOCALAPPDATA%\app.grimtome.desktop\assets\user\manifest.json`, same format).
 3. Nothing — the caller renders Grimtome's original artwork (line icons, CSS styling, brand mark).
 
 Paths never appear in code; every file is looked up through a manifest.
 
 ## The cache
 
-`%LOCALAPPDATA%\Grimtome\assets\current` (this exact path is also the Tauri `assetProtocol` scope):
+`%LOCALAPPDATA%\app.grimtome.desktop\assets\current` (this exact path is also the Tauri `assetProtocol` scope):
 
 - `manifest.json` — `{ schemaVersion, gameBuild, locale, generatedAtUnix, source, assets: { id: { file, category, width, height, sha256, texture, frame } }, failures }`
 - `catalog.json` — classes, skills (with upgrades), uniques (slot, class, power text), aspects, glyphs, Paragon boards, affix templates — in the chosen locale.

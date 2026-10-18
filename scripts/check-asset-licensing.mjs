@@ -2,7 +2,7 @@
 //
 // 1. No raw game data in the repository (.dat/.tex/CASC/BLTE files, asset caches).
 // 2. No committed image may be byte-identical to an asset in the local import cache
-//    (%LOCALAPPDATA%\Grimtome\assets\current\manifest.json), when that cache exists.
+//    (%LOCALAPPDATA%\app.grimtome.desktop\assets\current\manifest.json), when that cache exists.
 //
 // Usage: node scripts/check-asset-licensing.mjs   (runs in CI and before releases)
 
@@ -22,13 +22,19 @@ const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclud
 const problems = [];
 
 const FORBIDDEN_EXT = /\.(dat|tex|idx|blte|casc|index|sno|stl|pak|mpq)$/i;
-const FORBIDDEN_PATH = /(^|\/)(local-assets|assets\/current|assets\/user|Grimtome\/assets)(\/|$)/i;
+const FORBIDDEN_PATH = /(^|\/)(local-assets|assets\/current|assets\/user|app\.grimtome\.desktop)(\/|$)/i;
 for (const f of files) {
   if (FORBIDDEN_EXT.test(f)) problems.push(`${f}: raw game data file type`);
   if (FORBIDDEN_PATH.test(f)) problems.push(`${f}: inside an imported-asset cache folder`);
 }
 
-const cache = join(process.env.LOCALAPPDATA ?? '', 'Grimtome', 'assets', 'current', 'manifest.json');
+const cache = join(
+  process.env.LOCALAPPDATA ?? '',
+  'app.grimtome.desktop',
+  'assets',
+  'current',
+  'manifest.json',
+);
 let compared = 0;
 if (process.env.LOCALAPPDATA && existsSync(cache)) {
   const manifest = JSON.parse(readFileSync(cache, 'utf8'));

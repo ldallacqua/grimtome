@@ -22,7 +22,7 @@ fn arg(args: &[String], name: &str) -> Option<String> {
 
 fn default_out() -> PathBuf {
     let base = std::env::var_os("LOCALAPPDATA").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("."));
-    base.join("Grimtome").join("assets").join("current")
+    base.join("app.grimtome.desktop").join("assets").join("current")
 }
 
 fn main() {

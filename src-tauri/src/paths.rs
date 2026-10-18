@@ -2,9 +2,11 @@ use crate::error::{AppError, AppResult};
 use std::path::PathBuf;
 use tauri::{AppHandle, Manager};
 
-/// `%LOCALAPPDATA%\Grimtome` — machine-local data that is never synced or uploaded.
+/// `%LOCALAPPDATA%\app.grimtome.desktop` — machine-local data that is never synced
+/// or uploaded. Kept apart from the install folder; the uninstaller's "delete app
+/// data" option removes it.
 pub fn local_root(app: &AppHandle) -> AppResult<PathBuf> {
-    Ok(app.path().local_data_dir()?.join("Grimtome"))
+    Ok(app.path().app_local_data_dir()?)
 }
 
 /// The imported game asset cache. Must match `assetProtocol.scope` in tauri.conf.json

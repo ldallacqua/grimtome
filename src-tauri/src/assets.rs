@@ -2,7 +2,7 @@
 //!
 //! The import is opt-in (Settings → Game assets, after a consent dialog), reads the
 //! user's own Diablo IV installation read-only and writes PNGs plus a manifest to
-//! `%LOCALAPPDATA%\Grimtome\assets\current`. Nothing is uploaded or bundled.
+//! `%LOCALAPPDATA%\app.grimtome.desktop\assets\current`. Nothing is uploaded or bundled.
 
 use crate::error::{AppError, AppResult};
 use crate::paths;
