@@ -42,6 +42,11 @@ jobs:
         shell: pwsh
         run: |
           $tag = "${{ github.ref_name }}"
+          gh release view $tag 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Release $tag already exists (published manually); attaching nothing."
+            exit 0
+          }
           gh release create $tag --draft --title "Grimtome $tag" --notes-file docs/RELEASE_NOTES.md `
             (Get-ChildItem target/release/bundle/nsis/*.exe).FullName `
             (Get-ChildItem target/release/bundle/msi/*.msi).FullName `
