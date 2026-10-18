@@ -13,6 +13,8 @@
 //!
 //! Encrypted content is never decrypted; it is reported as [`Error::Encrypted`] and skipped.
 
+#![allow(clippy::type_complexity)]
+
 pub mod blte;
 pub mod catalog;
 pub mod error;

@@ -4,8 +4,7 @@
   height: 100vh;
   background:
     radial-gradient(1200px 600px at 78% -10%, rgba(140, 40, 25, 0.12), transparent 60%),
-    radial-gradient(900px 500px at 0% 100%, rgba(214, 174, 107, 0.05), transparent 60%),
-    var(--gt-bg-app);
+    radial-gradient(900px 500px at 0% 100%, rgba(214, 174, 107, 0.05), transparent 60%), var(--gt-bg-app);
 }
 .gt-shell__body {
   display: flex;
@@ -99,8 +98,7 @@
   border: 0;
   border-radius: var(--gt-radius-md);
   background:
-    radial-gradient(100% 120% at 0% 0%, rgba(214, 174, 107, 0.09), transparent 60%),
-    var(--gt-surface-1);
+    radial-gradient(100% 120% at 0% 0%, rgba(214, 174, 107, 0.09), transparent 60%), var(--gt-surface-1);
   box-shadow: inset 0 0 0 1px var(--gt-line-1);
   text-align: left;
   transition: box-shadow var(--gt-dur-base) var(--gt-ease);

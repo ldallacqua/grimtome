@@ -7,6 +7,8 @@ export async function refreshAssets() {
     const status = await platform.assets.status();
     useApp.getState().setAssetStatus(status);
   } catch (e) {
-    useApp.getState().setAssetStatus({ root: null, manifest: null, catalog: null, userManifest: null, error: String(e) });
+    useApp
+      .getState()
+      .setAssetStatus({ root: null, manifest: null, catalog: null, userManifest: null, error: String(e) });
   }
 }

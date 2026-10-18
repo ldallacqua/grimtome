@@ -12,7 +12,14 @@ import { MAX_CHARACTER_LEVEL, MAX_PARAGON_LEVEL, type BuildRole, type Slot } fro
 import { AssetResolver } from '@/services/assets/resolver';
 import type { AssetCacheStatus, GameCatalog } from '@/services/assets/types';
 import { platform } from '@/services/platform';
-import { defaultPersisted, deserialize, PERSIST_KEY, serialize, type PersistedState, type ScanRecord } from './persistence';
+import {
+  defaultPersisted,
+  deserialize,
+  PERSIST_KEY,
+  serialize,
+  type PersistedState,
+  type ScanRecord,
+} from './persistence';
 import type { Settings } from './settings';
 
 export type Route = 'dashboard' | 'advisor' | 'skills' | 'paragon' | 'builds' | 'settings';
@@ -78,16 +85,25 @@ const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).sli
 const now = () => new Date().toISOString();
 
 function dictionaryFor(catalog: GameCatalog | null): AffixDictionary {
-  return catalog?.affixTemplates?.length ? defaultAffixDictionary.withTemplates(catalog.affixTemplates) : defaultAffixDictionary;
+  return catalog?.affixTemplates?.length
+    ? defaultAffixDictionary.withTemplates(catalog.affixTemplates)
+    : defaultAffixDictionary;
 }
 
 function resolverFor(status: AssetCacheStatus | null, useGame: boolean): AssetResolver {
   if (!status?.root) return AssetResolver.empty();
   const root = status.root;
-  const game = useGame && status.manifest ? { manifest: status.manifest, urlFor: (f: string) => platform.assets.urlFor(root, f) } : null;
+  const game =
+    useGame && status.manifest
+      ? { manifest: status.manifest, urlFor: (f: string) => platform.assets.urlFor(root, f) }
+      : null;
   const userRoot = root.replace(/[\\/]current$/, '');
   const user = status.userManifest
-    ? { manifest: status.userManifest, urlFor: (f: string) => platform.assets.urlFor(`${userRoot}${root.includes('\\') ? '\\' : '/'}user`, f) }
+    ? {
+        manifest: status.userManifest,
+        urlFor: (f: string) =>
+          platform.assets.urlFor(`${userRoot}${root.includes('\\') ? '\\' : '/'}user`, f),
+      }
     : null;
   return new AssetResolver(game, user);
 }
@@ -123,7 +139,12 @@ export const useApp = create<AppState>()((set, get) => ({
   setAssetStatus(status) {
     const useGame = get().settings.assets.useGameAssets;
     const catalog = useGame ? (status?.catalog ?? null) : null;
-    set({ assetStatus: status, resolver: resolverFor(status, useGame), catalog, dictionary: dictionaryFor(status?.catalog ?? null) });
+    set({
+      assetStatus: status,
+      resolver: resolverFor(status, useGame),
+      catalog,
+      dictionary: dictionaryFor(status?.catalog ?? null),
+    });
   },
 
   setBuild: (role, build) => set((s) => ({ builds: { ...s.builds, [role]: { ...build, role } } })),
@@ -131,24 +152,40 @@ export const useApp = create<AppState>()((set, get) => ({
     set((s) => {
       const builds = { ...s.builds };
       delete builds[role];
-      const t = role === 'endgame' && s.transition.phase === 'endgame' ? { ...s.transition, phase: 'leveling' as const } : s.transition;
+      const t =
+        role === 'endgame' && s.transition.phase === 'endgame'
+          ? { ...s.transition, phase: 'leveling' as const }
+          : s.transition;
       return { builds, transition: t };
     }),
-  loadSampleBuilds: () => set({ builds: { leveling: SAMPLE_BUILDS.leveling, endgame: SAMPLE_BUILDS.endgame } }),
+  loadSampleBuilds: () =>
+    set({ builds: { leveling: SAMPLE_BUILDS.leveling, endgame: SAMPLE_BUILDS.endgame } }),
 
-  setLevel: (level) => set((s) => ({ progress: { ...s.progress, level: Math.max(1, Math.min(MAX_CHARACTER_LEVEL, Math.round(level))) } })),
+  setLevel: (level) =>
+    set((s) => ({
+      progress: { ...s.progress, level: Math.max(1, Math.min(MAX_CHARACTER_LEVEL, Math.round(level))) },
+    })),
   setParagon: (paragon) =>
-    set((s) => ({ progress: { ...s.progress, paragon: Math.max(0, Math.min(MAX_PARAGON_LEVEL, Math.round(paragon))) } })),
+    set((s) => ({
+      progress: { ...s.progress, paragon: Math.max(0, Math.min(MAX_PARAGON_LEVEL, Math.round(paragon))) },
+    })),
   setSkillSteps: (role, steps) =>
     set((s) => {
       const max = s.builds[role]?.skills.length ?? 0;
-      return { progress: { ...s.progress, skillSteps: { ...s.progress.skillSteps, [role]: Math.max(0, Math.min(max, steps)) } } };
+      return {
+        progress: {
+          ...s.progress,
+          skillSteps: { ...s.progress.skillSteps, [role]: Math.max(0, Math.min(max, steps)) },
+        },
+      };
     }),
   toggleParagonStep: (role, stepId) =>
     set((s) => {
       const cur = s.progress.paragonCompleted[role];
       const next = cur.includes(stepId) ? cur.filter((x) => x !== stepId) : [...cur, stepId];
-      return { progress: { ...s.progress, paragonCompleted: { ...s.progress.paragonCompleted, [role]: next } } };
+      return {
+        progress: { ...s.progress, paragonCompleted: { ...s.progress.paragonCompleted, [role]: next } },
+      };
     }),
   toggleOwned: (kind, name, owned) =>
     set((s) => {
@@ -163,7 +200,12 @@ export const useApp = create<AppState>()((set, get) => ({
   toggleCustomCriterion: (label) =>
     set((s) => {
       const cur = s.progress.customMet;
-      return { progress: { ...s.progress, customMet: cur.includes(label) ? cur.filter((c) => c !== label) : [...cur, label] } };
+      return {
+        progress: {
+          ...s.progress,
+          customMet: cur.includes(label) ? cur.filter((c) => c !== label) : [...cur, label],
+        },
+      };
     }),
 
   acceptTransition() {
@@ -172,7 +214,9 @@ export const useApp = create<AppState>()((set, get) => ({
   },
   postponeTransition(untilParagon) {
     const s = get();
-    set({ transition: transition(s.transition, { type: 'POSTPONE', at: now(), untilParagon }, !!s.builds.endgame) });
+    set({
+      transition: transition(s.transition, { type: 'POSTPONE', at: now(), untilParagon }, !!s.builds.endgame),
+    });
   },
   revertTransition() {
     const s = get();
@@ -181,11 +225,16 @@ export const useApp = create<AppState>()((set, get) => ({
 
   addScan(scan) {
     const record: ScanRecord = { ...scan, id: newId(), at: scan.at ?? now() };
-    set((s) => ({ scans: [record, ...s.scans].slice(0, Math.max(1, s.settings.privacy.scanHistoryLimit)), selectedScanId: record.id }));
+    set((s) => ({
+      scans: [record, ...s.scans].slice(0, Math.max(1, s.settings.privacy.scanHistoryLimit)),
+      selectedScanId: record.id,
+    }));
     return record;
   },
   updateScanItem: (id, item, verified = true) =>
-    set((s) => ({ scans: s.scans.map((sc) => (sc.id === id ? { ...sc, item: verified ? markVerified(item) : item } : sc)) })),
+    set((s) => ({
+      scans: s.scans.map((sc) => (sc.id === id ? { ...sc, item: verified ? markVerified(item) : item } : sc)),
+    })),
   removeScan: (id) =>
     set((s) => {
       const scans = s.scans.filter((x) => x.id !== id);
@@ -204,7 +253,8 @@ export const useApp = create<AppState>()((set, get) => ({
     const before = get().settings;
     const settings = patch(before);
     set({ settings });
-    if (settings.assets.useGameAssets !== before.assets.useGameAssets) get().setAssetStatus(get().assetStatus);
+    if (settings.assets.useGameAssets !== before.assets.useGameAssets)
+      get().setAssetStatus(get().assetStatus);
   },
   completeOnboarding: () => set({ onboardingComplete: true }),
   async resetAll() {
@@ -213,10 +263,41 @@ export const useApp = create<AppState>()((set, get) => ({
   },
 }));
 
-/** Persist relevant slices whenever they change (debounced). */
+/** Persist relevant slices whenever they change (debounced, flushed on exit). */
 let persistTimer: ReturnType<typeof setTimeout> | null = null;
+
+function writeNow(): Promise<void> {
+  if (persistTimer) clearTimeout(persistTimer);
+  persistTimer = null;
+  const {
+    builds,
+    transition: t,
+    progress,
+    scans,
+    equipped,
+    settings,
+    onboardingComplete,
+    version,
+  } = useApp.getState();
+  return platform.storage.write(
+    PERSIST_KEY,
+    serialize({ builds, transition: t, progress, scans, equipped, settings, onboardingComplete, version }),
+  );
+}
+
 export function startPersistence() {
-  return useApp.subscribe((s, prev) => {
+  // A pending write must not be lost when the page goes away (reload, window
+  // close, app shutdown). Browser storage writes synchronously here; the desktop
+  // host additionally asks the UI to flush before it exits.
+  const flushPending = () => {
+    if (persistTimer) void writeNow();
+  };
+  const onVisibility = () => {
+    if (document.visibilityState === 'hidden') flushPending();
+  };
+  window.addEventListener('pagehide', flushPending);
+  document.addEventListener('visibilitychange', onVisibility);
+  const unsubscribe = useApp.subscribe((s, prev) => {
     if (!s.ready) return;
     const changed =
       s.builds !== prev.builds ||
@@ -228,18 +309,18 @@ export function startPersistence() {
       s.onboardingComplete !== prev.onboardingComplete;
     if (!changed) return;
     if (persistTimer) clearTimeout(persistTimer);
-    persistTimer = setTimeout(() => {
-      const { builds, transition: t, progress, scans, equipped, settings, onboardingComplete, version } = useApp.getState();
-      void platform.storage.write(PERSIST_KEY, serialize({ builds, transition: t, progress, scans, equipped, settings, onboardingComplete, version }));
-    }, 250);
+    persistTimer = setTimeout(() => void writeNow(), 250);
   });
+  return () => {
+    unsubscribe();
+    window.removeEventListener('pagehide', flushPending);
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
 }
 
-/** Flush pending writes immediately (used before resets and in tests). */
+/** Flush pending writes immediately (before resets, on app exit, in tests). */
 export async function flushPersistence() {
-  if (persistTimer) clearTimeout(persistTimer);
-  const { builds, transition: t, progress, scans, equipped, settings, onboardingComplete, version } = useApp.getState();
-  await platform.storage.write(PERSIST_KEY, serialize({ builds, transition: t, progress, scans, equipped, settings, onboardingComplete, version }));
+  await writeNow();
 }
 
 // ---- Selectors -------------------------------------------------------------
@@ -252,7 +333,10 @@ export function catalogHints(catalog: GameCatalog | null): CatalogHints | undefi
   return { aspects: catalog.aspects, uniques: catalog.uniques };
 }
 
-export function evaluate(s: Pick<AppState, 'builds' | 'transition' | 'equipped' | 'catalog'>, item: ParsedItem): StructuredEvaluation {
+export function evaluate(
+  s: Pick<AppState, 'builds' | 'transition' | 'equipped' | 'catalog'>,
+  item: ParsedItem,
+): StructuredEvaluation {
   const hints = catalogHints(s.catalog);
   return evaluateItem(item, {
     builds: s.builds,
@@ -268,4 +352,11 @@ export function readiness(s: Pick<AppState, 'builds' | 'progress'>) {
 
 /** The minimal slice item evaluation depends on (stable across unrelated updates). */
 export const useEvalState = () =>
-  useApp(useShallow((s) => ({ builds: s.builds, transition: s.transition, equipped: s.equipped, catalog: s.catalog })));
+  useApp(
+    useShallow((s) => ({
+      builds: s.builds,
+      transition: s.transition,
+      equipped: s.equipped,
+      catalog: s.catalog,
+    })),
+  );

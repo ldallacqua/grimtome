@@ -21,9 +21,19 @@ const affix = (label: string, weight: AffixWeight, greater?: boolean): AffixPrio
 });
 
 const skillRef = (name: string) => ({ id: `skill.barbarian.${slugify(name)}`, name });
-const rank = (name: string, r: number, maxRank = 5): SkillStep => ({ skill: skillRef(name), kind: 'rank', rank: r, maxRank });
-const upgrade = (name: string, upgradeName: string): SkillStep => ({ skill: skillRef(name), kind: 'upgrade', upgrade: upgradeName });
-const ranks = (name: string, from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => rank(name, from + i));
+const rank = (name: string, r: number, maxRank = 5): SkillStep => ({
+  skill: skillRef(name),
+  kind: 'rank',
+  rank: r,
+  maxRank,
+});
+const upgrade = (name: string, upgradeName: string): SkillStep => ({
+  skill: skillRef(name),
+  kind: 'upgrade',
+  upgrade: upgradeName,
+});
+const ranks = (name: string, from: number, to: number) =>
+  Array.from({ length: to - from + 1 }, (_, i) => rank(name, from + i));
 
 const gear = (slot: Slot, opts: Partial<Omit<GearPlan, 'slot'>> = {}): GearPlan => ({
   slot,
@@ -34,7 +44,13 @@ const gear = (slot: Slot, opts: Partial<Omit<GearPlan, 'slot'>> = {}): GearPlan 
 });
 const aspect = (name: string) => ({ id: `aspect.${slugify(name)}`, name });
 const unique = (name: string, required: boolean) => ({ id: `item.${slugify(name)}`, name, required });
-const board = (id: string, name: string, glyph?: string, focus?: string, targetParagon?: number): ParagonStep => ({
+const board = (
+  id: string,
+  name: string,
+  glyph?: string,
+  focus?: string,
+  targetParagon?: number,
+): ParagonStep => ({
   id,
   board: { id: `paragon.board.barbarian.${slugify(name)}`, name },
   ...(glyph ? { glyph: { id: `paragon.glyph.${slugify(glyph)}`, name: glyph } } : {}),
@@ -51,7 +67,8 @@ export const SAMPLE_LEVELING: Build = {
   source: { kind: 'sample', attribution: SAMPLE_ATTRIBUTION, importedAt: IMPORTED_AT },
   season: 'Season 15',
   patch: '3.2',
-  summary: 'Spin through campaign content with Whirlwind, sustaining Fury with shouts and pulling enemies in.',
+  summary:
+    'Spin through campaign content with Whirlwind, sustaining Fury with shouts and pulling enemies in.',
   skills: [
     rank('Lunging Strike', 1),
     rank('Whirlwind', 1),
@@ -101,7 +118,11 @@ export const SAMPLE_LEVELING: Build = {
     }),
     gear('amulet', {
       aspect: aspect('Aspect of Limitless Rage'),
-      affixes: [affix('Movement Speed', 2), affix('Cooldown Reduction', 2), affix('Resource Cost Reduction', 2)],
+      affixes: [
+        affix('Movement Speed', 2),
+        affix('Cooldown Reduction', 2),
+        affix('Resource Cost Reduction', 2),
+      ],
     }),
     gear('ring', {
       aspect: aspect('Aspect of Encroaching Wrath'),
@@ -110,7 +131,13 @@ export const SAMPLE_LEVELING: Build = {
   ],
   paragon: [
     board('lvl-start', 'Start', 'Ire', 'Strength nodes toward the glyph socket.', 10),
-    board('lvl-warbringer', 'Warbringer', 'Marshal', 'Rare nodes near the socket, then the legendary node.', 25),
+    board(
+      'lvl-warbringer',
+      'Warbringer',
+      'Marshal',
+      'Rare nodes near the socket, then the legendary node.',
+      25,
+    ),
   ],
   updatedAt: IMPORTED_AT,
 };
@@ -124,7 +151,8 @@ export const SAMPLE_ENDGAME: Build = {
   source: { kind: 'sample', attribution: SAMPLE_ATTRIBUTION, importedAt: IMPORTED_AT },
   season: 'Season 15',
   patch: '3.2',
-  summary: 'Hammer of the Ancients leaves Earthquakes behind; Leap groups enemies and shouts keep uptime high.',
+  summary:
+    'Hammer of the Ancients leaves Earthquakes behind; Leap groups enemies and shouts keep uptime high.',
   skills: [
     rank('Bash', 1),
     upgrade('Bash', 'Enhanced Bash'),
@@ -148,7 +176,11 @@ export const SAMPLE_ENDGAME: Build = {
   gear: [
     gear('weapon', {
       unique: unique("Ramaladni's Magnum Opus", true),
-      affixes: [affix('Critical Strike Damage', 3, true), affix('Vulnerable Damage', 3), affix('Strength', 2)],
+      affixes: [
+        affix('Critical Strike Damage', 3, true),
+        affix('Vulnerable Damage', 3),
+        affix('Strength', 2),
+      ],
       tempers: [affix('Overpower Damage', 2)],
     }),
     gear('helm', {
@@ -178,7 +210,11 @@ export const SAMPLE_ENDGAME: Build = {
     }),
     gear('ring', {
       unique: unique('Ring of Red Furor', false),
-      affixes: [affix('Critical Strike Chance', 3), affix('Critical Strike Damage', 3, true), affix('Vulnerable Damage', 2)],
+      affixes: [
+        affix('Critical Strike Chance', 3),
+        affix('Critical Strike Damage', 3, true),
+        affix('Vulnerable Damage', 2),
+      ],
     }),
     gear('ring', {
       aspect: aspect("Earthstriker's Aspect"),
@@ -187,7 +223,13 @@ export const SAMPLE_ENDGAME: Build = {
   ],
   paragon: [
     board('end-start', 'Start', 'Ire', 'Strength nodes toward the glyph socket.', 10),
-    board('end-warbringer', 'Warbringer', 'Marshal', 'Socket the glyph, then path to the legendary node.', 40),
+    board(
+      'end-warbringer',
+      'Warbringer',
+      'Marshal',
+      'Socket the glyph, then path to the legendary node.',
+      40,
+    ),
     board('end-decimator', 'Decimator', 'Might', 'Rare nodes inside the glyph radius first.', 80),
     board('end-bone-breaker', 'Bone Breaker', 'Wrath', undefined, 140),
     board('end-blood-rage', 'Blood Rage', 'Territorial', undefined, 200),
@@ -195,7 +237,7 @@ export const SAMPLE_ENDGAME: Build = {
   transition: {
     minLevel: 60,
     minParagon: 20,
-    requiredUniques: [{ id: "item.ramaladnis-magnum-opus", name: "Ramaladni's Magnum Opus" }],
+    requiredUniques: [{ id: 'item.ramaladnis-magnum-opus', name: "Ramaladni's Magnum Opus" }],
     requiredAspects: [aspect('Aspect of Earthquakes'), aspect('Aspect of Ancestral Force')],
     minSkillSteps: 12,
     custom: [],

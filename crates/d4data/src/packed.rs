@@ -74,7 +74,7 @@ pub(crate) fn build_sample(records: &[(u32, Vec<u8>)], pad8: bool) -> Vec<u8> {
         d.extend((body.len() as u32).to_le_bytes());
     }
     for (_, body) in records {
-        while d.len() % 8 != 0 {
+        while !d.len().is_multiple_of(8) {
             d.push(0);
         }
         if pad8 {

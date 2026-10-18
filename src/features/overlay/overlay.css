@@ -154,7 +154,11 @@
 :root[data-skin='game'] .gt-ov__card {
   border-radius: 0;
   overflow: visible;
-  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--v) 14%, transparent), transparent 60%);
+  background: radial-gradient(
+    120% 90% at 0% 0%,
+    color-mix(in srgb, var(--v) 14%, transparent),
+    transparent 60%
+  );
   box-shadow: none;
   border: 0 solid transparent;
   border-image: var(--d4-panel) 76 fill / 26px stretch;

@@ -3,7 +3,19 @@ import { useState } from 'react';
 import { readiness, useApp } from '@/app/store';
 import type { Build, GearPlan } from '@/domain/builds/schema';
 import { CLASS_NAMES, SLOT_NAMES, SLOTS, type BuildRole } from '@/domain/shared/ids';
-import { Badge, Button, Callout, ClassEmblem, Dialog, EmptyState, Icon, PageHeader, Panel, Stepper, Toggle } from '@/design-system';
+import {
+  Badge,
+  Button,
+  Callout,
+  ClassEmblem,
+  Dialog,
+  EmptyState,
+  Icon,
+  PageHeader,
+  Panel,
+  Stepper,
+  Toggle,
+} from '@/design-system';
 import { exportJson } from '@/services/importers/json';
 import { platform } from '@/services/platform';
 import { ImportDialog } from './ImportDialog';
@@ -26,7 +38,19 @@ function BuildSlot({ role, onImport }: { role: BuildRole; onImport: (r: BuildRol
   if (!build) {
     return (
       <Panel variant="raised" eyebrow={label} className="gt-buildslot is-empty">
-        <EmptyState compact icon="builds" title={`No ${role} build`} body={role === 'leveling' ? 'The build you play while leveling.' : 'The build you are working toward.'} actions={<Button variant="primary" icon="plus" onClick={() => onImport(role)}>Import</Button>} />
+        <EmptyState
+          compact
+          icon="builds"
+          title={`No ${role} build`}
+          body={
+            role === 'leveling' ? 'The build you play while leveling.' : 'The build you are working toward.'
+          }
+          actions={
+            <Button variant="primary" icon="plus" onClick={() => onImport(role)}>
+              Import
+            </Button>
+          }
+        />
       </Panel>
     );
   }
@@ -65,7 +89,10 @@ function BuildSlot({ role, onImport }: { role: BuildRole; onImport: (r: BuildRol
         </div>
       </div>
       <div className="gt-buildslot__source">
-        <Badge tone={build.source.kind === 'sample' ? 'arcane' : 'neutral'} icon={build.source.kind === 'sample' ? 'sparkle' : 'link'}>
+        <Badge
+          tone={build.source.kind === 'sample' ? 'arcane' : 'neutral'}
+          icon={build.source.kind === 'sample' ? 'sparkle' : 'link'}
+        >
           {SOURCE_LABEL[build.source.kind]}
         </Badge>
         <span className="gt-muted gt-small">{build.source.attribution}</span>
@@ -75,7 +102,12 @@ function BuildSlot({ role, onImport }: { role: BuildRole; onImport: (r: BuildRol
           Replace
         </Button>
         {build.source.url ? (
-          <Button size="sm" variant="ghost" icon="external" onClick={() => void platform.openExternal(build.source.url!)}>
+          <Button
+            size="sm"
+            variant="ghost"
+            icon="external"
+            onClick={() => void platform.openExternal(build.source.url!)}
+          >
             Open source
           </Button>
         ) : null}
@@ -129,7 +161,12 @@ function TransitionPanel() {
   if (r.status === 'unavailable') return null;
   const onEndgame = t.phase === 'endgame';
   return (
-    <Panel variant="ornate" padding="lg" eyebrow="Build transition" title={onEndgame ? `Playing ${builds.endgame?.name}` : `Transition to ${builds.endgame?.name}`}>
+    <Panel
+      variant="ornate"
+      padding="lg"
+      eyebrow="Build transition"
+      title={onEndgame ? `Playing ${builds.endgame?.name}` : `Transition to ${builds.endgame?.name}`}
+    >
       <div className="gt-transition">
         <div className="gt-transition__criteria">
           <div className="gt-transition__char">
@@ -139,7 +176,13 @@ function TransitionPanel() {
             </div>
             <div>
               <div className="gt-section-label">Paragon</div>
-              <Stepper value={progress.paragon} min={0} max={300} onChange={setParagon} label="Paragon level" />
+              <Stepper
+                value={progress.paragon}
+                min={0}
+                max={300}
+                onChange={setParagon}
+                label="Paragon level"
+              />
             </div>
           </div>
           <ul className="gt-criteria">
@@ -156,13 +199,21 @@ function TransitionPanel() {
                   </span>
                 </span>
                 {c.kind === 'unique' || c.kind === 'aspect' ? (
-                  <Toggle label={`${c.label} obtained`} checked={c.met} onChange={(v) => toggleOwned(c.kind as 'unique' | 'aspect', c.label.replace(/^Obtain /, ''), v)} />
+                  <Toggle
+                    label={`${c.label} obtained`}
+                    checked={c.met}
+                    onChange={(v) =>
+                      toggleOwned(c.kind as 'unique' | 'aspect', c.label.replace(/^Obtain /, ''), v)
+                    }
+                  />
                 ) : c.kind === 'custom' ? (
                   <Toggle label={c.label} checked={c.met} onChange={() => toggleCustom(c.label)} />
                 ) : null}
               </li>
             ))}
-            {!r.criteria.length ? <li className="gt-muted">This endgame build lists no transition requirements.</li> : null}
+            {!r.criteria.length ? (
+              <li className="gt-muted">This endgame build lists no transition requirements.</li>
+            ) : null}
           </ul>
         </div>
         <div className="gt-transition__status">
@@ -172,10 +223,14 @@ function TransitionPanel() {
             </Callout>
           ) : r.status === 'ready' ? (
             <Callout tone="arcane" title="Endgame transition available">
-              Your character has reached the recommended progression stage. You can now switch to your planned endgame build.
+              Your character has reached the recommended progression stage. You can now switch to your planned
+              endgame build.
             </Callout>
           ) : (
-            <Callout tone="warning" title={`${r.missing.filter((m) => m.required).length} requirement(s) remaining`}>
+            <Callout
+              tone="warning"
+              title={`${r.missing.filter((m) => m.required).length} requirement(s) remaining`}
+            >
               {r.missing
                 .filter((m) => m.required)
                 .map((m) => m.label)
@@ -198,7 +253,11 @@ function TransitionPanel() {
                     icon="history"
                     onClick={() => {
                       postpone(progress.paragon + 10);
-                      toast({ tone: 'info', title: 'Transition postponed', body: `We will remind you again at Paragon ${progress.paragon + 10}.` });
+                      toast({
+                        tone: 'info',
+                        title: 'Transition postponed',
+                        body: `We will remind you again at Paragon ${progress.paragon + 10}.`,
+                      });
                     }}
                   >
                     Postpone
@@ -230,7 +289,11 @@ function TransitionPanel() {
                 if (confirm === 'accept') accept();
                 else revert();
                 setConfirm(null);
-                toast({ tone: 'success', title: confirm === 'accept' ? 'Endgame build active' : 'Leveling build active', body: 'Recommendations were updated.' });
+                toast({
+                  tone: 'success',
+                  title: confirm === 'accept' ? 'Endgame build active' : 'Leveling build active',
+                  body: 'Recommendations were updated.',
+                });
               }}
             >
               {confirm === 'accept' ? 'Switch now' : 'Return'}
@@ -243,8 +306,12 @@ function TransitionPanel() {
             'All required criteria are met. Item verdicts, skill guidance and Paragon goals will follow the endgame build.'
           ) : (
             <>
-              Some requirements are still missing ({r.missing.filter((m) => m.required).map((m) => m.label).join(', ')}). You can switch anyway — you can always
-              return.
+              Some requirements are still missing (
+              {r.missing
+                .filter((m) => m.required)
+                .map((m) => m.label)
+                .join(', ')}
+              ). You can switch anyway — you can always return.
             </>
           )
         ) : (
@@ -301,9 +368,15 @@ function Comparison() {
           if (!l.length && !e.length) return null;
           const rows = Math.max(l.length, e.length, 1);
           return Array.from({ length: rows }, (_, i) => {
-            const changed = JSON.stringify(l[i]?.affixes.map((a) => a.key)) !== JSON.stringify(e[i]?.affixes.map((a) => a.key)) || l[i]?.aspect?.name !== e[i]?.aspect?.name;
+            const changed =
+              JSON.stringify(l[i]?.affixes.map((a) => a.key)) !==
+                JSON.stringify(e[i]?.affixes.map((a) => a.key)) || l[i]?.aspect?.name !== e[i]?.aspect?.name;
             return (
-              <div key={`${slot}-${i}`} className={clsx('gt-compare__row', changed && 'is-changed')} role="row">
+              <div
+                key={`${slot}-${i}`}
+                className={clsx('gt-compare__row', changed && 'is-changed')}
+                role="row"
+              >
                 <div className="gt-compare__slot" role="cell">
                   <Icon name={slot} size={16} />
                   {SLOT_NAMES[slot]}
@@ -343,7 +416,12 @@ export function BuildsScreen() {
             <Button variant="primary" icon="plus" onClick={() => setImportRole('leveling')}>
               Import
             </Button>
-            <Button variant="secondary" icon="download" onClick={exportBuilds} disabled={!builds.leveling && !builds.endgame}>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={exportBuilds}
+              disabled={!builds.leveling && !builds.endgame}
+            >
               Export JSON
             </Button>
             <Button variant="ghost" icon="sparkle" onClick={loadSamples}>
@@ -360,11 +438,17 @@ export function BuildsScreen() {
         <TransitionPanel />
         <Comparison />
         <Callout tone="info" icon="link" title="Where builds come from">
-          Grimtome never downloads guides from websites. Paste the sections you need from the guide you are reading, import a JSON file, or start from the
-          samples — and the source link stays attached to your build.
+          Grimtome never downloads guides from websites. Paste the sections you need from the guide you are
+          reading, import a JSON file, or start from the samples — and the source link stays attached to your
+          build.
         </Callout>
       </div>
-      <ImportDialog open={importRole !== null} initialRole={importRole ?? 'leveling'} onClose={() => setImportRole(null)} key={importRole ?? 'none'} />
+      <ImportDialog
+        open={importRole !== null}
+        initialRole={importRole ?? 'leveling'}
+        onClose={() => setImportRole(null)}
+        key={importRole ?? 'none'}
+      />
     </div>
   );
 }

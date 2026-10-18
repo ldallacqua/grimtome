@@ -35,6 +35,8 @@ export interface CaptureSettings {
   /** Box around the cursor (for `cursor` mode), in physical pixels. */
   cursorBox?: { width: number; height: number };
   language?: string;
+  /** Wait this long (app minimized) before capturing, for in-app scans. */
+  delayMs?: number;
 }
 
 export interface ScanPayload {
@@ -58,6 +60,8 @@ export type PlatformEvent =
   | { type: 'scan-error'; message: string }
   | { type: 'import-progress'; payload: ImportProgress }
   | { type: 'overlay-click-through'; enabled: boolean }
+  /** Desktop: the main window is closing; flush state, then call `windows.exit()`. */
+  | { type: 'close-requested' }
   | { type: 'state-changed' };
 
 export interface OverlayMessage {
@@ -94,6 +98,8 @@ export interface PlatformApi {
   };
   capture: {
     available: boolean;
+    /** Keeps the host's copy of the capture settings current (used by the global hotkey). */
+    configure(settings: CaptureSettings): Promise<void>;
     scan(settings: CaptureSettings): Promise<ScanPayload>;
   };
   ocr: {
@@ -114,6 +120,8 @@ export interface PlatformApi {
     /** Resizes the current window to fit its content (logical pixels). */
     fitCurrent(width: number, height: number): Promise<void>;
     hideCurrent(): Promise<void>;
+    /** Quits the app (desktop) after the UI has saved its state. */
+    exit(): Promise<void>;
   };
   hotkeys: {
     supported: boolean;

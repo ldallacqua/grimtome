@@ -1,7 +1,12 @@
 import { z } from 'zod';
 import { BuildSchema } from '@/domain/builds/schema';
 import type { ParsedItem } from '@/domain/items/types';
-import { emptyProgress, initialTransitionState, type CharacterProgress, type TransitionState } from '@/domain/progression/transition';
+import {
+  emptyProgress,
+  initialTransitionState,
+  type CharacterProgress,
+  type TransitionState,
+} from '@/domain/progression/transition';
 import type { Slot } from '@/domain/shared/ids';
 import { parseSettings, type Settings } from './settings';
 
@@ -50,7 +55,12 @@ const TransitionSchema = z.object({
   phase: z.enum(['leveling', 'endgame']),
   postponedUntil: z.object({ level: z.number().optional(), paragon: z.number().optional() }).nullable(),
   history: z.array(
-    z.object({ at: z.string(), kind: z.enum(['accept', 'revert', 'postpone']), from: z.enum(['leveling', 'endgame']), to: z.enum(['leveling', 'endgame']) }),
+    z.object({
+      at: z.string(),
+      kind: z.enum(['accept', 'revert', 'postpone']),
+      from: z.enum(['leveling', 'endgame']),
+      to: z.enum(['leveling', 'endgame']),
+    }),
   ),
 });
 
@@ -60,7 +70,11 @@ const ItemSchema = z
     rarity: z.string().nullable(),
     slot: z.string().nullable(),
     affixes: z.array(z.object({ raw: z.string(), key: z.string().nullable() }).loose()),
-    confidence: z.object({ level: z.enum(['high', 'medium', 'low']), score: z.number(), issues: z.array(z.string()) }),
+    confidence: z.object({
+      level: z.enum(['high', 'medium', 'low']),
+      score: z.number(),
+      issues: z.array(z.string()),
+    }),
   })
   .loose();
 
@@ -123,6 +137,8 @@ export function deserialize(text: string | null): PersistedState {
 
 export function serialize(state: PersistedState): string {
   const keepImages = state.settings.privacy.keepScanImages;
-  const scans = state.scans.slice(0, state.settings.privacy.scanHistoryLimit).map((s) => (keepImages ? s : { ...s, image: null }));
+  const scans = state.scans
+    .slice(0, state.settings.privacy.scanHistoryLimit)
+    .map((s) => (keepImages ? s : { ...s, image: null }));
   return JSON.stringify({ ...state, version: PERSIST_VERSION, scans });
 }

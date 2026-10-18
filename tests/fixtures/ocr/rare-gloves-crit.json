@@ -1,0 +1,125 @@
+{
+  "lines": [
+    {
+      "text": "Grim Grasp",
+      "bbox": {
+        "x": 19.5,
+        "y": 16.0,
+        "w": 106.5,
+        "h": 21.0
+      },
+      "color": "#ffff64"
+    },
+    {
+      "text": "Ancestral Rare Gloves",
+      "bbox": {
+        "x": 19.0,
+        "y": 43.0,
+        "w": 143.0,
+        "h": 11.5
+      },
+      "color": "#cdcd4f"
+    },
+    {
+      "text": "800 Item Power",
+      "bbox": {
+        "x": 19.0,
+        "y": 84.666664,
+        "w": 114.0,
+        "h": 11.666667
+      },
+      "color": "#ece6db"
+    },
+    {
+      "text": "1,126 Armor",
+      "bbox": {
+        "x": 20.0,
+        "y": 109.5,
+        "w": 86.5,
+        "h": 13.5
+      },
+      "color": "#a1a18b"
+    },
+    {
+      "text": "+12.5% Critical Strike Chance [10.0 - 15.0",
+      "bbox": {
+        "x": 44.0,
+        "y": 136.0,
+        "w": 286.0,
+        "h": 15.5
+      },
+      "color": "#d2d3c1",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+16.096 Attack Speed [12.0 - 18.01%",
+      "bbox": {
+        "x": 21.5,
+        "y": 161.5,
+        "w": 273.5,
+        "h": 17.0
+      },
+      "color": "#d1d3c0",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+92 Strength [70 - 1101",
+      "bbox": {
+        "x": 21.5,
+        "y": 188.0,
+        "w": 186.0,
+        "h": 16.5
+      },
+      "color": "#d3d2be",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+8.5% Lucky Hit Chance",
+      "bbox": {
+        "x": 44.333332,
+        "y": 213.66667,
+        "w": 169.0,
+        "h": 16.666666
+      },
+      "color": "#d2d4c2",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "Requires Level 60",
+      "bbox": {
+        "x": 20.0,
+        "y": 242.0,
+        "w": 106.0,
+        "h": 13.0
+      },
+      "color": "#817d6c"
+    },
+    {
+      "text": "Sell Value: 24,512",
+      "bbox": {
+        "x": 19.5,
+        "y": 269.0,
+        "w": 105.5,
+        "h": 11.0
+      },
+      "color": "#857d6a"
+    },
+    {
+      "text": "Durability•. 100/100",
+      "bbox": {
+        "x": 20.0,
+        "y": 295.0,
+        "w": 116.0,
+        "h": 13.0
+      },
+      "color": "#797d66"
+    }
+  ],
+  "engine": "windows",
+  "language": "en-US",
+  "elapsedMs": 56,
+  "imageSize": {
+    "w": 330,
+    "h": 323
+  }
+}

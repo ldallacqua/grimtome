@@ -128,9 +128,30 @@ export const BUILTIN_AFFIXES: readonly AffixDefinition[] = [
   // Utility & resource
   def('Movement Speed', 'utility'),
   def('Cooldown Reduction', 'utility'),
-  def('Resource Cost Reduction', 'resource', ['Fury Cost Reduction', 'Mana Cost Reduction', 'Spirit Cost Reduction', 'Essence Cost Reduction', 'Energy Cost Reduction', 'Vigor Cost Reduction']),
-  def('Resource Generation', 'resource', ['Fury Generation', 'Mana Generation', 'Spirit Generation', 'Essence Generation', 'Energy Generation', 'Vigor Generation']),
-  def('Maximum Resource', 'resource', ['Maximum Fury', 'Maximum Mana', 'Maximum Spirit', 'Maximum Essence', 'Maximum Energy', 'Maximum Vigor']),
+  def('Resource Cost Reduction', 'resource', [
+    'Fury Cost Reduction',
+    'Mana Cost Reduction',
+    'Spirit Cost Reduction',
+    'Essence Cost Reduction',
+    'Energy Cost Reduction',
+    'Vigor Cost Reduction',
+  ]),
+  def('Resource Generation', 'resource', [
+    'Fury Generation',
+    'Mana Generation',
+    'Spirit Generation',
+    'Essence Generation',
+    'Energy Generation',
+    'Vigor Generation',
+  ]),
+  def('Maximum Resource', 'resource', [
+    'Maximum Fury',
+    'Maximum Mana',
+    'Maximum Spirit',
+    'Maximum Essence',
+    'Maximum Energy',
+    'Maximum Vigor',
+  ]),
   def('Crowd Control Duration', 'utility'),
   def('Faster Cast Rate', 'utility'),
   def('Gold Drop Rate', 'utility'),
@@ -175,7 +196,10 @@ export class AffixDictionary {
     const next = new AffixDictionary([]);
     for (const e of this.entries) next.add(e.def, e.norm);
     for (const t of templates) {
-      const label = t.text.replace(/\[[^\]]*\]/g, ' ').replace(/\{[^}]*\}/g, ' ').replace(/\|[^|]*\|/g, ' ');
+      const label = t.text
+        .replace(/\[[^\]]*\]/g, ' ')
+        .replace(/\{[^}]*\}/g, ' ')
+        .replace(/\|[^|]*\|/g, ' ');
       const norm = normalizeLabel(label);
       if (norm.length < 4 || norm.split(' ').length > 9 || next.exact.has(norm)) continue;
       next.add({ key: slugify(norm), label: titleCase(norm), category: guessCategory(norm) }, norm);
@@ -197,7 +221,8 @@ export class AffixDictionary {
       };
     }
     const hit = this.exact.get(norm);
-    if (hit) return { key: hit.key, label: hit.label, category: hit.category, confidence: 1, method: 'exact' };
+    if (hit)
+      return { key: hit.key, label: hit.label, category: hit.category, confidence: 1, method: 'exact' };
 
     let best: { score: number; def: AffixDefinition } | null = null;
     let second = 0;
@@ -210,7 +235,9 @@ export class AffixDictionary {
         second = Math.max(second, s);
       }
     }
-    const lengthRatio = best ? Math.min(norm.length, best.def.label.length) / Math.max(norm.length, best.def.label.length) : 0;
+    const lengthRatio = best
+      ? Math.min(norm.length, best.def.label.length) / Math.max(norm.length, best.def.label.length)
+      : 0;
     if (best && best.score >= 0.86 && best.score - second >= 0.06 && lengthRatio >= 0.7) {
       return {
         key: best.def.key,
@@ -234,12 +261,15 @@ export class AffixDictionary {
 }
 
 function titleCase(s: string): string {
-  return s.replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(To|Of|And|For|While|From|With|The|A|An|In|On)\b/g, (w) => w.toLowerCase());
+  return s
+    .replace(/\b([a-z])/g, (m) => m.toUpperCase())
+    .replace(/\b(To|Of|And|For|While|From|With|The|A|An|In|On)\b/g, (w) => w.toLowerCase());
 }
 
 function guessCategory(norm: string): AffixCategory {
   if (/resist|armor|reduction|life|barrier|fortify|dodge|block|healing/.test(norm)) return 'defense';
-  if (/cost|generation|maximum (fury|mana|spirit|essence|energy|vigor|resource)/.test(norm)) return 'resource';
+  if (/cost|generation|maximum (fury|mana|spirit|essence|energy|vigor|resource)/.test(norm))
+    return 'resource';
   if (/movement|cooldown|cast rate|duration/.test(norm)) return 'utility';
   return 'offense';
 }

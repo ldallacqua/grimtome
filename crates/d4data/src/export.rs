@@ -4,8 +4,8 @@
 //! only when complete, so a cancelled or failed import never leaves a half cache.
 
 use crate::catalog::{AssetJob, Catalog, Compose, GameData};
-use crate::texture::Frame;
 use crate::error::{Error, Result};
+use crate::texture::Frame;
 use rayon::prelude::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -90,10 +90,18 @@ pub fn key_out_black_background(img: &mut image::RgbaImage) {
         }
         cleared[i] = true;
         img.get_pixel_mut(x, y)[3] = 0;
-        if x > 0 { stack.push((x - 1, y)); }
-        if y > 0 { stack.push((x, y - 1)); }
-        if x + 1 < w { stack.push((x + 1, y)); }
-        if y + 1 < h { stack.push((x, y + 1)); }
+        if x > 0 {
+            stack.push((x - 1, y));
+        }
+        if y > 0 {
+            stack.push((x, y - 1));
+        }
+        if x + 1 < w {
+            stack.push((x + 1, y));
+        }
+        if y + 1 < h {
+            stack.push((x, y + 1));
+        }
     }
     // Feather: near-black pixels touching the cleared area become partly transparent.
     for y in 1..h - 1 {
@@ -156,10 +164,8 @@ pub fn export(
     progress: &(dyn Fn(Progress) + Sync),
     cancel: &AtomicBool,
 ) -> Result<AssetManifest> {
-    let staging: PathBuf = out_dir.with_file_name(format!(
-        "{}.staging",
-        out_dir.file_name().and_then(|n| n.to_str()).unwrap_or("cache")
-    ));
+    let staging: PathBuf =
+        out_dir.with_file_name(format!("{}.staging", out_dir.file_name().and_then(|n| n.to_str()).unwrap_or("cache")));
     if staging.exists() {
         std::fs::remove_dir_all(&staging)?;
     }
@@ -180,10 +186,8 @@ pub fn export(
                 return Err("cancelled".into());
             }
             let name = game.texture_name(*tex).unwrap_or("?").to_string();
-            let decoded = game
-                .texture_def(*tex)
-                .ok_or_else(|| format!("{name}: missing texture definition"))
-                .and_then(|def| {
+            let decoded =
+                game.texture_def(*tex).ok_or_else(|| format!("{name}: missing texture definition")).and_then(|def| {
                     let payload = game.storage.read_payload(*tex).map_err(|e| format!("{name}: {e}"))?;
                     let img = def.decode(&payload).map_err(|e| format!("{name}: {e}"))?;
                     Ok((def, img))
@@ -214,7 +218,8 @@ pub fn export(
                 if let Some(max) = job.max_px {
                     if img.width().max(img.height()) > max {
                         let scale = max as f32 / img.width().max(img.height()) as f32;
-                        let (w, h) = ((img.width() as f32 * scale).round() as u32, (img.height() as f32 * scale).round() as u32);
+                        let (w, h) =
+                            ((img.width() as f32 * scale).round() as u32, (img.height() as f32 * scale).round() as u32);
                         img = image::imageops::resize(&img, w.max(1), h.max(1), image::imageops::FilterType::Lanczos3);
                     }
                 }
@@ -241,7 +246,7 @@ pub fn export(
                     },
                 ));
                 let n = done.fetch_add(1, Ordering::Relaxed) + 1;
-                if n % 25 == 0 {
+                if n.is_multiple_of(25) {
                     progress(Progress { stage: "icons", done: n, total });
                 }
             }
@@ -272,8 +277,14 @@ pub fn export(
         failures,
     };
     progress(Progress { stage: "writing", done: total, total });
-    write_atomic(&staging.join("catalog.json"), &serde_json::to_vec_pretty(catalog).map_err(|e| Error::Format(e.to_string()))?)?;
-    write_atomic(&staging.join("manifest.json"), &serde_json::to_vec_pretty(&manifest).map_err(|e| Error::Format(e.to_string()))?)?;
+    write_atomic(
+        &staging.join("catalog.json"),
+        &serde_json::to_vec_pretty(catalog).map_err(|e| Error::Format(e.to_string()))?,
+    )?;
+    write_atomic(
+        &staging.join("manifest.json"),
+        &serde_json::to_vec_pretty(&manifest).map_err(|e| Error::Format(e.to_string()))?,
+    )?;
     if out_dir.exists() {
         std::fs::remove_dir_all(out_dir)?;
     }

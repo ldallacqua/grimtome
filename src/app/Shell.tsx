@@ -1,7 +1,16 @@
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 import { CLASS_NAMES } from '@/domain/shared/ids';
-import { BrandMark, ClassEmblem, Icon, KeyCap, Toasts, Toggle, Wordmark, type IconName } from '@/design-system';
+import {
+  BrandMark,
+  ClassEmblem,
+  Icon,
+  KeyCap,
+  Toasts,
+  Toggle,
+  Wordmark,
+  type IconName,
+} from '@/design-system';
 import { isTauri, platform } from '@/services/platform';
 import { useT, type MessageKey } from '@/shared/i18n';
 import { hotkeyParts } from './settings';
@@ -43,13 +52,28 @@ function TitleBar() {
       <div className="gt-titlebar__spacer" data-tauri-drag-region />
       {isTauri ? (
         <div className="gt-titlebar__controls">
-          <button type="button" aria-label="Minimize" className="is-min" onClick={() => void platform.windows.minimize()}>
+          <button
+            type="button"
+            aria-label="Minimize"
+            className="is-min"
+            onClick={() => void platform.windows.minimize()}
+          >
             <Icon name="minimize" size={14} />
           </button>
-          <button type="button" aria-label="Maximize" className="is-max" onClick={() => void platform.windows.toggleMaximize()}>
+          <button
+            type="button"
+            aria-label="Maximize"
+            className="is-max"
+            onClick={() => void platform.windows.toggleMaximize()}
+          >
             <Icon name="maximize" size={12} />
           </button>
-          <button type="button" aria-label="Close" className="is-close" onClick={() => void platform.windows.close()}>
+          <button
+            type="button"
+            aria-label="Close"
+            className="is-close"
+            onClick={() => void platform.windows.close()}
+          >
             <Icon name="close" size={14} />
           </button>
         </div>
@@ -65,8 +89,19 @@ function CharacterCard() {
   const navigate = useApp((s) => s.navigate);
   const t = useT();
   return (
-    <button type="button" className="gt-charcard" onClick={() => navigate('builds')} aria-label="Active build">
-      {build ? <ClassEmblem classId={build.classId} size={58} /> : <span className="gt-charcard__empty"><Icon name="builds" size={22} /></span>}
+    <button
+      type="button"
+      className="gt-charcard"
+      onClick={() => navigate('builds')}
+      aria-label="Active build"
+    >
+      {build ? (
+        <ClassEmblem classId={build.classId} size={58} />
+      ) : (
+        <span className="gt-charcard__empty">
+          <Icon name="builds" size={22} />
+        </span>
+      )}
       <span className="gt-charcard__info">
         <span className="gt-charcard__class">{build ? CLASS_NAMES[build.classId] : t('build.none')}</span>
         <span className="gt-charcard__build">{build?.name ?? 'Load builds to begin'}</span>
@@ -115,7 +150,12 @@ function Sidebar() {
         {NAV.filter((n) => n.section === 'plan').map(item)}
       </nav>
       <div className="gt-sidebar__footer">
-        <button type="button" className={clsx('gt-scan-cta', scanning && 'is-busy')} onClick={() => void scanNow()} disabled={scanning}>
+        <button
+          type="button"
+          className={clsx('gt-scan-cta', scanning && 'is-busy')}
+          onClick={() => void scanNow()}
+          disabled={scanning}
+        >
           <span className="gt-scan-cta__icon">
             <Icon name="scan" size={20} />
           </span>
@@ -138,7 +178,11 @@ function Sidebar() {
             }}
           />
         </div>
-        <button type="button" className={clsx('gt-nav__item', route === 'settings' && 'is-active')} onClick={() => navigate('settings')}>
+        <button
+          type="button"
+          className={clsx('gt-nav__item', route === 'settings' && 'is-active')}
+          onClick={() => navigate('settings')}
+        >
           <NavGlyph route="settings" icon="settings" />
           <span>{t('nav.settings')}</span>
         </button>

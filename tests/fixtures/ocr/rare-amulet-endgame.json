@@ -1,0 +1,84 @@
+{
+  "lines": [
+    {
+      "text": "Sigil of Ashes",
+      "bbox": {
+        "x": 19.5,
+        "y": 15.5,
+        "w": 126.5,
+        "h": 21.5
+      },
+      "color": "#ffff64"
+    },
+    {
+      "text": "Ancestral Rare Amulet",
+      "bbox": {
+        "x": 19.0,
+        "y": 43.0,
+        "w": 146.5,
+        "h": 11.5
+      },
+      "color": "#cdcc4f"
+    },
+    {
+      "text": "800 Item Power",
+      "bbox": {
+        "x": 19.0,
+        "y": 85.0,
+        "w": 114.0,
+        "h": 11.0
+      },
+      "color": "#ece6dc"
+    },
+    {
+      "text": "+9.0% Cooldown Reduction",
+      "bbox": {
+        "x": 44.333332,
+        "y": 107.666664,
+        "w": 195.33333,
+        "h": 16.333334
+      },
+      "color": "#d3d4c0",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+11.5% Damage Reduction",
+      "bbox": {
+        "x": 21.5,
+        "y": 136.5,
+        "w": 213.5,
+        "h": 16.5
+      },
+      "color": "#d2d4c1",
+      "iconColor": "#f0a027"
+    },
+    {
+      "text": "+4.096 Movement Speed",
+      "bbox": {
+        "x": 45.666668,
+        "y": 161.0,
+        "w": 172.0,
+        "h": 17.333334
+      },
+      "color": "#d3d4c2",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "Requires Level 60",
+      "bbox": {
+        "x": 20.0,
+        "y": 191.0,
+        "w": 106.0,
+        "h": 13.0
+      },
+      "color": "#807d6c"
+    }
+  ],
+  "engine": "windows",
+  "language": "en-US",
+  "elapsedMs": 44,
+  "imageSize": {
+    "w": 271,
+    "h": 219
+  }
+}

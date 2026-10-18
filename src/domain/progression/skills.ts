@@ -79,7 +79,11 @@ export function summarizeSkills(build: Build, allocated: number): SkillSummary[]
 export function milestones(build: Build, size = 5): { from: number; to: number; steps: SkillStep[] }[] {
   const out: { from: number; to: number; steps: SkillStep[] }[] = [];
   for (let i = 0; i < build.skills.length; i += size) {
-    out.push({ from: i, to: Math.min(build.skills.length, i + size), steps: build.skills.slice(i, i + size) });
+    out.push({
+      from: i,
+      to: Math.min(build.skills.length, i + size),
+      steps: build.skills.slice(i, i + size),
+    });
   }
   return out;
 }

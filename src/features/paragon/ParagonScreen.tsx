@@ -3,7 +3,18 @@ import { useState } from 'react';
 import { useApp } from '@/app/store';
 import { paragonMilestones, paragonProgress } from '@/domain/progression/paragon';
 import { MAX_PARAGON_LEVEL, type BuildRole } from '@/domain/shared/ids';
-import { Badge, Button, Callout, EmptyState, GlyphIcon, Icon, PageHeader, Panel, Ring, Stepper } from '@/design-system';
+import {
+  Badge,
+  Button,
+  Callout,
+  EmptyState,
+  GlyphIcon,
+  Icon,
+  PageHeader,
+  Panel,
+  Ring,
+  Stepper,
+} from '@/design-system';
 import { RoleSwitch } from '../skills/SkillsScreen';
 import './paragon.css';
 
@@ -24,7 +35,16 @@ export function ParagonScreen() {
       <div>
         <PageHeader eyebrow="Paragon" title="Paragon progression" />
         <Panel variant="ornate" padding="lg">
-          <EmptyState icon="paragon" title="No build loaded" body="Import a build to track its Paragon boards and glyphs." actions={<Button variant="primary" icon="builds" onClick={() => navigate('builds')}>Manage builds</Button>} />
+          <EmptyState
+            icon="paragon"
+            title="No build loaded"
+            body="Import a build to track its Paragon boards and glyphs."
+            actions={
+              <Button variant="primary" icon="builds" onClick={() => navigate('builds')}>
+                Manage builds
+              </Button>
+            }
+          />
         </Panel>
       </div>
     );
@@ -41,11 +61,19 @@ export function ParagonScreen() {
         actions={<RoleSwitch value={effectiveRole} onChange={setRole} />}
       />
       <div className="gt-grid gt-grid--sidebar">
-        <Panel variant="ornate" padding="lg" title="Board path" eyebrow={`${prog.done} of ${prog.total} milestones`}>
+        <Panel
+          variant="ornate"
+          padding="lg"
+          title="Board path"
+          eyebrow={`${prog.done} of ${prog.total} milestones`}
+        >
           {milestones.length ? (
             <ol className="gt-paragon-path">
               {milestones.map((m) => (
-                <li key={m.id} className={clsx('gt-board', m.completed && 'is-done', m.current && 'is-current')}>
+                <li
+                  key={m.id}
+                  className={clsx('gt-board', m.completed && 'is-done', m.current && 'is-current')}
+                >
                   <div className="gt-board__node" aria-hidden>
                     <span className="gt-num">{m.order}</span>
                   </div>
@@ -54,12 +82,25 @@ export function ParagonScreen() {
                       <div>
                         <div className="gt-board__name">{m.board.name}</div>
                         <div className="gt-row gt-row--wrap" style={{ marginTop: 6 }}>
-                          {m.current ? <Badge tone="gold" icon="target">Current objective</Badge> : null}
-                          {m.completed ? <Badge tone="success" icon="check">Completed</Badge> : null}
+                          {m.current ? (
+                            <Badge tone="gold" icon="target">
+                              Current objective
+                            </Badge>
+                          ) : null}
+                          {m.completed ? (
+                            <Badge tone="success" icon="check">
+                              Completed
+                            </Badge>
+                          ) : null}
                           {m.targetParagon !== undefined ? <Badge>Paragon {m.targetParagon}</Badge> : null}
                         </div>
                       </div>
-                      <Button size="sm" variant={m.completed ? 'ghost' : 'secondary'} icon={m.completed ? 'refresh' : 'check'} onClick={() => toggle(effectiveRole, m.id)}>
+                      <Button
+                        size="sm"
+                        variant={m.completed ? 'ghost' : 'secondary'}
+                        icon={m.completed ? 'refresh' : 'check'}
+                        onClick={() => toggle(effectiveRole, m.id)}
+                      >
                         {m.completed ? 'Undo' : 'Complete'}
                       </Button>
                     </div>
@@ -78,7 +119,12 @@ export function ParagonScreen() {
               ))}
             </ol>
           ) : (
-            <EmptyState compact icon="paragon" title="No Paragon plan" body="This build source did not include Paragon boards." />
+            <EmptyState
+              compact
+              icon="paragon"
+              title="No Paragon plan"
+              body="This build source did not include Paragon boards."
+            />
           )}
         </Panel>
         <div className="gt-stack">
@@ -88,12 +134,18 @@ export function ParagonScreen() {
                 <div className="gt-num gt-paragon-level__value">{paragon}</div>
                 <div className="gt-paragon-level__label">/ {MAX_PARAGON_LEVEL}</div>
               </Ring>
-              <Stepper value={paragon} min={0} max={MAX_PARAGON_LEVEL} onChange={setParagon} label="Paragon level" />
+              <Stepper
+                value={paragon}
+                min={0}
+                max={MAX_PARAGON_LEVEL}
+                onChange={setParagon}
+                label="Paragon level"
+              />
             </div>
           </Panel>
           <Callout tone="info" icon="info" title="Milestone tracking">
-            Node-by-node routes are shown only when a build source provides node data. Imported guides usually list boards and glyphs, so Grimtome tracks
-            those milestones rather than inventing paths.
+            Node-by-node routes are shown only when a build source provides node data. Imported guides usually
+            list boards and glyphs, so Grimtome tracks those milestones rather than inventing paths.
           </Callout>
           <Panel title="Glyphs in this plan" eyebrow="Collection" padding="sm">
             <div className="gt-glyph-list">

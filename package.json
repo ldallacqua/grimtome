@@ -25,7 +25,7 @@
     "test:visual": "playwright test --project=visual",
     "test:visual:update": "playwright test --project=visual --update-snapshots",
     "test:desktop": "playwright test --config playwright.desktop.config.ts",
-    "fixtures:tooltips": "node scripts/render-tooltip-fixtures.mjs",
+    "fixtures:tooltips": "node scripts/render-tooltip-fixtures.ts",
     "check:assets": "node scripts/check-asset-licensing.mjs",
     "extract:dev": "cargo run --release -p d4data --bin grimtome-extract -- export",
     "icons": "node scripts/build-icons.mjs && tauri icon src-tauri/icons/app-icon.png"

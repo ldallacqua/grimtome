@@ -1,4 +1,11 @@
-import type { AffixPriority, AffixWeight, Build, GearPlan, ParagonStep, SkillStep } from '@/domain/builds/schema';
+import type {
+  AffixPriority,
+  AffixWeight,
+  Build,
+  GearPlan,
+  ParagonStep,
+  SkillStep,
+} from '@/domain/builds/schema';
 import { type AffixDictionary } from '@/domain/items/affixes';
 import { slotFromType } from '@/domain/items/parser';
 import { cleanLine, stripBullet } from '@/domain/items/text';
@@ -26,7 +33,15 @@ export interface PasteImportOptions {
 
 export interface PasteImportResult {
   build: Build;
-  counts: { skills: number; upgrades: number; aspects: number; uniques: number; affixes: number; boards: number; glyphs: number };
+  counts: {
+    skills: number;
+    upgrades: number;
+    aspects: number;
+    uniques: number;
+    affixes: number;
+    boards: number;
+    glyphs: number;
+  };
   warnings: string[];
 }
 
@@ -63,7 +78,10 @@ export function importFromText(text: string, opts: PasteImportOptions): PasteImp
     .map((l) => cleanLine(l))
     .filter((l) => l.length > 1);
   const cat = opts.catalog;
-  if (!cat) warnings.push('Game data is not imported, so only affixes and slots could be recognized. Import game assets in Settings for full recognition.');
+  if (!cat)
+    warnings.push(
+      'Game data is not imported, so only affixes and slots could be recognized. Import game assets in Settings for full recognition.',
+    );
 
   const classSkills = cat?.skills.filter((s) => s.class === opts.classId) ?? [];
   const aspects = cat?.aspects.filter((a) => !a.class || a.class === opts.classId) ?? [];
@@ -186,7 +204,9 @@ export function importFromText(text: string, opts: PasteImportOptions): PasteImp
   const build: Build = {
     schemaVersion: 1,
     id: `paste-${Date.parse(now).toString(36)}`,
-    name: opts.name?.trim() || `${CLASS_NAMES[opts.classId]} ${opts.role === 'leveling' ? 'Leveling' : 'Endgame'} (pasted)`,
+    name:
+      opts.name?.trim() ||
+      `${CLASS_NAMES[opts.classId]} ${opts.role === 'leveling' ? 'Leveling' : 'Endgame'} (pasted)`,
     classId: opts.classId,
     role: opts.role,
     source: {

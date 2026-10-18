@@ -36,7 +36,11 @@ export default defineConfig({
   plugins: [react(), localGameAssets()],
   resolve: { alias: { '@': path.join(root, 'src') } },
   clearScreen: false,
-  server: { port: 1420, strictPort: true, watch: { ignored: ['**/src-tauri/**', '**/target/**', '**/.scratch/**'] } },
+  server: {
+    port: 1420,
+    strictPort: true,
+    watch: { ignored: ['**/src-tauri/**', '**/target/**', '**/.scratch/**'] },
+  },
   envPrefix: ['VITE_', 'TAURI_ENV_'],
   build: {
     target: 'es2022',

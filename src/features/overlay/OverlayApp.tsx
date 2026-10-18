@@ -84,14 +84,28 @@ export function OverlayApp() {
 
   return (
     <div className="gt-ov" style={{ opacity: visible ? settings.overlay.opacity : 0 }}>
-      <div ref={cardRef} className={clsx('gt-ov__card', expanded && 'is-expanded')} data-verdict={verdict ?? undefined}>
+      <div
+        ref={cardRef}
+        className={clsx('gt-ov__card', expanded && 'is-expanded')}
+        data-verdict={verdict ?? undefined}
+      >
         <div className="gt-ov__bar" data-tauri-drag-region>
           <BrandMark size={16} glow={false} />
           <span className="gt-ov__build" data-tauri-drag-region>
             {message?.activeBuild ?? 'Grimtome'}
           </span>
-          <IconButton icon={expanded ? 'minus' : 'plus'} label={expanded ? 'Compact' : 'Expand'} size="sm" onClick={() => setExpanded(!expanded)} />
-          <IconButton icon="close" label="Hide overlay" size="sm" onClick={() => void platform.windows.hideCurrent()} />
+          <IconButton
+            icon={expanded ? 'minus' : 'plus'}
+            label={expanded ? 'Compact' : 'Expand'}
+            size="sm"
+            onClick={() => setExpanded(!expanded)}
+          />
+          <IconButton
+            icon="close"
+            label="Hide overlay"
+            size="sm"
+            onClick={() => void platform.windows.hideCurrent()}
+          />
         </div>
         {message && meta ? (
           <div className="gt-ov__body">
@@ -112,7 +126,19 @@ export function OverlayApp() {
               <ul className="gt-ov__reasons">
                 {message.reasons.map((r, i) => (
                   <li key={i} className={`is-${r.tone}`}>
-                    <Icon name={r.tone === 'positive' ? 'check' : r.tone === 'warning' ? 'warning' : r.tone === 'negative' ? 'minus' : 'info'} size={12} strokeWidth={2.2} />
+                    <Icon
+                      name={
+                        r.tone === 'positive'
+                          ? 'check'
+                          : r.tone === 'warning'
+                            ? 'warning'
+                            : r.tone === 'negative'
+                              ? 'minus'
+                              : 'info'
+                      }
+                      size={12}
+                      strokeWidth={2.2}
+                    />
                     <span>{r.text}</span>
                   </li>
                 ))}
@@ -120,7 +146,8 @@ export function OverlayApp() {
             ) : null}
             {message.confidence !== 'high' ? (
               <div className="gt-ov__conf">
-                <Icon name="warning" size={12} /> {message.confidence === 'low' ? 'Low' : 'Medium'} confidence — review in Grimtome
+                <Icon name="warning" size={12} /> {message.confidence === 'low' ? 'Low' : 'Medium'} confidence
+                — review in Grimtome
               </div>
             ) : null}
           </div>

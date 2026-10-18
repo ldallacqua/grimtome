@@ -11,7 +11,7 @@ import { TransitionBanner } from '@/features/transitions/TransitionBanner';
 import { isTauri, platform } from '@/services/platform';
 import { refreshAssets } from './assets';
 import { Shell } from './Shell';
-import { startPersistence, useApp } from './store';
+import { flushPersistence, startPersistence, useApp } from './store';
 import { ingestScan } from './useScan';
 
 function useBootstrap() {
@@ -25,7 +25,9 @@ function useBootstrap() {
       const s = useApp.getState();
       if (e.type === 'scan') ingestScan(e.payload, 'capture');
       else if (e.type === 'scan-error') s.toast({ tone: 'danger', title: 'Scan failed', body: e.message });
-      else if (e.type === 'overlay-click-through') s.updateSettings((st) => ({ ...st, overlay: { ...st.overlay, clickThrough: e.enabled } }));
+      else if (e.type === 'overlay-click-through')
+        s.updateSettings((st) => ({ ...st, overlay: { ...st.overlay, clickThrough: e.enabled } }));
+      else if (e.type === 'close-requested') void flushPersistence().finally(() => platform.windows.exit());
     });
     return () => {
       stop();
@@ -39,9 +41,19 @@ function useBootstrap() {
   useEffect(() => {
     if (!ready || !platform.hotkeys.supported) return;
     void platform.hotkeys.apply(hotkeys).then(({ failed }) => {
-      if (failed.length) toast({ tone: 'warning', title: 'Some hotkeys could not be registered', body: `${failed.join(', ')} may be used by another app.` });
+      if (failed.length)
+        toast({
+          tone: 'warning',
+          title: 'Some hotkeys could not be registered',
+          body: `${failed.join(', ')} may be used by another app.`,
+        });
     });
   }, [ready, hotkeys, toast]);
+
+  const capture = useApp((s) => s.settings.capture);
+  useEffect(() => {
+    if (ready) void platform.capture.configure(capture);
+  }, [ready, capture]);
 
   const overlay = useApp((s) => s.settings.overlay);
   useEffect(() => {
@@ -83,7 +95,11 @@ export function App() {
   const useGame = useApp((s) => s.settings.assets.useGameAssets);
   const showArt = useApp((s) => s.settings.appearance.showGameArt);
   const assets = useMemo(
-    () => ({ resolver, enhanced: useGame && resolver.hasGameAssets, showArt: showArt && useGame && resolver.hasGameAssets }),
+    () => ({
+      resolver,
+      enhanced: useGame && resolver.hasGameAssets,
+      showArt: showArt && useGame && resolver.hasGameAssets,
+    }),
     [resolver, useGame, showArt],
   );
   useGameSkin(resolver, assets.enhanced);

@@ -27,7 +27,11 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--v);
-  background: linear-gradient(90deg, color-mix(in srgb, var(--v) 18%, transparent), color-mix(in srgb, var(--v) 6%, transparent));
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--v) 18%, transparent),
+    color-mix(in srgb, var(--v) 6%, transparent)
+  );
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--v) 35%, transparent);
   white-space: nowrap;
 }
@@ -48,8 +52,7 @@
   border-radius: var(--gt-radius-md);
   background:
     radial-gradient(100% 140% at 0% 50%, color-mix(in srgb, var(--v) 16%, transparent), transparent 60%),
-    linear-gradient(180deg, rgba(255, 236, 200, 0.03), transparent),
-    var(--gt-surface-2);
+    linear-gradient(180deg, rgba(255, 236, 200, 0.03), transparent), var(--gt-surface-2);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--v) 34%, transparent),
     inset 0 1px 0 rgba(255, 240, 210, 0.05),
@@ -188,8 +191,7 @@
   border-radius: 0;
   overflow: visible;
   background:
-    radial-gradient(90% 160% at 0% 50%, color-mix(in srgb, var(--v) 14%, transparent), transparent 60%),
-    none;
+    radial-gradient(90% 160% at 0% 50%, color-mix(in srgb, var(--v) 14%, transparent), transparent 60%), none;
   border: 0 solid transparent;
   border-image: var(--d4-panel) 76 fill / 38px stretch;
   box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.95);

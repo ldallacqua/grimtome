@@ -40,14 +40,19 @@ const en: Table = {
   'low-confidence': () => 'The tooltip could not be read reliably, so no firm recommendation is given.',
   'unknown-slot': () => 'The equipment slot could not be determined.',
   'unique-active': (p) => `${p.unique} is ${p.required ? 'a core unique' : 'used'} in your ${p.build} build.`,
-  'unique-future': (p) => `${p.unique} is ${p.required ? 'required' : 'used'} by your planned ${p.build} build.`,
+  'unique-future': (p) =>
+    `${p.unique} is ${p.required ? 'required' : 'used'} by your planned ${p.build} build.`,
   'unique-unused': (p) => `Neither build uses ${p.unique}.`,
-  'mythic-unused': () => 'Mythic uniques are rare — even unused ones are worth keeping until you have checked other builds.',
-  'aspect-active': (p) => `Carries ${p.aspect}, which your ${p.build} build uses${p.slot ? ` on ${p.slot}` : ''}.`,
+  'mythic-unused': () =>
+    'Mythic uniques are rare — even unused ones are worth keeping until you have checked other builds.',
+  'aspect-active': (p) =>
+    `Carries ${p.aspect}, which your ${p.build} build uses${p.slot ? ` on ${p.slot}` : ''}.`,
   'aspect-future': (p) => `Carries ${p.aspect}, which your planned ${p.build} build needs.`,
   'aspect-unidentified': () => 'Its legendary power could not be matched to an aspect your builds use.',
-  'affixes-active': (p) => `Has ${p.count} of the top priorities for this slot in ${p.build}: ${list(p.labels)}.`,
-  'affixes-future': (p) => `Has ${p.count} priority affix${Number(p.count) === 1 ? '' : 'es'} for ${p.build}: ${list(p.labels)}.`,
+  'affixes-active': (p) =>
+    `Has ${p.count} of the top priorities for this slot in ${p.build}: ${list(p.labels)}.`,
+  'affixes-future': (p) =>
+    `Has ${p.count} priority affix${Number(p.count) === 1 ? '' : 'es'} for ${p.build}: ${list(p.labels)}.`,
   'greater-affix': (p) => `Greater Affix on ${list(p.labels)}.`,
   'missing-essentials': (p) => `Missing essential stats for ${p.build}: ${list(p.labels)}.`,
   'no-guidance': (p) => `${p.build} has no gear guidance for this slot.`,
@@ -58,16 +63,21 @@ const en: Table = {
 };
 
 const ptBR: Table = {
-  'low-confidence': () => 'Não foi possível ler a dica com confiança, então nenhuma recomendação firme é dada.',
+  'low-confidence': () =>
+    'Não foi possível ler a dica com confiança, então nenhuma recomendação firme é dada.',
   'unknown-slot': () => 'Não foi possível identificar o compartimento do equipamento.',
-  'unique-active': (p) => `${p.unique} é ${p.required ? 'um único essencial' : 'usado'} na sua build ${p.build}.`,
-  'unique-future': (p) => `${p.unique} é ${p.required ? 'necessário' : 'usado'} na sua build planejada ${p.build}.`,
+  'unique-active': (p) =>
+    `${p.unique} é ${p.required ? 'um único essencial' : 'usado'} na sua build ${p.build}.`,
+  'unique-future': (p) =>
+    `${p.unique} é ${p.required ? 'necessário' : 'usado'} na sua build planejada ${p.build}.`,
   'unique-unused': (p) => `Nenhuma build usa ${p.unique}.`,
   'mythic-unused': () => 'Únicos míticos são raros — guarde até verificar outras builds.',
-  'aspect-active': (p) => `Possui ${p.aspect}, usado pela sua build ${p.build}${p.slot ? ` em ${p.slot}` : ''}.`,
+  'aspect-active': (p) =>
+    `Possui ${p.aspect}, usado pela sua build ${p.build}${p.slot ? ` em ${p.slot}` : ''}.`,
   'aspect-future': (p) => `Possui ${p.aspect}, necessário para sua build planejada ${p.build}.`,
   'aspect-unidentified': () => 'O poder lendário não corresponde a nenhum aspecto das suas builds.',
-  'affixes-active': (p) => `Tem ${p.count} das prioridades deste compartimento em ${p.build}: ${list(p.labels)}.`,
+  'affixes-active': (p) =>
+    `Tem ${p.count} das prioridades deste compartimento em ${p.build}: ${list(p.labels)}.`,
   'affixes-future': (p) => `Tem ${p.count} afixo(s) prioritário(s) para ${p.build}: ${list(p.labels)}.`,
   'greater-affix': (p) => `Afixo Maior em ${list(p.labels)}.`,
   'missing-essentials': (p) => `Faltam atributos essenciais para ${p.build}: ${list(p.labels)}.`,

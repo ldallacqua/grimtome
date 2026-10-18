@@ -113,7 +113,11 @@
 .gt-item-icon__glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--rc) 14%, transparent), transparent 62%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--rc) 14%, transparent),
+    transparent 62%
+  );
 }
 .gt-item-icon img {
   position: relative;

@@ -5,7 +5,16 @@ import { open as openDialog } from '@tauri-apps/plugin-dialog';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import type { OcrResult } from '@/domain/items/types';
 import type { AssetCacheStatus, AssetManifest, GameCatalog } from '../assets/types';
-import type { CaptureSettings, HotkeyMap, ImportSummary, Installation, OverlayMessage, PlatformApi, PlatformEvent, ScanPayload } from './types';
+import type {
+  CaptureSettings,
+  HotkeyMap,
+  ImportSummary,
+  Installation,
+  OverlayMessage,
+  PlatformApi,
+  PlatformEvent,
+  ScanPayload,
+} from './types';
 
 /** Desktop host: thin wrappers around the Rust commands in `src-tauri/src/commands`. */
 
@@ -41,7 +50,10 @@ export function createTauriPlatform(): PlatformApi {
   void listen<{ stage: string; done: number; total: number }>('assets://progress', (e) =>
     emit({ type: 'import-progress', payload: e.payload }),
   );
-  void listen<boolean>('overlay://click-through', (e) => emit({ type: 'overlay-click-through', enabled: e.payload }));
+  void listen<boolean>('overlay://click-through', (e) =>
+    emit({ type: 'overlay-click-through', enabled: e.payload }),
+  );
+  void listen('app://close-requested', () => emit({ type: 'close-requested' }));
 
   return {
     kind: 'tauri',
@@ -71,6 +83,7 @@ export function createTauriPlatform(): PlatformApi {
     },
     capture: {
       available: true,
+      configure: (settings: CaptureSettings) => invoke('capture_configure', { settings }),
       scan: (settings: CaptureSettings) => invoke<ScanPayload>('scan_capture', { settings }),
     },
     ocr: {
@@ -90,8 +103,10 @@ export function createTauriPlatform(): PlatformApi {
         const un = listen<OverlayMessage>('overlay://message', (e) => handler(e.payload));
         return () => void un.then((f) => f());
       },
-      fitCurrent: (width, height) => getCurrentWindow().setSize(new LogicalSize(Math.ceil(width), Math.ceil(height))),
+      fitCurrent: (width, height) =>
+        getCurrentWindow().setSize(new LogicalSize(Math.ceil(width), Math.ceil(height))),
       hideCurrent: () => invoke('overlay_show', { visible: false }),
+      exit: () => invoke('app_exit'),
     },
     hotkeys: {
       supported: true,

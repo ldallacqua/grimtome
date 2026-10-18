@@ -13,12 +13,55 @@ const catalog: GameCatalog = {
   locale: 'enUS',
   classes: [],
   skills: [
-    { id: 'skill.barbarian.hammer-of-the-ancients', class: 'barbarian', sno: 1, name: 'Hammer of the Ancients', summary: null, upgrades: ['Enhanced Hammer of the Ancients', 'Fissure'], icon: null },
-    { id: 'skill.barbarian.leap', class: 'barbarian', sno: 2, name: 'Leap', summary: null, upgrades: ['Death From Above'], icon: null },
-    { id: 'skill.sorcerer.fireball', class: 'sorcerer', sno: 3, name: 'Fireball', summary: null, upgrades: [], icon: null },
+    {
+      id: 'skill.barbarian.hammer-of-the-ancients',
+      class: 'barbarian',
+      sno: 1,
+      name: 'Hammer of the Ancients',
+      summary: null,
+      upgrades: ['Enhanced Hammer of the Ancients', 'Fissure'],
+      icon: null,
+    },
+    {
+      id: 'skill.barbarian.leap',
+      class: 'barbarian',
+      sno: 2,
+      name: 'Leap',
+      summary: null,
+      upgrades: ['Death From Above'],
+      icon: null,
+    },
+    {
+      id: 'skill.sorcerer.fireball',
+      class: 'sorcerer',
+      sno: 3,
+      name: 'Fireball',
+      summary: null,
+      upgrades: [],
+      icon: null,
+    },
   ],
-  uniques: [{ id: 'item.ramaladnis-magnum-opus', sno: 4, name: "Ramaladni's Magnum Opus", slot: 'weapon', class: 'barbarian', power: null, flavor: null, icon: null }],
-  aspects: [{ id: 'aspect.aspect-of-earthquakes', sno: 5, name: 'Aspect of Earthquakes', class: 'barbarian', description: null }],
+  uniques: [
+    {
+      id: 'item.ramaladnis-magnum-opus',
+      sno: 4,
+      name: "Ramaladni's Magnum Opus",
+      slot: 'weapon',
+      class: 'barbarian',
+      power: null,
+      flavor: null,
+      icon: null,
+    },
+  ],
+  aspects: [
+    {
+      id: 'aspect.aspect-of-earthquakes',
+      sno: 5,
+      name: 'Aspect of Earthquakes',
+      class: 'barbarian',
+      description: null,
+    },
+  ],
   glyphs: [{ id: 'paragon.glyph.might', sno: 6, name: 'Might', icon: null }],
   paragonBoards: [
     { id: 'paragon.board.barbarian.warbringer', sno: 7, name: 'Warbringer', class: 'barbarian' },
@@ -50,8 +93,16 @@ Decimator
 
 describe('paste importer', () => {
   it('builds a draft from pasted guide text using catalog names only', () => {
-    const r = importFromText(GUIDE, { classId: 'barbarian', role: 'endgame', catalog, dictionary: defaultAffixDictionary, now: '2026-10-18T00:00:00Z' });
-    expect(r.build.skills.map((s) => (s.kind === 'upgrade' ? `+${s.upgrade}` : `${s.skill.name} ${s.rank}`))).toEqual([
+    const r = importFromText(GUIDE, {
+      classId: 'barbarian',
+      role: 'endgame',
+      catalog,
+      dictionary: defaultAffixDictionary,
+      now: '2026-10-18T00:00:00Z',
+    });
+    expect(
+      r.build.skills.map((s) => (s.kind === 'upgrade' ? `+${s.upgrade}` : `${s.skill.name} ${s.rank}`)),
+    ).toEqual([
       'Hammer of the Ancients 1',
       '+Enhanced Hammer of the Ancients',
       'Leap 1',
@@ -76,7 +127,12 @@ describe('paste importer', () => {
   });
 
   it('ignores other classes and works without game data', () => {
-    const r = importFromText('Fireball\nGloves: Critical Strike Chance', { classId: 'barbarian', role: 'leveling', catalog: null, dictionary: defaultAffixDictionary });
+    const r = importFromText('Fireball\nGloves: Critical Strike Chance', {
+      classId: 'barbarian',
+      role: 'leveling',
+      catalog: null,
+      dictionary: defaultAffixDictionary,
+    });
     expect(r.build.skills).toEqual([]);
     expect(r.build.gear[0]?.affixes[0]?.key).toBe('critical-strike-chance');
     expect(r.warnings[0]).toMatch(/Game data is not imported/);
@@ -100,8 +156,14 @@ describe('json importer', () => {
 
 describe('maxroll links', () => {
   it('validates links without fetching anything', () => {
-    expect(parseMaxrollUrl('https://maxroll.gg/d4/build-guides/hota-barbarian-guide')).toMatchObject({ kind: 'guide', slug: 'hota-barbarian-guide' });
-    expect(parseMaxrollUrl('https://maxroll.gg/d4/planner/abc123#2')).toMatchObject({ kind: 'planner', slug: 'abc123' });
+    expect(parseMaxrollUrl('https://maxroll.gg/d4/build-guides/hota-barbarian-guide')).toMatchObject({
+      kind: 'guide',
+      slug: 'hota-barbarian-guide',
+    });
+    expect(parseMaxrollUrl('https://maxroll.gg/d4/planner/abc123#2')).toMatchObject({
+      kind: 'planner',
+      slug: 'abc123',
+    });
     expect(parseMaxrollUrl('https://evil.example/d4/planner/x')).toBeNull();
     expect(parseMaxrollUrl('http://maxroll.gg/d4/planner/x')).toBeNull();
     expect(parseMaxrollUrl('not a url')).toBeNull();

@@ -27,9 +27,7 @@ pub struct Manifest<'a> {
 }
 
 fn be32(d: &[u8], at: usize) -> Result<u32> {
-    d.get(at..at + 4)
-        .map(|s| u32::from_be_bytes([s[0], s[1], s[2], s[3]]))
-        .ok_or_else(|| fmt_err("TVFS truncated"))
+    d.get(at..at + 4).map(|s| u32::from_be_bytes([s[0], s[1], s[2], s[3]])).ok_or_else(|| fmt_err("TVFS truncated"))
 }
 
 fn be_n(d: &[u8], at: usize, n: usize) -> Result<usize> {
@@ -76,9 +74,8 @@ impl<'a> Manifest<'a> {
     fn cft_entry(&self, off: usize) -> Result<Span> {
         let mut p = self.cft_off + off;
         let mut ekey = [0u8; 16];
-        ekey[..self.ekey_size].copy_from_slice(
-            self.d.get(p..p + self.ekey_size).ok_or_else(|| fmt_err("CFT truncated"))?,
-        );
+        ekey[..self.ekey_size]
+            .copy_from_slice(self.d.get(p..p + self.ekey_size).ok_or_else(|| fmt_err("CFT truncated"))?);
         p += self.ekey_size;
         let encoded_size = be32(self.d, p)?;
         p += 4 + self.est_ofs_size;
@@ -225,8 +222,7 @@ mod tests {
         let data = sample();
         let m = Manifest::parse(&data).unwrap();
         let mut seen = Vec::new();
-        m.for_each_file(|p, s| seen.push((p.to_string(), s[0].encoded_size, s[0].content_size, s[0].ekey[0])))
-            .unwrap();
+        m.for_each_file(|p, s| seen.push((p.to_string(), s[0].encoded_size, s[0].content_size, s[0].ekey[0]))).unwrap();
         assert_eq!(seen, vec![("a/x".to_string(), 11, 22, 1), ("a/y".to_string(), 33, 44, 2)]);
     }
 }

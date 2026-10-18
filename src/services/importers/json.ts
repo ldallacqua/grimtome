@@ -3,7 +3,8 @@ import type { BuildRole } from '@/domain/shared/ids';
 
 /** JSON import/export of builds (`grimtome.builds` v1, or a single build object). */
 
-export type JsonImportResult = { ok: true; builds: Partial<Record<BuildRole, Build>> } | { ok: false; errors: string[] };
+export type JsonImportResult =
+  { ok: true; builds: Partial<Record<BuildRole, Build>> } | { ok: false; errors: string[] };
 
 export function importJson(text: string): JsonImportResult {
   let raw: unknown;

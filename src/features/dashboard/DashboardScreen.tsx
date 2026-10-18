@@ -26,7 +26,11 @@ import {
 import { timeAgo } from '@/shared/format';
 import './dashboard.css';
 
-const HERO_ART = ['art.loadingscreen-season15-07', 'art.loadingscreen-season15-06', 'art.loadingscreen-season15-08'];
+const HERO_ART = [
+  'art.loadingscreen-season15-07',
+  'art.loadingscreen-season15-06',
+  'art.loadingscreen-season15-08',
+];
 
 function Hero() {
   const build = useApp(selectActiveBuild);
@@ -38,9 +42,16 @@ function Hero() {
   const art = showArt ? (HERO_ART.map((id) => resolver.url(id)).find(Boolean) ?? null) : null;
   const emblem = build && showArt ? resolver.url(`class.${build.classId}.emblem`) : null;
   return (
-    <section className={clsx('gt-hero', art && 'has-art')} style={art ? ({ '--hero-art': `url("${art}")` } as CSSProperties) : undefined}>
+    <section
+      className={clsx('gt-hero', art && 'has-art')}
+      style={art ? ({ '--hero-art': `url("${art}")` } as CSSProperties) : undefined}
+    >
       <div className="gt-hero__veil" aria-hidden />
-      {emblem ? <img className="gt-hero__emblem" src={emblem} alt="" aria-hidden /> : <div className="gt-hero__sigil" aria-hidden />}
+      {emblem ? (
+        <img className="gt-hero__emblem" src={emblem} alt="" aria-hidden />
+      ) : (
+        <div className="gt-hero__sigil" aria-hidden />
+      )}
       <div className="gt-hero__content">
         <div className="gt-hero__eyebrow">
           <span>{phase === 'leveling' ? 'Leveling phase' : 'Endgame phase'}</span>
@@ -54,15 +65,30 @@ function Hero() {
           ) : null}
         </div>
         <h1 className="gt-hero__title">{build?.name ?? 'Welcome to Grimtome'}</h1>
-        <p className="gt-hero__summary">{build?.summary ?? 'Load your leveling and endgame builds to get item verdicts and progression guidance.'}</p>
+        <p className="gt-hero__summary">
+          {build?.summary ??
+            'Load your leveling and endgame builds to get item verdicts and progression guidance.'}
+        </p>
         <div className="gt-hero__stats">
           <div className="gt-hero__stat">
             <span className="gt-hero__statlabel">Level</span>
-            <Stepper value={progress.level} min={1} max={MAX_CHARACTER_LEVEL} onChange={setLevel} label="Character level" />
+            <Stepper
+              value={progress.level}
+              min={1}
+              max={MAX_CHARACTER_LEVEL}
+              onChange={setLevel}
+              label="Character level"
+            />
           </div>
           <div className="gt-hero__stat">
             <span className="gt-hero__statlabel">Paragon</span>
-            <Stepper value={progress.paragon} min={0} max={MAX_PARAGON_LEVEL} onChange={setParagon} label="Paragon level" />
+            <Stepper
+              value={progress.paragon}
+              min={0}
+              max={MAX_PARAGON_LEVEL}
+              onChange={setParagon}
+              label="Paragon level"
+            />
           </div>
         </div>
       </div>
@@ -88,7 +114,11 @@ function NextSkillCard() {
       variant="raised"
       eyebrow="Next skill point"
       title={next ? next.step.skill.name : 'Skill plan complete'}
-      actions={<Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('skills')}>Plan</Button>}
+      actions={
+        <Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('skills')}>
+          Plan
+        </Button>
+      }
       className="gt-dash-card"
     >
       {next ? (
@@ -96,7 +126,9 @@ function NextSkillCard() {
           <SkillIcon id={next.step.skill.id ?? null} name={next.step.skill.name} size={64} state="next" />
           <div className="gt-dash-skill__text">
             <div className="gt-dash-skill__label">{next.label}</div>
-            <p className="gt-muted gt-small">Step {next.index + 1} of {next.total} in your imported {build.role} build.</p>
+            <p className="gt-muted gt-small">
+              Step {next.index + 1} of {next.total} in your imported {build.role} build.
+            </p>
             <Meter value={next.index} max={next.total} label="Skill plan progress" />
           </div>
         </div>
@@ -105,10 +137,20 @@ function NextSkillCard() {
       )}
       {next ? (
         <div className="gt-dash-card__actions">
-          <Button size="sm" variant="primary" icon="check" onClick={() => setSkillSteps(phase, allocated + 1)}>
+          <Button
+            size="sm"
+            variant="primary"
+            icon="check"
+            onClick={() => setSkillSteps(phase, allocated + 1)}
+          >
             Mark allocated
           </Button>
-          <Button size="sm" variant="ghost" onClick={() => setSkillSteps(phase, allocated - 1)} disabled={allocated === 0}>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => setSkillSteps(phase, allocated - 1)}
+            disabled={allocated === 0}
+          >
             Undo
           </Button>
         </div>
@@ -130,8 +172,14 @@ function ParagonCard() {
     <Panel
       variant="raised"
       eyebrow="Paragon objective"
-      title={objective ? objective.board.name : build.paragon.length ? 'All boards complete' : 'No Paragon plan'}
-      actions={<Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('paragon')}>Boards</Button>}
+      title={
+        objective ? objective.board.name : build.paragon.length ? 'All boards complete' : 'No Paragon plan'
+      }
+      actions={
+        <Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('paragon')}>
+          Boards
+        </Button>
+      }
       className="gt-dash-card"
     >
       <div className="gt-dash-paragon">
@@ -151,7 +199,9 @@ function ParagonCard() {
             </div>
           ) : null}
           {objective?.focus ? <p className="gt-muted gt-small">{objective.focus}</p> : null}
-          {objective?.targetParagon !== undefined ? <Badge tone="gold">Target Paragon {objective.targetParagon}</Badge> : null}
+          {objective?.targetParagon !== undefined ? (
+            <Badge tone="gold">Target Paragon {objective.targetParagon}</Badge>
+          ) : null}
         </div>
       </div>
       {objective ? (
@@ -188,12 +238,23 @@ function TransitionCard() {
     <Panel
       variant="raised"
       eyebrow="Build transition"
-      title={done ? 'Endgame build active' : r.status === 'ready' ? 'Ready to transition' : 'Preparing for endgame'}
+      title={
+        done ? 'Endgame build active' : r.status === 'ready' ? 'Ready to transition' : 'Preparing for endgame'
+      }
       className="gt-dash-card"
-      actions={<Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('builds')}>Review</Button>}
+      actions={
+        <Button size="sm" variant="ghost" iconRight="chevronRight" onClick={() => navigate('builds')}>
+          Review
+        </Button>
+      }
     >
       <div className="gt-dash-paragon">
-        <Ring value={done ? r.total : r.met} max={Math.max(1, r.total)} size={74} tone={r.status === 'ready' || done ? 'success' : 'arcane'}>
+        <Ring
+          value={done ? r.total : r.met}
+          max={Math.max(1, r.total)}
+          size={74}
+          tone={r.status === 'ready' || done ? 'success' : 'arcane'}
+        >
           <div className="gt-num gt-dash-ring__value">
             {done ? r.total : r.met}/{r.total}
           </div>
@@ -206,8 +267,18 @@ function TransitionCard() {
               {c.label}
             </li>
           ))}
-          {done ? <li className="is-done"><Icon name="check" size={13} />Item advice now targets {builds.endgame?.name}.</li> : null}
-          {!done && r.missing.length === 0 ? <li className="is-done"><Icon name="check" size={13} />All requirements met.</li> : null}
+          {done ? (
+            <li className="is-done">
+              <Icon name="check" size={13} />
+              Item advice now targets {builds.endgame?.name}.
+            </li>
+          ) : null}
+          {!done && r.missing.length === 0 ? (
+            <li className="is-done">
+              <Icon name="check" size={13} />
+              All requirements met.
+            </li>
+          ) : null}
         </ul>
       </div>
     </Panel>
@@ -231,7 +302,8 @@ function QuickScan() {
           <div className="gt-section-label">Item Advisor</div>
           <h2 className="gt-quickscan__title">Hover. Press. Know what to keep.</h2>
           <p className="gt-muted">
-            Hover an item in Diablo IV and press <KeyCap keys={hotkeyParts(hotkey)} size="sm" /> — Grimtome reads the tooltip and judges it against both of your builds.
+            Hover an item in Diablo IV and press <KeyCap keys={hotkeyParts(hotkey)} size="sm" /> — Grimtome
+            reads the tooltip and judges it against both of your builds.
           </p>
           <div className="gt-row gt-row--wrap" style={{ marginTop: 18 }}>
             <Button variant="primary" icon="scan" size="lg" onClick={() => void scanNow()}>
@@ -253,7 +325,12 @@ function QuickScan() {
                 navigate('advisor');
               }}
             >
-              <ItemIcon id={uniqueIconId(catalog, latest.item)} slot={latest.item.slot} rarity={latest.item.rarity} size={58} />
+              <ItemIcon
+                id={uniqueIconId(catalog, latest.item)}
+                slot={latest.item.slot}
+                rarity={latest.item.rarity}
+                size={58}
+              />
               <div className="gt-latest__text">
                 <div className="gt-section-label">Last scan · {timeAgo(latest.at)}</div>
                 <div className="gt-latest__name" data-rarity={latest.item.rarity ?? 'common'}>
@@ -263,7 +340,12 @@ function QuickScan() {
               </div>
             </button>
           ) : (
-            <EmptyState compact icon="advisor" title="No scans yet" body="Your latest verdict will appear here." />
+            <EmptyState
+              compact
+              icon="advisor"
+              title="No scans yet"
+              body="Your latest verdict will appear here."
+            />
           )}
         </div>
       </div>
@@ -293,7 +375,12 @@ function RecentScans() {
                   navigate('advisor');
                 }}
               >
-                <ItemIcon id={uniqueIconId(catalog, sc.item)} slot={sc.item.slot} rarity={sc.item.rarity} size={36} />
+                <ItemIcon
+                  id={uniqueIconId(catalog, sc.item)}
+                  slot={sc.item.slot}
+                  rarity={sc.item.rarity}
+                  size={36}
+                />
                 <span className="gt-recent__name" data-rarity={sc.item.rarity ?? 'common'}>
                   {sc.item.name ?? 'Unknown item'}
                 </span>

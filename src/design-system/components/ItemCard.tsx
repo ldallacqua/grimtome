@@ -56,7 +56,11 @@ function Separator() {
 function Bullet({ affix }: { affix: ParsedAffix }) {
   if (affix.greater) {
     return (
-      <span className="gt-affix__bullet gt-affix__bullet--ga" title="Greater Affix" aria-label="Greater Affix">
+      <span
+        className="gt-affix__bullet gt-affix__bullet--ga"
+        title="Greater Affix"
+        aria-label="Greater Affix"
+      >
         <span aria-hidden>✦</span>
       </span>
     );
@@ -74,8 +78,12 @@ function Bullet({ affix }: { affix: ParsedAffix }) {
 function formatValue(a: ParsedAffix): string | null {
   if (a.value === null) return null;
   const decimals = /\d[.,](\d+)/.exec(a.raw.replace(/\[[^\]]*\]/g, ''))?.[1]?.length ?? 0;
-  const v = decimals && !/^\d{1,3}([.,]\d{3})+$/.test(String(a.value)) ? a.value.toFixed(Math.min(2, decimals)) : a.value.toLocaleString('en-US');
-  const sign = a.value >= 0 && /\+\s*\d/.test(a.raw) ? '+' : a.value >= 0 && a.key?.startsWith('skill-ranks') ? '+' : '';
+  const v =
+    decimals && !/^\d{1,3}([.,]\d{3})+$/.test(String(a.value))
+      ? a.value.toFixed(Math.min(2, decimals))
+      : a.value.toLocaleString('en-US');
+  const sign =
+    a.value >= 0 && /\+\s*\d/.test(a.raw) ? '+' : a.value >= 0 && a.key?.startsWith('skill-ranks') ? '+' : '';
   return `${sign}${v}${a.percent ? '%' : ''}`;
 }
 
@@ -98,7 +106,9 @@ export function ItemCard({
   compact,
   className,
 }: ItemCardProps) {
-  const typeLine = [ancestral ? 'Ancestral' : null, rarity ? RARITY_LABEL[rarity] : null, itemType].filter(Boolean).join(' ');
+  const typeLine = [ancestral ? 'Ancestral' : null, rarity ? RARITY_LABEL[rarity] : null, itemType]
+    .filter(Boolean)
+    .join(' ');
   return (
     <article
       className={clsx('gt-item-card', compact && 'gt-item-card--compact', className)}
@@ -132,7 +142,10 @@ export function ItemCard({
                 const ann = annotations?.[i];
                 const value = formatValue(a);
                 return (
-                  <li key={`${a.raw}-${i}`} className={clsx('gt-affix', !a.key && 'is-unknown', a.greater && 'is-greater')}>
+                  <li
+                    key={`${a.raw}-${i}`}
+                    className={clsx('gt-affix', !a.key && 'is-unknown', a.greater && 'is-greater')}
+                  >
                     <Bullet affix={a} />
                     <span className="gt-affix__text">
                       {value ? <span className="gt-affix__value gt-num">{value}</span> : null}{' '}
@@ -145,10 +158,16 @@ export function ItemCard({
                         </span>
                       ) : null}
                       {ann?.active ? (
-                        <span className="gt-affix__dot gt-affix__dot--active" title={`Priority ${ann.active}/3 for your active build`} />
+                        <span
+                          className="gt-affix__dot gt-affix__dot--active"
+                          title={`Priority ${ann.active}/3 for your active build`}
+                        />
                       ) : null}
                       {ann?.future ? (
-                        <span className="gt-affix__dot gt-affix__dot--future" title={`Priority ${ann.future}/3 for your endgame build`} />
+                        <span
+                          className="gt-affix__dot gt-affix__dot--future"
+                          title={`Priority ${ann.future}/3 for your endgame build`}
+                        />
                       ) : null}
                     </span>
                   </li>
@@ -170,7 +189,8 @@ export function ItemCard({
             ))}
             {masterwork ? (
               <span className="gt-item-card__mw">
-                Masterwork <span className="gt-num">{masterwork.rank}</span>/<span className="gt-num">{masterwork.max}</span>
+                Masterwork <span className="gt-num">{masterwork.rank}</span>/
+                <span className="gt-num">{masterwork.max}</span>
               </span>
             ) : null}
             {requiredLevel ? <span className="gt-item-card__req">Requires Level {requiredLevel}</span> : null}

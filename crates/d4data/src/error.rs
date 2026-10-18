@@ -6,10 +6,7 @@ pub enum Error {
     Io(#[from] std::io::Error),
 
     #[error("I/O error reading {path}: {source}")]
-    IoAt {
-        path: PathBuf,
-        source: std::io::Error,
-    },
+    IoAt { path: PathBuf, source: std::io::Error },
 
     #[error("unsupported game data layout: {0}")]
     Layout(String),

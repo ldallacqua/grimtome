@@ -1,0 +1,124 @@
+{
+  "lines": [
+    {
+      "text": "Ramaladni's Magnum Opus",
+      "bbox": {
+        "x": 20.5,
+        "y": 20.0,
+        "w": 260.0,
+        "h": 21.0
+      },
+      "color": "#c7b377"
+    },
+    {
+      "text": "Unique Two-Handed Mace",
+      "bbox": {
+        "x": 20.0,
+        "y": 47.0,
+        "w": 176.0,
+        "h": 14.0
+      },
+      "color": "#9c905b"
+    },
+    {
+      "text": "800 Item Power",
+      "bbox": {
+        "x": 19.333334,
+        "y": 88.666664,
+        "w": 113.666664,
+        "h": 11.666667
+      },
+      "color": "#ece6db"
+    },
+    {
+      "text": "4,980 Damage Per Second",
+      "bbox": {
+        "x": 19.0,
+        "y": 113.0,
+        "w": 184.0,
+        "h": 16.0
+      },
+      "color": "#a6a18e"
+    },
+    {
+      "text": "+22.0% Vulnerable Damage",
+      "bbox": {
+        "x": 44.0,
+        "y": 140.0,
+        "w": 195.0,
+        "h": 16.5
+      },
+      "color": "#d7d4c1",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+45.0% Critical Strike Damage",
+      "bbox": {
+        "x": 44.0,
+        "y": 165.5,
+        "w": 212.0,
+        "h": 17.0
+      },
+      "color": "#d5d4c1",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+98 Strength",
+      "bbox": {
+        "x": 44.0,
+        "y": 192.0,
+        "w": 91.5,
+        "h": 16.5
+      },
+      "color": "#d6d4c3",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "Skills deal additional damage for each point of Fury",
+      "bbox": {
+        "x": 19.0,
+        "y": 224.5,
+        "w": 357.0,
+        "h": 17.0
+      },
+      "color": "#bfb36d"
+    },
+    {
+      "text": "you have, but you no longer passively generate Fury.",
+      "bbox": {
+        "x": 17.5,
+        "y": 248.0,
+        "w": 362.0,
+        "h": 16.5
+      },
+      "color": "#bfb36d"
+    },
+    {
+      "text": "Unique Equip",
+      "bbox": {
+        "x": 20.0,
+        "y": 277.0,
+        "w": 82.0,
+        "h": 13.0
+      },
+      "color": "#7e7c67"
+    },
+    {
+      "text": "Requires Level 60",
+      "bbox": {
+        "x": 20.0,
+        "y": 303.0,
+        "w": 106.0,
+        "h": 13.0
+      },
+      "color": "#807d6c"
+    }
+  ],
+  "engine": "windows",
+  "language": "en-US",
+  "elapsedMs": 68,
+  "imageSize": {
+    "w": 422,
+    "h": 334
+  }
+}

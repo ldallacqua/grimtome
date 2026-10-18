@@ -68,9 +68,8 @@ impl KeyLayouts {
             .ok_or_else(|| Error::Layout("missing key-layout-index-bits".into()))?;
         let mut layouts = Vec::new();
         for i in 0..(1u32 << index_bits) {
-            let raw = cfg
-                .get(&format!("key-layout-{i}"))
-                .ok_or_else(|| Error::Layout(format!("missing key-layout-{i}")))?;
+            let raw =
+                cfg.get(&format!("key-layout-{i}")).ok_or_else(|| Error::Layout(format!("missing key-layout-{i}")))?;
             let nums: Vec<u64> = raw.split_whitespace().filter_map(|n| n.parse().ok()).collect();
             if nums.len() != 4 {
                 return Err(Error::Layout(format!("key-layout-{i} has {} fields", nums.len())));
@@ -104,10 +103,7 @@ impl KeyLayouts {
         let b = if layout.b_bits == 0 { 0 } else { fields & ((1u64 << layout.b_bits) - 1) };
         let dir = data_dir.join(format!("{folder:03}"));
         let (name, offset) = match (layout.a_bits, layout.b_bits) {
-            (14, 32) => (
-                format!("0x{a:04x}-{}.dat", kind.suffix()),
-                b * layout.unit.max(1),
-            ),
+            (14, 32) => (format!("0x{a:04x}-{}.dat", kind.suffix()), b * layout.unit.max(1)),
             (46, 0) => {
                 let id = a >> 16;
                 let sub = a & 0xFFFF;
@@ -147,9 +143,7 @@ mod tests {
 
     #[test]
     fn container_layout_uses_byte_offsets() {
-        let loc = layouts()
-            .locate(Path::new("D"), &key("0b9ab6a0b63b451da800000102b4ca5b"), Kind::Meta)
-            .unwrap();
+        let loc = layouts().locate(Path::new("D"), &key("0b9ab6a0b63b451da800000102b4ca5b"), Kind::Meta).unwrap();
         assert_eq!(loc.file, Path::new("D").join("000").join("0x0001-meta.dat"));
         assert_eq!(loc.offset, 0x02b4ca5b);
     }
@@ -165,18 +159,14 @@ mod tests {
 
     #[test]
     fn child_pack_layout_uses_4k_units() {
-        let loc = layouts()
-            .locate(Path::new("D"), &key("cafb097b9d74c00e9b8207c6e7800047"), Kind::Child)
-            .unwrap();
+        let loc = layouts().locate(Path::new("D"), &key("cafb097b9d74c00e9b8207c6e7800047"), Kind::Child).unwrap();
         assert_eq!(loc.file, Path::new("D").join("008").join("2038686-child.dat"));
         assert_eq!(loc.offset, 0x47 * 4096);
     }
 
     #[test]
     fn payload_container_offsets_are_scaled() {
-        let loc = layouts()
-            .locate(Path::new("D"), &key("c03a2ef5e5b367c96cc0030000427cb9"), Kind::Payload)
-            .unwrap();
+        let loc = layouts().locate(Path::new("D"), &key("c03a2ef5e5b367c96cc0030000427cb9"), Kind::Payload).unwrap();
         assert_eq!(loc.file, Path::new("D").join("000").join("0x0300-payload.dat"));
         assert_eq!(loc.offset, 0x00427cb9 * 4096);
     }

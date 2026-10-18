@@ -52,14 +52,24 @@ export function identifyAspect(
     const byName = item.name ? nameScore(item.name, c.name) : 0;
     const byText = item.powerText && c.description ? textScore(item.powerText, c.description) : 0;
     // Full name match is decisive; text similarity needs to be clearly high.
-    const score = Math.max(byName >= 1 ? 0.95 : byName * 0.6, byText >= 0.62 ? Math.min(0.92, byText + 0.2) : 0);
+    const score = Math.max(
+      byName >= 1 ? 0.95 : byName * 0.6,
+      byText >= 0.62 ? Math.min(0.92, byText + 0.2) : 0,
+    );
     if (!best || score > best.score) best = { c, score };
   }
   if (!best || best.score < 0.6) return null;
-  return { ...(best.c.id ? { id: best.c.id } : {}), name: best.c.name, confidence: Math.round(best.score * 100) / 100 };
+  return {
+    ...(best.c.id ? { id: best.c.id } : {}),
+    name: best.c.name,
+    confidence: Math.round(best.score * 100) / 100,
+  };
 }
 
-export function identifyUnique<T extends NamedRef>(itemName: string | null, candidates: readonly T[]): T | null {
+export function identifyUnique<T extends NamedRef>(
+  itemName: string | null,
+  candidates: readonly T[],
+): T | null {
   if (!itemName) return null;
   const n = normalizeLabel(itemName);
   let best: { c: T; score: number } | null = null;

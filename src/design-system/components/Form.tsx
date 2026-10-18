@@ -1,9 +1,25 @@
 import clsx from 'clsx';
-import { useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import {
+  useId,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
+} from 'react';
 import { Icon } from '../icons';
 import './Form.css';
 
-export function Field({ label, hint, children, inline }: { label: ReactNode; hint?: ReactNode; children: ReactNode; inline?: boolean }) {
+export function Field({
+  label,
+  hint,
+  children,
+  inline,
+}: {
+  label: ReactNode;
+  hint?: ReactNode;
+  children: ReactNode;
+  inline?: boolean;
+}) {
   return (
     <div className={clsx('gt-field', inline && 'gt-field--inline')}>
       <div className="gt-field__head">
@@ -141,7 +157,12 @@ export function Stepper({
 }) {
   return (
     <div className="gt-stepper" role="group" aria-label={label}>
-      <button type="button" aria-label={`Decrease ${label}`} onClick={() => onChange(Math.max(min, value - 1))} disabled={value <= min}>
+      <button
+        type="button"
+        aria-label={`Decrease ${label}`}
+        onClick={() => onChange(Math.max(min, value - 1))}
+        disabled={value <= min}
+      >
         <Icon name="minus" size={14} />
       </button>
       <input
@@ -154,7 +175,12 @@ export function Stepper({
           if (Number.isFinite(n)) onChange(Math.max(min, Math.min(max, n)));
         }}
       />
-      <button type="button" aria-label={`Increase ${label}`} onClick={() => onChange(Math.min(max, value + 1))} disabled={value >= max}>
+      <button
+        type="button"
+        aria-label={`Increase ${label}`}
+        onClick={() => onChange(Math.min(max, value + 1))}
+        disabled={value >= max}
+      >
         <Icon name="plus" size={14} />
       </button>
     </div>

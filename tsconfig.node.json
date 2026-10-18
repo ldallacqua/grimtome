@@ -14,5 +14,12 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true
   },
-  "include": ["vite.config.ts", "playwright.config.ts", "playwright.desktop.config.ts", "tests/e2e", "tests/visual", "tests/desktop"]
+  "include": [
+    "vite.config.ts",
+    "playwright.config.ts",
+    "playwright.desktop.config.ts",
+    "tests/e2e",
+    "tests/visual",
+    "tests/desktop"
+  ]
 }

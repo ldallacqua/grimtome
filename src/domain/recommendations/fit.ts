@@ -30,13 +30,21 @@ function fitAgainstPlan(build: Build, plan: GearPlan | null, item: ParsedItem) {
     if (!a.key) continue;
     const p = all.find((x) => x.key === a.key);
     if (p && !matched.some((m) => m.key === p.key)) {
-      matched.push({ key: p.key, label: p.label, weight: p.weight, greater: a.greater, tempered: a.tempered || temperKeys.has(p.key) });
+      matched.push({
+        key: p.key,
+        label: p.label,
+        weight: p.weight,
+        greater: a.greater,
+        tempered: a.tempered || temperKeys.has(p.key),
+      });
     }
   }
   const possible = all.slice(0, TOP_PRIORITIES).reduce((s, p) => s + p.weight, 0);
   const got = matched.reduce((s, m) => s + m.weight + (m.greater ? 0.5 : 0), 0);
   const essentials = affixPriorities.filter((p) => p.weight === 3);
-  const missingEssentials = essentials.filter((e) => !matched.some((m) => m.key === e.key)).map((e) => e.label);
+  const missingEssentials = essentials
+    .filter((e) => !matched.some((m) => m.key === e.key))
+    .map((e) => e.label);
   const ratio = possible ? Math.min(1, got / possible) : 0;
   const essentialHits = essentials.length - missingEssentials.length;
   let tier: FitTier;
@@ -45,11 +53,19 @@ function fitAgainstPlan(build: Build, plan: GearPlan | null, item: ParsedItem) {
   else if (ratio >= 0.3 || essentialHits >= 1) tier = 'partial';
   else if (matched.length) tier = 'weak';
   else tier = 'none';
-  return { matched, missingEssentials, ratio: Math.round(ratio * 100) / 100, tier, hasGuidance: all.length > 0 };
+  return {
+    matched,
+    missingEssentials,
+    ratio: Math.round(ratio * 100) / 100,
+    tier,
+    hasGuidance: all.length > 0,
+  };
 }
 
 function uniqueCandidates(build: Build): (NamedRef & { required: boolean })[] {
-  const fromGear = build.gear.flatMap((g) => (g.unique ? [{ ...g.unique, required: g.unique.required }] : []));
+  const fromGear = build.gear.flatMap((g) =>
+    g.unique ? [{ ...g.unique, required: g.unique.required }] : [],
+  );
   const fromTransition = (build.transition?.requiredUniques ?? []).map((u) => ({ ...u, required: true }));
   const merged = new Map<string, NamedRef & { required: boolean }>();
   for (const u of [...fromGear, ...fromTransition]) {
@@ -74,10 +90,18 @@ function aspectCandidates(build: Build, catalog?: CatalogHints): AspectCandidate
   return out;
 }
 
-export function evaluateFit(build: Build, role: BuildRole, item: ParsedItem, catalog?: CatalogHints): BuildFit {
+export function evaluateFit(
+  build: Build,
+  role: BuildRole,
+  item: ParsedItem,
+  catalog?: CatalogHints,
+): BuildFit {
   const plans = plansForSlot(build, item);
   // Rings (and some builds' weapons) can have several plans; keep the best-fitting one.
-  const candidates = (plans.length ? plans : [null]).map((p) => ({ plan: p, fit: fitAgainstPlan(build, p, item) }));
+  const candidates = (plans.length ? plans : [null]).map((p) => ({
+    plan: p,
+    fit: fitAgainstPlan(build, p, item),
+  }));
   candidates.sort((a, b) => b.fit.ratio - a.fit.ratio);
   const best = candidates[0]!;
 

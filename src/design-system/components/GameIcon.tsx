@@ -10,10 +10,20 @@ import './GameIcon.css';
  * original Grimtome fallback otherwise, so layouts never depend on game files.
  */
 
-const RARITY_FRAME: Partial<Record<Rarity, number>> = { common: 0, unique: 1, rare: 2, mythic: 3, magic: 4, legendary: 5 };
+const RARITY_FRAME: Partial<Record<Rarity, number>> = {
+  common: 0,
+  unique: 1,
+  rare: 2,
+  mythic: 3,
+  magic: 4,
+  legendary: 5,
+};
 
 function initials(name: string): string {
-  const words = name.replace(/[^A-Za-z\s]/g, '').split(/\s+/).filter(Boolean);
+  const words = name
+    .replace(/[^A-Za-z\s]/g, '')
+    .split(/\s+/)
+    .filter(Boolean);
   return (words.length > 1 ? words[0]![0]! + words[1]![0]! : (words[0] ?? '?').slice(0, 2)).toUpperCase();
 }
 
@@ -38,7 +48,11 @@ export function SkillIcon({
       style={{ '--size': `${size}px` } as CSSProperties}
       title={name}
     >
-      {url ? <img src={url} alt="" draggable={false} /> : <span className="gt-skill-icon__rune">{initials(name)}</span>}
+      {url ? (
+        <img src={url} alt="" draggable={false} />
+      ) : (
+        <span className="gt-skill-icon__rune">{initials(name)}</span>
+      )}
     </span>
   );
 }
@@ -47,8 +61,23 @@ export function RarityGlyph({ rarity, size = 18 }: { rarity: Rarity | null; size
   const { resolver, enhanced } = useAssets();
   const frame = rarity ? RARITY_FRAME[rarity] : undefined;
   const url = enhanced && frame !== undefined ? resolver.url(`ui.2dinventory-itemrarities.${frame}`) : null;
-  if (url) return <img className="gt-rarity-glyph" src={url} alt="" style={{ width: size, height: size }} draggable={false} />;
-  return <span className="gt-rarity-glyph gt-rarity-glyph--css" data-rarity={rarity ?? 'common'} style={{ width: size * 0.62, height: size * 0.62 }} />;
+  if (url)
+    return (
+      <img
+        className="gt-rarity-glyph"
+        src={url}
+        alt=""
+        style={{ width: size, height: size }}
+        draggable={false}
+      />
+    );
+  return (
+    <span
+      className="gt-rarity-glyph gt-rarity-glyph--css"
+      data-rarity={rarity ?? 'common'}
+      style={{ width: size * 0.62, height: size * 0.62 }}
+    />
+  );
 }
 
 export function ItemIcon({
@@ -78,7 +107,12 @@ export function ItemIcon({
       ) : (
         <>
           <span className="gt-item-icon__slot" data-slot={slot ?? 'none'} aria-hidden />
-          <Icon name={slot ?? 'gem'} size={Math.round(size * 0.46)} strokeWidth={1.3} className="gt-item-icon__glyph" />
+          <Icon
+            name={slot ?? 'gem'}
+            size={Math.round(size * 0.46)}
+            strokeWidth={1.3}
+            className="gt-item-icon__glyph"
+          />
         </>
       )}
     </span>
@@ -96,12 +130,25 @@ const CLASS_GLYPH: Record<ClassId, string> = {
   warlock: 'Wa',
 };
 
-export function ClassEmblem({ classId, size = 56, ring = true, className }: { classId: ClassId; size?: number; ring?: boolean; className?: string }) {
+export function ClassEmblem({
+  classId,
+  size = 56,
+  ring = true,
+  className,
+}: {
+  classId: ClassId;
+  size?: number;
+  ring?: boolean;
+  className?: string;
+}) {
   const { resolver, enhanced } = useAssets();
   const url = resolver.url(`class.${classId}`);
   const frame = enhanced && ring ? resolver.url('ui.tooltip.15') : null;
   return (
-    <span className={clsx('gt-class-emblem', ring && 'has-ring', className)} style={{ '--size': `${size}px` } as CSSProperties}>
+    <span
+      className={clsx('gt-class-emblem', ring && 'has-ring', className)}
+      style={{ '--size': `${size}px` } as CSSProperties}
+    >
       {frame ? <img className="gt-class-emblem__frame" src={frame} alt="" draggable={false} /> : null}
       {url ? (
         <img className="gt-class-emblem__img" src={url} alt="" draggable={false} />
@@ -112,11 +159,25 @@ export function ClassEmblem({ classId, size = 56, ring = true, className }: { cl
   );
 }
 
-export function GlyphIcon({ id, name, size = 40, className }: { id?: string | null; name: string; size?: number; className?: string }) {
+export function GlyphIcon({
+  id,
+  name,
+  size = 40,
+  className,
+}: {
+  id?: string | null;
+  name: string;
+  size?: number;
+  className?: string;
+}) {
   const { resolver } = useAssets();
   const url = resolver.url(id);
   return (
-    <span className={clsx('gt-glyph-icon', !url && 'is-fallback', className)} style={{ '--size': `${size}px` } as CSSProperties} title={name}>
+    <span
+      className={clsx('gt-glyph-icon', !url && 'is-fallback', className)}
+      style={{ '--size': `${size}px` } as CSSProperties}
+      title={name}
+    >
       {url ? <img src={url} alt="" draggable={false} /> : <span>{initials(name).slice(0, 1)}</span>}
     </span>
   );

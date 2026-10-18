@@ -52,7 +52,10 @@ export interface Readiness {
 
 const owns = (list: readonly string[], ref: NamedRef) => list.includes(ref.name.toLowerCase());
 
-export function transitionReadiness(builds: Partial<Record<BuildRole, Build>>, progress: CharacterProgress): Readiness {
+export function transitionReadiness(
+  builds: Partial<Record<BuildRole, Build>>,
+  progress: CharacterProgress,
+): Readiness {
   const endgame = builds.endgame;
   if (!endgame) return { status: 'unavailable', criteria: [], met: 0, total: 0, missing: [] };
   const t = endgame.transition;
@@ -138,7 +141,11 @@ export interface TransitionState {
   history: TransitionEntry[];
 }
 
-export const initialTransitionState = (): TransitionState => ({ phase: 'leveling', postponedUntil: null, history: [] });
+export const initialTransitionState = (): TransitionState => ({
+  phase: 'leveling',
+  postponedUntil: null,
+  history: [],
+});
 
 export type TransitionEvent =
   | { type: 'ACCEPT'; at: string }
@@ -148,7 +155,11 @@ export type TransitionEvent =
 export class TransitionError extends Error {}
 
 /** Pure reducer. Throws on invalid events so the UI can never desynchronize. */
-export function transition(state: TransitionState, event: TransitionEvent, hasEndgame: boolean): TransitionState {
+export function transition(
+  state: TransitionState,
+  event: TransitionEvent,
+  hasEndgame: boolean,
+): TransitionState {
   switch (event.type) {
     case 'ACCEPT':
       if (state.phase !== 'leveling') throw new TransitionError('Already on the endgame build.');
@@ -187,5 +198,8 @@ export function shouldPromptTransition(
   if (state.phase !== 'leveling' || readiness.status !== 'ready') return false;
   const p = state.postponedUntil;
   if (!p) return true;
-  return (p.level !== undefined && progress.level >= p.level) || (p.paragon !== undefined && progress.paragon >= p.paragon);
+  return (
+    (p.level !== undefined && progress.level >= p.level) ||
+    (p.paragon !== undefined && progress.paragon >= p.paragon)
+  );
 }

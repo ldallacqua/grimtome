@@ -5,8 +5,7 @@
   justify-items: center;
   gap: var(--gt-space-6);
   background:
-    radial-gradient(600px 400px at 50% 40%, rgba(140, 40, 25, 0.18), transparent 70%),
-    var(--gt-bg-app);
+    radial-gradient(600px 400px at 50% 40%, rgba(140, 40, 25, 0.18), transparent 70%), var(--gt-bg-app);
 }
 
 /* Shared screen layout helpers */

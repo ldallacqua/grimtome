@@ -15,4 +15,6 @@ import { currentWindowKind } from './services/platform';
 const kind = currentWindowKind();
 document.documentElement.dataset.window = kind;
 
-createRoot(document.getElementById('root')!).render(<StrictMode>{kind === 'overlay' ? <OverlayApp /> : <App />}</StrictMode>);
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>{kind === 'overlay' ? <OverlayApp /> : <App />}</StrictMode>,
+);

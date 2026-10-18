@@ -66,9 +66,7 @@ fn le32(d: &[u8], at: usize) -> Result<u32> {
 }
 
 fn le16(d: &[u8], at: usize) -> Result<u16> {
-    d.get(at..at + 2)
-        .map(|s| u16::from_le_bytes([s[0], s[1]]))
-        .ok_or_else(|| fmt_err("texture definition truncated"))
+    d.get(at..at + 2).map(|s| u16::from_le_bytes([s[0], s[1]])).ok_or_else(|| fmt_err("texture definition truncated"))
 }
 
 fn lef(d: &[u8], at: usize) -> Result<f32> {
@@ -119,19 +117,14 @@ impl TextureDef {
         let (row, rows) = if fmt == PixelFormat::Bgra8 {
             (self.width as usize * 4, self.height as usize)
         } else {
-            (
-                (self.width as usize).div_ceil(4) * fmt.block_bytes(),
-                (self.height as usize).div_ceil(4),
-            )
+            ((self.width as usize).div_ceil(4) * fmt.block_bytes(), (self.height as usize).div_ceil(4))
         };
         Some(row.next_multiple_of(ROW_PITCH_ALIGN) * rows)
     }
 
     /// Decodes the full-size mip from a payload blob into an RGBA image.
     pub fn decode(&self, payload: &[u8]) -> Result<RgbaImage> {
-        let fmt = self
-            .pixel_format()
-            .ok_or_else(|| fmt_err(format!("unsupported texture format {}", self.format)))?;
+        let fmt = self.pixel_format().ok_or_else(|| fmt_err(format!("unsupported texture format {}", self.format)))?;
         let expected = self.expected_top_mip_size().unwrap_or(0);
         let (start, _) = self.chunks.first().copied().unwrap_or((0, expected as u32));
         let top = payload

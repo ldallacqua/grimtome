@@ -129,10 +129,14 @@ export function migrateBuild(raw: unknown): ValidationResult<Build> {
       ? { ...(raw as object), schemaVersion: BUILD_SCHEMA_VERSION }
       : raw;
   const parsed = BuildSchema.safeParse(candidate);
-  return parsed.success ? { ok: true, value: parsed.data } : { ok: false, errors: formatIssues(parsed.error) };
+  return parsed.success
+    ? { ok: true, value: parsed.data }
+    : { ok: false, errors: formatIssues(parsed.error) };
 }
 
 export function parseBuildFile(raw: unknown): ValidationResult<BuildFile> {
   const parsed = BuildFileSchema.safeParse(raw);
-  return parsed.success ? { ok: true, value: parsed.data } : { ok: false, errors: formatIssues(parsed.error) };
+  return parsed.success
+    ? { ok: true, value: parsed.data }
+    : { ok: false, errors: formatIssues(parsed.error) };
 }

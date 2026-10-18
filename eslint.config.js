@@ -4,7 +4,18 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'target', 'src-tauri', 'coverage', 'playwright-report', 'test-results', '.scratch', 'node_modules'] },
+  {
+    ignores: [
+      'dist',
+      'target',
+      'src-tauri',
+      'coverage',
+      'playwright-report',
+      'test-results',
+      '.scratch',
+      'node_modules',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -20,7 +31,8 @@ export default tseslint.config(
           patterns: [
             {
               group: ['@tauri-apps/*'],
-              message: 'Import Tauri APIs only through src/services/platform (keeps the UI testable in a browser).',
+              message:
+                'Import Tauri APIs only through src/services/platform (keeps the UI testable in a browser).',
             },
           ],
         },
@@ -38,7 +50,17 @@ export default tseslint.config(
         'error',
         {
           patterns: [
-            { group: ['react', 'react-dom', '@tauri-apps/*', '@/features/*', '@/design-system/*', '@/services/*'], message: 'Domain logic must stay framework-free.' },
+            {
+              group: [
+                'react',
+                'react-dom',
+                '@tauri-apps/*',
+                '@/features/*',
+                '@/design-system/*',
+                '@/services/*',
+              ],
+              message: 'Domain logic must stay framework-free.',
+            },
           ],
         },
       ],

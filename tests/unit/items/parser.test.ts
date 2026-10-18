@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { AffixDictionary, affixKey } from '@/domain/items/affixes';
 import { markVerified, parseTooltip, rarityFromColor, slotFromType } from '@/domain/items/parser';
-import { firstNumber, normalizeLabel, rollRange, stripBullet } from '@/domain/items/text';
+import { firstNumber, normalizeLabel, repairOcr, rollRange, stripBullet } from '@/domain/items/text';
 import type { OcrLine } from '@/domain/items/types';
 import {
   GARBLED,
@@ -13,7 +13,8 @@ import {
   type TooltipFixture,
 } from '../../fixtures/tooltips';
 
-const toLines = (f: TooltipFixture): OcrLine[] => f.lines.map((text, i) => ({ text, ...(f.colors?.[i] ?? {}) }));
+const toLines = (f: TooltipFixture): OcrLine[] =>
+  f.lines.map((text, i) => ({ text, ...(f.colors?.[i] ?? {}) }));
 
 describe('text normalization', () => {
   it('reduces affix lines to labels', () => {
@@ -55,7 +56,10 @@ describe('affix dictionary', () => {
   });
 
   it('recognizes skill rank affixes', () => {
-    expect(dict.match('+2 to Whirlwind')).toMatchObject({ key: 'skill-ranks.whirlwind', method: 'skill-rank' });
+    expect(dict.match('+2 to Whirlwind')).toMatchObject({
+      key: 'skill-ranks.whirlwind',
+      method: 'skill-rank',
+    });
   });
 
   it('extends with catalog templates without changing built-in keys', () => {
@@ -113,7 +117,11 @@ describe('parseTooltip', () => {
   });
 
   it('keeps unknown lines as unrecognized affixes instead of guessing', () => {
-    const lines = [...RARE_RING_UNKNOWN.lines.slice(0, 3), '◆ +14% Bewitchment Potency', ...RARE_RING_UNKNOWN.lines.slice(3)];
+    const lines = [
+      ...RARE_RING_UNKNOWN.lines.slice(0, 3),
+      '◆ +14% Bewitchment Potency',
+      ...RARE_RING_UNKNOWN.lines.slice(3),
+    ];
     const item = parseTooltip(lines);
     const unknown = item.affixes.find((a) => a.raw.includes('Bewitchment'));
     expect(unknown).toMatchObject({ key: null, method: 'none' });
@@ -131,7 +139,10 @@ describe('parseTooltip', () => {
   });
 
   it('infers rarity from color only when the type line is missing', () => {
-    const item = parseTooltip([{ text: 'Gauntlets of Earthquakes', color: '#f08a2c' }, { text: '800 Item Power' }]);
+    const item = parseTooltip([
+      { text: 'Gauntlets of Earthquakes', color: '#f08a2c' },
+      { text: '800 Item Power' },
+    ]);
     expect(item.rarity).toBe('legendary');
     expect(item.confidence.issues).toContain('Rarity inferred from the name color.');
   });
@@ -159,5 +170,30 @@ describe('helpers', () => {
     expect(rarityFromColor('#b27dff')).toBe('mythic');
     expect(rarityFromColor('#c7b377')).toBe('unique');
     expect(rarityFromColor(undefined)).toBeNull();
+  });
+});
+
+describe('OCR repairs', () => {
+  it('fixes systematic Windows OCR misreadings', () => {
+    expect(repairOcr('+9.096 Cooldown Reduction')).toBe('+9.0% Cooldown Reduction');
+    expect(repairOcr('+16.096 Attack Speed [12.0 - 18.01%')).toBe('+16.0% Attack Speed [12.0 - 18.0]%');
+    expect(repairOcr('+92 Strength [70 - 1101')).toBe('+92 Strength [70 - 110]');
+    expect(repairOcr('+12.5% Critical Strike Chance [10.0 - 15.0')).toBe(
+      '+12.5% Critical Strike Chance [10.0 - 15.0]',
+    );
+    expect(repairOcr('1 ,190 Armor')).toBe('1,190 Armor');
+    expect(repairOcr('+7.5 o/o Gold')).toBe('+7.5% Gold');
+  });
+
+  it('leaves correct readings alone', () => {
+    for (const ok of [
+      '+96 Strength',
+      '+12.5% Critical Strike Chance [10.0 - 15.0]%',
+      '4,980 Damage Per Second',
+      '+1,520 Maximum Life',
+      'Requires Level 60',
+    ]) {
+      expect(repairOcr(ok)).toBe(ok);
+    }
   });
 });

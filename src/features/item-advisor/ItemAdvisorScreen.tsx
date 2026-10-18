@@ -26,14 +26,20 @@ import { CorrectionEditor } from './CorrectionEditor';
 import { DropZone, SampleGallery, useFileScan, usePasteDialog } from './ScanInput';
 import './advisor.css';
 
-function annotationsFor(item: ParsedItem, ev: ReturnType<typeof evaluate>, activeRole: BuildRole): Record<number, AffixAnnotation> {
+function annotationsFor(
+  item: ParsedItem,
+  ev: ReturnType<typeof evaluate>,
+  activeRole: BuildRole,
+): Record<number, AffixAnnotation> {
   const out: Record<number, AffixAnnotation> = {};
   const futureRole: BuildRole = activeRole === 'leveling' ? 'endgame' : 'leveling';
   item.affixes.forEach((a, i) => {
     if (!a.key) return;
     const act = ev.fits[activeRole]?.matched.find((m) => m.key === a.key);
-    const fut = activeRole === 'leveling' ? ev.fits[futureRole]?.matched.find((m) => m.key === a.key) : undefined;
-    if (act || fut) out[i] = { ...(act ? { active: act.weight } : {}), ...(fut ? { future: fut.weight } : {}) };
+    const fut =
+      activeRole === 'leveling' ? ev.fits[futureRole]?.matched.find((m) => m.key === a.key) : undefined;
+    if (act || fut)
+      out[i] = { ...(act ? { active: act.weight } : {}), ...(fut ? { future: fut.weight } : {}) };
   });
   return out;
 }
@@ -59,8 +65,17 @@ function HistoryStrip() {
           const ev = evaluate(ctx, sc.item);
           return (
             <li key={sc.id} data-verdict={ev.verdict}>
-              <button type="button" className={clsx('gt-strip__item gt-card', sc.id === current && 'is-selected')} onClick={() => select(sc.id)}>
-                <ItemIcon id={uniqueIconId(catalog, sc.item)} slot={sc.item.slot} rarity={sc.item.rarity} size={34} />
+              <button
+                type="button"
+                className={clsx('gt-strip__item gt-card', sc.id === current && 'is-selected')}
+                onClick={() => select(sc.id)}
+              >
+                <ItemIcon
+                  id={uniqueIconId(catalog, sc.item)}
+                  slot={sc.item.slot}
+                  rarity={sc.item.rarity}
+                  size={34}
+                />
                 <span className="gt-strip__text">
                   <span className="gt-strip__name" data-rarity={sc.item.rarity ?? 'common'}>
                     {sc.item.name ?? 'Unknown item'}
@@ -70,7 +85,13 @@ function HistoryStrip() {
                   </span>
                 </span>
               </button>
-              <IconButton icon="close" label="Remove scan" size="sm" className="gt-strip__remove" onClick={() => remove(sc.id)} />
+              <IconButton
+                icon="close"
+                label="Remove scan"
+                size="sm"
+                className="gt-strip__remove"
+                onClick={() => remove(sc.id)}
+              />
             </li>
           );
         })}
@@ -98,9 +119,17 @@ function Result() {
   const item = scan.item;
   const iconId = uniqueIconId(catalog, item);
   const fits = (['leveling', 'endgame'] as const).map((r) => ev.fits[r]).filter((f) => !!f);
-  const ownedName = ev.fits.endgame?.unique?.name ?? ev.fits.leveling?.unique?.name ?? ev.fits.endgame?.aspect?.name ?? ev.fits.leveling?.aspect?.name;
+  const ownedName =
+    ev.fits.endgame?.unique?.name ??
+    ev.fits.leveling?.unique?.name ??
+    ev.fits.endgame?.aspect?.name ??
+    ev.fits.leveling?.aspect?.name;
   const ownedKind = ev.fits.endgame?.unique || ev.fits.leveling?.unique ? 'unique' : 'aspect';
-  const owned = ownedName ? (ownedKind === 'unique' ? progress.ownedUniques : progress.ownedAspects).includes(ownedName.toLowerCase()) : false;
+  const owned = ownedName
+    ? (ownedKind === 'unique' ? progress.ownedUniques : progress.ownedAspects).includes(
+        ownedName.toLowerCase(),
+      )
+    : false;
 
   return (
     <div className="gt-stack" data-testid="advisor-result">
@@ -163,14 +192,23 @@ function Result() {
                 icon="keep"
                 onClick={() => {
                   setEquipped(item.slot!, { ...item, equipped: true });
-                  toast({ tone: 'success', title: 'Marked as equipped', body: `Future ${SLOT_NAMES[item.slot!].toLowerCase()} scans will be compared against it.` });
+                  toast({
+                    tone: 'success',
+                    title: 'Marked as equipped',
+                    body: `Future ${SLOT_NAMES[item.slot!].toLowerCase()} scans will be compared against it.`,
+                  });
                 }}
               >
                 Mark as equipped
               </Button>
             ) : null}
             {ownedName ? (
-              <Button size="sm" variant={owned ? 'ghost' : 'arcane'} icon={owned ? 'check' : 'stash'} onClick={() => toggleOwned(ownedKind, ownedName)}>
+              <Button
+                size="sm"
+                variant={owned ? 'ghost' : 'arcane'}
+                icon={owned ? 'check' : 'stash'}
+                onClick={() => toggleOwned(ownedKind, ownedName)}
+              >
                 {owned ? `${ownedName} obtained` : `I have ${ownedName}`}
               </Button>
             ) : null}
@@ -188,7 +226,11 @@ function Result() {
             onSave={(next) => {
               updateScanItem(scan.id, next, true);
               setEditing(false);
-              toast({ tone: 'success', title: 'Corrections saved', body: 'The verdict was recalculated with your changes.' });
+              toast({
+                tone: 'success',
+                title: 'Corrections saved',
+                body: 'The verdict was recalculated with your changes.',
+              });
             }}
           />
         </Panel>
@@ -244,7 +286,11 @@ export function ItemAdvisorScreen() {
               <Button variant="secondary" icon="paste" onClick={paste.open}>
                 Paste
               </Button>
-              <Button variant={showSamples ? 'secondary' : 'ghost'} icon="sparkle" onClick={() => setShowSamples((v) => !v)}>
+              <Button
+                variant={showSamples ? 'secondary' : 'ghost'}
+                icon="sparkle"
+                onClick={() => setShowSamples((v) => !v)}
+              >
                 Samples
               </Button>
             </>
@@ -278,7 +324,11 @@ export function ItemAdvisorScreen() {
         </div>
       ) : (
         <Panel variant="ornate" padding="lg">
-          {hasBuild ? <DropZone /> : <EmptyState icon="advisor" title="Load a build to start" body="Then scan or upload an item." />}
+          {hasBuild ? (
+            <DropZone />
+          ) : (
+            <EmptyState icon="advisor" title="Load a build to start" body="Then scan or upload an item." />
+          )}
         </Panel>
       )}
     </div>

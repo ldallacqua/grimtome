@@ -53,7 +53,8 @@ function esc(s: string) {
 
 function html(f: TooltipFixture): string {
   const [name, type, ...rest] = f.lines;
-  const rarityWord = (type ?? '').toLowerCase().match(/mythic|unique|legendary|rare|magic|common/)?.[0] ?? 'common';
+  const rarityWord =
+    (type ?? '').toLowerCase().match(/mythic|unique|legendary|rare|magic|common/)?.[0] ?? 'common';
   const color = RARITY_COLOR[rarityWord] ?? '#e6e6e6';
   const body = rest
     .map((line) => {
@@ -63,7 +64,8 @@ function html(f: TooltipFixture): string {
         return `<div class="affix"><span class="${ga ? 'star' : 'dia'}">${ga ? '✦' : ''}</span>${esc(line.slice(bullet[0].length))}</div>`;
       }
       if (/Item Power/.test(line)) return `<div class="ip">${esc(line)}</div>`;
-      if (/^(Requires|Sell Value|Durability|Unique Equip|Empty Socket)/.test(line)) return `<div class="foot">${esc(line)}</div>`;
+      if (/^(Requires|Sell Value|Durability|Unique Equip|Empty Socket)/.test(line))
+        return `<div class="foot">${esc(line)}</div>`;
       if (/Armor$|Damage Per Second/.test(line)) return `<div class="base">${esc(line)}</div>`;
       if (line.split(' ').length > 5) return `<div class="power" style="color:${color}">${esc(line)}</div>`;
       return `<div class="base">${esc(line)}</div>`;
@@ -105,7 +107,10 @@ async function main() {
         title,
         image: `samples/${fixture.id}.png`,
         sha256: createHash('sha256').update(png).digest('hex'),
-        ocr: { engine: 'fixture', lines: fixture.lines.map((text, i) => ({ text, ...(fixture.colors?.[i] ?? {}) })) },
+        ocr: {
+          engine: 'fixture',
+          lines: fixture.lines.map((text, i) => ({ text, ...(fixture.colors?.[i] ?? {}) })),
+        },
       });
     }
     console.log(`rendered ${fixture.id}`);

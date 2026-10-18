@@ -5,13 +5,50 @@ const BULLET_RE = /^[\s•·◆◇♦⬥⬦▪▫■□●○◉◎★☆✦✧�
 
 /** Collapses whitespace and normalizes typographic punctuation. */
 export function cleanLine(raw: string): string {
-  return raw
-    .normalize('NFKC')
-    .replace(/[‘’ʼ]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/[–—−]/g, '-')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return repairOcr(
+    raw
+      .normalize('NFKC')
+      .replace(/[‘’ʼ]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/[–—−]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim(),
+  );
+}
+
+const decimals = (s: string) => s.split(/[.,]/)[1]?.length ?? 0;
+const toNumber = (s: string) => Number(s.replace(/,(?=\d{3}\b)/g, '').replace(',', '.'));
+
+/**
+ * The closing bracket of a roll range is often read as a trailing "1":
+ * `[12.0 - 18.01%` or `[70 - 1101`. Drops it when the reading is implausible
+ * (more decimals than the lower bound, or far too large).
+ */
+function repairRangeEnd(lo: string, hi: string): string {
+  if (hi.length < 2 || !hi.endsWith('1')) return hi;
+  const cand = hi.slice(0, -1).replace(/[.,]$/, '');
+  if (decimals(hi) > decimals(lo) && decimals(cand) === decimals(lo)) return cand;
+  if (toNumber(hi) / Math.max(toNumber(lo), 1e-9) > 3 && toNumber(cand) >= toNumber(lo)) return cand;
+  return hi;
+}
+
+/**
+ * Fixes systematic Windows OCR misreadings of Diablo IV tooltips (recorded in
+ * tests/fixtures/ocr): "%" read as "96" after a one-decimal value, a space
+ * inside thousands separators ("1 ,190"), and an unterminated roll range.
+ */
+export function repairOcr(line: string): string {
+  let s = line
+    .replace(/(\d)\s*([.,])\s+(?=\d{3}\b)/g, '$1$2')
+    .replace(/(\d)\s+([.,])(?=\d{3}\b)/g, '$1$2')
+    .replace(/(\d[.,]\d)96(?=\s|$|\[)/g, '$1%')
+    .replace(/(\d)\s?[oO0]\/[oO0]/g, '$1%');
+  const open = /\[\s*(\d+(?:[.,]\d+)?)\s*-?\s*(\d+(?:[.,]\d+)?)\s*([\]lI|]?)\s*(%?)\s*$/.exec(s);
+  if (open && open[3] !== ']') {
+    const [, lo = '', hi = '', , pct = ''] = open;
+    s = `${s.slice(0, open.index).trimEnd()} [${lo} - ${repairRangeEnd(lo, hi)}]${pct}`;
+  }
+  return s;
 }
 
 export function stripBullet(line: string): { text: string; hadBullet: boolean; bullet: string } {
@@ -33,6 +70,7 @@ export function normalizeLabel(text: string): string {
   return cleanLine(text)
     .toLowerCase()
     .replace(/\[[^\]]*\]%?/g, ' ')
+    .replace(/\[[^\]]*$/, ' ')
     .replace(/\([^)]*\)/g, ' ')
     .replace(/\bx\s*(?=\d)/g, ' ')
     .replace(/[+-]?\d+(?:[.,]\d+)*/g, ' ')

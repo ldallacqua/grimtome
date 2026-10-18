@@ -10,8 +10,7 @@
   isolation: isolate;
   background:
     radial-gradient(800px 500px at 50% 0%, rgba(170, 40, 22, 0.28), transparent 70%),
-    radial-gradient(600px 500px at 50% 110%, rgba(214, 174, 107, 0.1), transparent 70%),
-    var(--gt-bg-app);
+    radial-gradient(600px 500px at 50% 110%, rgba(214, 174, 107, 0.1), transparent 70%), var(--gt-bg-app);
 }
 .gt-ob.has-art {
   background:
@@ -32,8 +31,7 @@
   padding: var(--gt-space-7) var(--gt-space-8) var(--gt-space-7);
   border-radius: var(--gt-radius-lg);
   background:
-    radial-gradient(120% 60% at 50% 0%, rgba(214, 174, 107, 0.08), transparent 60%),
-    rgba(18, 16, 14, 0.94);
+    radial-gradient(120% 60% at 50% 0%, rgba(214, 174, 107, 0.08), transparent 60%), rgba(18, 16, 14, 0.94);
   backdrop-filter: blur(10px);
   box-shadow:
     inset 0 0 0 1px var(--gt-line-2),

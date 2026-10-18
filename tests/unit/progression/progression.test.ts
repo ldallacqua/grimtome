@@ -105,7 +105,9 @@ describe('transition state machine', () => {
       ownedAspects: ['aspect of earthquakes', 'aspect of ancestral force'],
     });
     const s = transition(initialTransitionState(), { type: 'POSTPONE', at, untilParagon: 40 }, true);
-    expect(shouldPromptTransition(initialTransitionState(), readiness, { level: 60, paragon: 25 })).toBe(true);
+    expect(shouldPromptTransition(initialTransitionState(), readiness, { level: 60, paragon: 25 })).toBe(
+      true,
+    );
     expect(shouldPromptTransition(s, readiness, { level: 60, paragon: 25 })).toBe(false);
     expect(shouldPromptTransition(s, readiness, { level: 60, paragon: 40 })).toBe(true);
   });
@@ -135,7 +137,9 @@ describe('build schema', () => {
       updatedAt: '2026-10-18',
     });
     expect(partial.ok && partial.value.skills).toEqual([]);
-    expect(parseBuildFile({ format: 'grimtome.builds', version: 1, leveling: SAMPLE_LEVELING }).ok).toBe(true);
+    expect(parseBuildFile({ format: 'grimtome.builds', version: 1, leveling: SAMPLE_LEVELING }).ok).toBe(
+      true,
+    );
     expect(parseBuildFile({ format: 'other' }).ok).toBe(false);
   });
 });

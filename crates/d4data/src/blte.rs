@@ -6,9 +6,7 @@ use std::io::Read;
 
 fn inflate(data: &[u8], size_hint: usize) -> Result<Vec<u8>> {
     let mut out = Vec::with_capacity(size_hint);
-    ZlibDecoder::new(data)
-        .read_to_end(&mut out)
-        .map_err(|e| Error::Decompress(e.to_string()))?;
+    ZlibDecoder::new(data).read_to_end(&mut out).map_err(|e| Error::Decompress(e.to_string()))?;
     Ok(out)
 }
 
@@ -52,9 +50,7 @@ fn decode_blte(data: &[u8], size_hint: usize) -> Result<Vec<u8>> {
     }
     let mut out = Vec::with_capacity(size_hint);
     for (csize, dsize) in chunks {
-        let chunk = data
-            .get(pos..pos + csize)
-            .ok_or_else(|| fmt_err("BLTE chunk exceeds blob"))?;
+        let chunk = data.get(pos..pos + csize).ok_or_else(|| fmt_err("BLTE chunk exceeds blob"))?;
         pos += csize;
         match chunk.first() {
             Some(b'N') => out.extend_from_slice(&chunk[1..]),

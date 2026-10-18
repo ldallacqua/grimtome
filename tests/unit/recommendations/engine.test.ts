@@ -20,7 +20,10 @@ import {
 const parse = (f: TooltipFixture): ParsedItem =>
   parseTooltip(f.lines.map((text, i): OcrLine => ({ text, ...(f.colors?.[i] ?? {}) })));
 
-const leveling: EvaluationContext = { builds: { leveling: SAMPLE_LEVELING, endgame: SAMPLE_ENDGAME }, activeRole: 'leveling' };
+const leveling: EvaluationContext = {
+  builds: { leveling: SAMPLE_LEVELING, endgame: SAMPLE_ENDGAME },
+  activeRole: 'leveling',
+};
 const endgame: EvaluationContext = { ...leveling, activeRole: 'endgame' };
 
 describe('evaluateItem — future build awareness', () => {
@@ -44,7 +47,9 @@ describe('evaluateItem — future build awareness', () => {
     const ev = evaluateItem(parse(LEGENDARY_GLOVES_EARTHQUAKES), leveling);
     expect(ev.verdict).toBe('stash');
     expect(ev.fits.endgame?.aspect?.name).toBe('Aspect of Earthquakes');
-    expect(ev.summary).toMatch(/^Not particularly useful for your leveling build, but it carries Aspect of Earthquakes/);
+    expect(ev.summary).toMatch(
+      /^Not particularly useful for your leveling build, but it carries Aspect of Earthquakes/,
+    );
     expect(ev.summary).toMatch(/Consider storing it\.$/);
   });
 
@@ -68,7 +73,14 @@ describe('evaluateItem — active build', () => {
 
   it('keeps instead of upgrading when the equipped item fits better', () => {
     const better = parse(RARE_GLOVES_CRIT);
-    const weaker = parseTooltip(['Plain Gloves', 'Rare Gloves', '800 Item Power', '◆ +12% Attack Speed', '◆ +4% Lucky Hit Chance', '◆ +80 Strength']);
+    const weaker = parseTooltip([
+      'Plain Gloves',
+      'Rare Gloves',
+      '800 Item Power',
+      '◆ +12% Attack Speed',
+      '◆ +4% Lucky Hit Chance',
+      '◆ +80 Strength',
+    ]);
     const ev = evaluateItem(weaker, { ...leveling, equipped: { gloves: better } });
     expect(ev.verdict).not.toBe('upgrade');
   });
@@ -109,22 +121,34 @@ describe('evaluateItem — conservative handling', () => {
   });
 
   it('asks for a build when none is loaded', () => {
-    expect(evaluateItem(parse(RARE_GLOVES_CRIT), { builds: {}, activeRole: 'leveling' }).verdict).toBe('review');
+    expect(evaluateItem(parse(RARE_GLOVES_CRIT), { builds: {}, activeRole: 'leveling' }).verdict).toBe(
+      'review',
+    );
   });
 
   it('trusts verified items even if OCR was poor', () => {
-    const item = { ...parse(RARE_GLOVES_CRIT), verified: true, confidence: { level: 'low' as const, score: 0.2, issues: [] } };
+    const item = {
+      ...parse(RARE_GLOVES_CRIT),
+      verified: true,
+      confidence: { level: 'low' as const, score: 0.2, issues: [] },
+    };
     expect(evaluateItem(item, leveling).verdict).toBe('upgrade');
   });
 });
 
 describe('identification & explanations', () => {
   it('identifies aspects from item names', () => {
-    expect(identifyAspect({ name: 'Gauntlets of Earthquakes', powerText: null }, [{ name: 'Aspect of Earthquakes' }])?.name).toBe(
-      'Aspect of Earthquakes',
-    );
-    expect(identifyAspect({ name: "Earthstriker's Gloves", powerText: null }, [{ name: "Earthstriker's Aspect" }])).not.toBeNull();
-    expect(identifyAspect({ name: 'Plain Gloves', powerText: null }, [{ name: 'Aspect of Earthquakes' }])).toBeNull();
+    expect(
+      identifyAspect({ name: 'Gauntlets of Earthquakes', powerText: null }, [
+        { name: 'Aspect of Earthquakes' },
+      ])?.name,
+    ).toBe('Aspect of Earthquakes');
+    expect(
+      identifyAspect({ name: "Earthstriker's Gloves", powerText: null }, [{ name: "Earthstriker's Aspect" }]),
+    ).not.toBeNull();
+    expect(
+      identifyAspect({ name: 'Plain Gloves', powerText: null }, [{ name: 'Aspect of Earthquakes' }]),
+    ).toBeNull();
   });
 
   it('identifies uniques tolerating OCR slips but not substrings of short names', () => {

@@ -346,8 +346,7 @@ impl GameData {
         let string_ids: HashMap<String, u32> =
             toc.group(groups::STRING_LIST).map(|(id, n)| (n.to_string(), id)).collect();
         let string_ids_lower = string_ids.iter().map(|(k, v)| (k.to_ascii_lowercase(), *v)).collect();
-        let texture_ids: HashMap<String, u32> =
-            toc.group(groups::TEXTURE).map(|(id, n)| (n.to_string(), id)).collect();
+        let texture_ids: HashMap<String, u32> = toc.group(groups::TEXTURE).map(|(id, n)| (n.to_string(), id)).collect();
         let mut frame_index: HashMap<u32, Vec<(u32, usize)>> = HashMap::new();
         for (name, id) in &texture_ids {
             if !(name.starts_with("2DUI") || name.starts_with("2DInventory")) {
@@ -387,11 +386,8 @@ impl GameData {
 
     /// Loads a StringList by SNO name, trying the exact name then a lowercase match.
     pub fn string_list(&self, name: &str) -> Option<HashMap<String, String>> {
-        let id = self
-            .string_ids
-            .get(name)
-            .or_else(|| self.string_ids_lower.get(&name.to_ascii_lowercase()))
-            .copied()?;
+        let id =
+            self.string_ids.get(name).or_else(|| self.string_ids_lower.get(&name.to_ascii_lowercase())).copied()?;
         strings::parse(self.strings.get(id)?).ok()
     }
 
@@ -402,9 +398,11 @@ impl GameData {
             if v <= 0xFFFF {
                 return None;
             }
-            self.frame_index.get(&v)?.iter().copied().find(|(tex, _)| {
-                self.texture_name(*tex).is_some_and(|n| n.starts_with(prefix))
-            })
+            self.frame_index
+                .get(&v)?
+                .iter()
+                .copied()
+                .find(|(tex, _)| self.texture_name(*tex).is_some_and(|n| n.starts_with(prefix)))
         })
     }
 
@@ -453,12 +451,26 @@ impl GameData {
                 // Frame positions are only trusted for the atlas shapes they were verified on.
                 let icon = (icon_frames == 24).then(|| {
                     let id = format!("class.{key}");
-                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: icons.unwrap(), frame: Some(*frame), max_px: None, compose: None });
+                    jobs.push(AssetJob {
+                        id: id.clone(),
+                        category: "classes",
+                        texture: icons.unwrap(),
+                        frame: Some(*frame),
+                        max_px: None,
+                        compose: None,
+                    });
                     id
                 });
                 let emblem = emblem_frame.filter(|_| rendered_frames == 7).map(|f| {
                     let id = format!("class.{key}.emblem");
-                    jobs.push(AssetJob { id: id.clone(), category: "classes", texture: rendered.unwrap(), frame: Some(f), max_px: Some(768), compose: None });
+                    jobs.push(AssetJob {
+                        id: id.clone(),
+                        category: "classes",
+                        texture: rendered.unwrap(),
+                        frame: Some(f),
+                        max_px: Some(768),
+                        compose: None,
+                    });
                     id
                 });
                 ClassEntry { id: format!("class.{key}"), key: key.to_string(), name: name.to_string(), icon, emblem }
@@ -482,13 +494,20 @@ impl GameData {
             .collect();
         // Several powers can share a display name (seasonal variants). Prefer the
         // canonical one, i.e. the shortest SNO name that starts with a class prefix.
-        let mut best: BTreeMap<(String, String), (u32, String, (u32, usize), HashMap<String, String>)> = BTreeMap::new();
+        let mut best: BTreeMap<(String, String), (u32, String, (u32, usize), HashMap<String, String>)> =
+            BTreeMap::new();
         for (class, name, sno, sno_name, frame, strings) in found {
             let key = (class, slug(&name));
             let better = match best.get(&key) {
                 None => true,
                 Some((_, cur, _, _)) => {
-                    let score = |s: &str| (s.contains("_S0") || s.starts_with('S') && s.as_bytes().get(1).is_some_and(u8::is_ascii_digit), s.len());
+                    let score = |s: &str| {
+                        (
+                            s.contains("_S0")
+                                || s.starts_with('S') && s.as_bytes().get(1).is_some_and(u8::is_ascii_digit),
+                            s.len(),
+                        )
+                    };
                     score(&sno_name) < score(cur)
                 }
             };
@@ -499,7 +518,14 @@ impl GameData {
         best.into_iter()
             .map(|((class, name_slug), (sno, _, frame, strings))| {
                 let id = format!("skill.{class}.{name_slug}");
-                jobs.push(AssetJob { id: id.clone(), category: "skills", texture: frame.0, frame: Some(frame.1), max_px: None, compose: None });
+                jobs.push(AssetJob {
+                    id: id.clone(),
+                    category: "skills",
+                    texture: frame.0,
+                    frame: Some(frame.1),
+                    max_px: None,
+                    compose: None,
+                });
                 let mut upgrades: Vec<(usize, String)> = strings
                     .iter()
                     .filter_map(|(k, v)| {
@@ -530,7 +556,8 @@ impl GameData {
     }
 
     fn uniques(&self, jobs: &mut Vec<AssetJob>) -> Vec<UniqueEntry> {
-        const SKIP: &[&str] = &["test", "template", "qst", "noPowers", "boost", "gambling", "cosmetic", "talisman", "_ph"];
+        const SKIP: &[&str] =
+            &["test", "template", "qst", "noPowers", "boost", "gambling", "cosmetic", "talisman", "_ph"];
         let items: Vec<(u32, String)> = self
             .toc
             .group(groups::ITEM)
@@ -577,12 +604,19 @@ impl GameData {
             .collect();
         let mut best: BTreeMap<String, (UniqueEntry, Option<(u32, usize)>, String)> = BTreeMap::new();
         for (entry, icon, sno_name) in found {
-            let seasonal = |s: &str| s.starts_with('S') && s.as_bytes().get(1).is_some_and(u8::is_ascii_digit) || s.starts_with("X2_");
+            let seasonal = |s: &str| {
+                s.starts_with('S') && s.as_bytes().get(1).is_some_and(u8::is_ascii_digit) || s.starts_with("X2_")
+            };
             let better = match best.get(&entry.id) {
                 None => true,
                 Some((cur, cur_icon, cur_name)) => {
                     (icon.is_some(), !seasonal(&sno_name), entry.power.is_some(), std::cmp::Reverse(sno_name.len()))
-                        > (cur_icon.is_some(), !seasonal(cur_name), cur.power.is_some(), std::cmp::Reverse(cur_name.len()))
+                        > (
+                            cur_icon.is_some(),
+                            !seasonal(cur_name),
+                            cur.power.is_some(),
+                            std::cmp::Reverse(cur_name.len()),
+                        )
                 }
             };
             if better {
@@ -592,7 +626,14 @@ impl GameData {
         best.into_values()
             .map(|(mut entry, icon, _)| {
                 if let Some((tex, frame)) = icon {
-                    jobs.push(AssetJob { id: entry.id.clone(), category: "items", texture: tex, frame: Some(frame), max_px: None, compose: None });
+                    jobs.push(AssetJob {
+                        id: entry.id.clone(),
+                        category: "items",
+                        texture: tex,
+                        frame: Some(frame),
+                        max_px: None,
+                        compose: None,
+                    });
                     entry.icon = Some(entry.id.clone());
                 }
                 entry
@@ -656,7 +697,14 @@ impl GameData {
             .map(|(mut g, icon)| {
                 if let Some((tex, frame)) = icon {
                     if !jobs.iter().any(|j| j.id == g.id) {
-                        jobs.push(AssetJob { id: g.id.clone(), category: "paragon", texture: tex, frame: Some(frame), max_px: None, compose: None });
+                        jobs.push(AssetJob {
+                            id: g.id.clone(),
+                            category: "paragon",
+                            texture: tex,
+                            frame: Some(frame),
+                            max_px: None,
+                            compose: None,
+                        });
                     }
                     g.icon = Some(g.id.clone());
                 }
@@ -708,10 +756,24 @@ impl GameData {
             let Some(def) = self.texture_def(tex) else { continue };
             let base = format!("ui.{}", slug(name.trim_start_matches("2DUI").trim_start_matches('_')));
             if def.frames.len() <= 1 {
-                jobs.push(AssetJob { id: base.clone(), category: "ui", texture: tex, frame: None, max_px: None, compose: None });
+                jobs.push(AssetJob {
+                    id: base.clone(),
+                    category: "ui",
+                    texture: tex,
+                    frame: None,
+                    max_px: None,
+                    compose: None,
+                });
             } else {
                 for i in 0..def.frames.len() {
-                    jobs.push(AssetJob { id: format!("{base}.{i}"), category: "ui", texture: tex, frame: Some(i), max_px: None, compose: None });
+                    jobs.push(AssetJob {
+                        id: format!("{base}.{i}"),
+                        category: "ui",
+                        texture: tex,
+                        frame: Some(i),
+                        max_px: None,
+                        compose: None,
+                    });
                 }
             }
         }
@@ -732,7 +794,14 @@ impl GameData {
         for name in ART_TEXTURES {
             if let Some(tex) = self.texture_id(name) {
                 let id = format!("art.{}", slug(name.trim_start_matches("2DUI_")));
-                jobs.push(AssetJob { id, category: "art", texture: tex, frame: None, max_px: Some(2048), compose: None });
+                jobs.push(AssetJob {
+                    id,
+                    category: "art",
+                    texture: tex,
+                    frame: None,
+                    max_px: Some(2048),
+                    compose: None,
+                });
             }
         }
     }

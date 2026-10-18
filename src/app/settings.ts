@@ -9,12 +9,21 @@ export const SettingsSchema = z.object({
       toggleOverlay: z.string().default('CommandOrControl+Shift+O'),
       clickThrough: z.string().default('CommandOrControl+Shift+X'),
     })
-    .default({ scan: 'CommandOrControl+Shift+D', toggleOverlay: 'CommandOrControl+Shift+O', clickThrough: 'CommandOrControl+Shift+X' }),
+    .default({
+      scan: 'CommandOrControl+Shift+D',
+      toggleOverlay: 'CommandOrControl+Shift+O',
+      clickThrough: 'CommandOrControl+Shift+X',
+    }),
   capture: z
     .object({
       mode: z.enum(['smart', 'cursor', 'region']).default('smart'),
-      region: z.object({ x: z.number(), y: z.number(), width: z.number().positive(), height: z.number().positive() }).nullable().default(null),
-      cursorBox: z.object({ width: z.number().min(200).max(3000), height: z.number().min(200).max(3000) }).default({ width: 1000, height: 1200 }),
+      region: z
+        .object({ x: z.number(), y: z.number(), width: z.number().positive(), height: z.number().positive() })
+        .nullable()
+        .default(null),
+      cursorBox: z
+        .object({ width: z.number().min(200).max(3000), height: z.number().min(200).max(3000) })
+        .default({ width: 1000, height: 1200 }),
       language: z.string().default('en-US'),
     })
     .default({ mode: 'smart', region: null, cursorBox: { width: 1000, height: 1200 }, language: 'en-US' }),
@@ -27,7 +36,14 @@ export const SettingsSchema = z.object({
       showOnScan: z.boolean().default(true),
       autoHideSeconds: z.number().int().min(0).max(120).default(0),
     })
-    .default({ enabled: true, opacity: 0.96, mode: 'compact', clickThrough: false, showOnScan: true, autoHideSeconds: 0 }),
+    .default({
+      enabled: true,
+      opacity: 0.96,
+      mode: 'compact',
+      clickThrough: false,
+      showOnScan: true,
+      autoHideSeconds: 0,
+    }),
   assets: z
     .object({
       useGameAssets: z.boolean().default(true),

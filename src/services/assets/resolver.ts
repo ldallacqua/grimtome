@@ -35,9 +35,11 @@ export class AssetResolver {
   resolve(id: string | null | undefined): ResolvedAsset {
     if (!id) return { url: null, source: 'none' };
     const g = this.game?.manifest.assets[id];
-    if (g && this.game) return { url: this.game.urlFor(g.file), source: 'game', width: g.width, height: g.height };
+    if (g && this.game)
+      return { url: this.game.urlFor(g.file), source: 'game', width: g.width, height: g.height };
     const u = this.user?.manifest.assets[id];
-    if (u && this.user) return { url: this.user.urlFor(u.file), source: 'user', width: u.width, height: u.height };
+    if (u && this.user)
+      return { url: this.user.urlFor(u.file), source: 'user', width: u.width, height: u.height };
     return { url: null, source: 'none' };
   }
 
@@ -48,7 +50,8 @@ export class AssetResolver {
   /** Number of assets per category, for the settings screen. */
   counts(): Record<string, number> {
     const out: Record<string, number> = {};
-    for (const rec of Object.values(this.game?.manifest.assets ?? {})) out[rec.category] = (out[rec.category] ?? 0) + 1;
+    for (const rec of Object.values(this.game?.manifest.assets ?? {}))
+      out[rec.category] = (out[rec.category] ?? 0) + 1;
     return out;
   }
 }

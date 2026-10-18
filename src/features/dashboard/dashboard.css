@@ -26,7 +26,13 @@
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, rgba(9, 7, 6, 0.97) 0%, rgba(9, 7, 6, 0.9) 34%, rgba(9, 7, 6, 0.45) 62%, rgba(9, 7, 6, 0.15) 100%),
+    linear-gradient(
+      90deg,
+      rgba(9, 7, 6, 0.97) 0%,
+      rgba(9, 7, 6, 0.9) 34%,
+      rgba(9, 7, 6, 0.45) 62%,
+      rgba(9, 7, 6, 0.15) 100%
+    ),
     linear-gradient(0deg, rgba(9, 7, 6, 0.85) 0%, transparent 45%);
 }
 .gt-hero:not(.has-art) .gt-hero__veil {

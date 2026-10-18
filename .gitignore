@@ -36,3 +36,6 @@ Thumbs.db
 *.local
 .env
 .env.*
+
+# Tauri generated schemas
+src-tauri/gen/

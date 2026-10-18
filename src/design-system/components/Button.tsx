@@ -17,7 +17,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = 'secondary', size = 'md', icon, iconRight, loading, block, className, children, disabled, ...rest },
+  {
+    variant = 'secondary',
+    size = 'md',
+    icon,
+    iconRight,
+    loading,
+    block,
+    className,
+    children,
+    disabled,
+    ...rest
+  },
   ref,
 ) {
   const iconSize = size === 'lg' ? 18 : size === 'sm' ? 14 : 16;
@@ -25,13 +36,24 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     <button
       ref={ref}
       type="button"
-      className={clsx('gt-btn', `gt-btn--${variant}`, `gt-btn--${size}`, block && 'gt-btn--block', loading && 'is-loading', className)}
+      className={clsx(
+        'gt-btn',
+        `gt-btn--${variant}`,
+        `gt-btn--${size}`,
+        block && 'gt-btn--block',
+        loading && 'is-loading',
+        className,
+      )}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}
     >
       <span className="gt-btn__face">
-        {loading ? <span className="gt-btn__spinner" aria-hidden /> : icon ? <Icon name={icon} size={iconSize} /> : null}
+        {loading ? (
+          <span className="gt-btn__spinner" aria-hidden />
+        ) : icon ? (
+          <Icon name={icon} size={iconSize} />
+        ) : null}
         {children ? <span className="gt-btn__label">{children}</span> : null}
         {iconRight ? <Icon name={iconRight} size={iconSize} /> : null}
       </span>
@@ -57,7 +79,13 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       type="button"
       aria-label={label}
       title={label}
-      className={clsx('gt-icon-btn', `gt-icon-btn--${size}`, `gt-icon-btn--${variant}`, active && 'is-active', className)}
+      className={clsx(
+        'gt-icon-btn',
+        `gt-icon-btn--${size}`,
+        `gt-icon-btn--${variant}`,
+        active && 'is-active',
+        className,
+      )}
       {...rest}
     >
       <Icon name={icon} size={size === 'sm' ? 15 : size === 'lg' ? 20 : 17} />

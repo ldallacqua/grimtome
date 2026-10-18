@@ -13,7 +13,10 @@ import { evaluate, useApp } from './store';
  */
 
 /** Catalog icon id for a unique/mythic item, matched by its exact name. */
-export function uniqueIconId(catalog: GameCatalog | null, item: Pick<ParsedItem, 'name' | 'rarity'>): string | null {
+export function uniqueIconId(
+  catalog: GameCatalog | null,
+  item: Pick<ParsedItem, 'name' | 'rarity'>,
+): string | null {
   if (!catalog || !item.name || (item.rarity !== 'unique' && item.rarity !== 'mythic')) return null;
   const n = item.name.toLowerCase();
   return catalog.uniques.find((u) => u.name.toLowerCase() === n)?.icon ?? null;
@@ -32,7 +35,9 @@ export function overlayMessageFor(record: ScanRecord): OverlayMessage {
     itemName: record.item.name,
     rarity: record.item.rarity,
     slot: record.item.slot,
-    reasons: ev.reasons.slice(0, 4).map((r) => ({ tone: r.tone, text: r.text, ...(r.role ? { role: r.role } : {}) })),
+    reasons: ev.reasons
+      .slice(0, 4)
+      .map((r) => ({ tone: r.tone, text: r.text, ...(r.role ? { role: r.role } : {}) })),
     confidence: ev.confidence,
     activeBuild: active?.name ?? null,
     iconUrl: iconId ? s.resolver.url(iconId) : null,
@@ -60,10 +65,15 @@ export function ingestScan(
   if (opts.navigate !== false) s.navigate('advisor');
   const settings = useApp.getState().settings;
   if (isTauri && settings.overlay.enabled && settings.overlay.showOnScan) {
-    void platform.windows.showOverlay(true).then(() => platform.windows.sendToOverlay(overlayMessageFor(record)));
+    void platform.windows
+      .showOverlay(true)
+      .then(() => platform.windows.sendToOverlay(overlayMessageFor(record)));
   }
   return record;
 }
+
+/** The in-app Scan button minimizes Grimtome and waits this long for the player to hover an item. */
+const IN_APP_SCAN_DELAY_MS = 3000;
 
 export function useScanController() {
   const setScanning = useApp((st) => st.setScanning);
@@ -81,8 +91,17 @@ export function useScanController() {
       return null;
     }
     setScanning(true);
+    toast({
+      tone: 'info',
+      title: `Capturing in ${IN_APP_SCAN_DELAY_MS / 1000} seconds`,
+      body: 'Grimtome steps aside — hover the item in Diablo IV so its tooltip is showing.',
+    });
     try {
-      const payload: ScanPayload = await platform.capture.scan(useApp.getState().settings.capture);
+      const settings = useApp.getState().settings.capture;
+      const payload: ScanPayload = await platform.capture.scan({
+        ...settings,
+        delayMs: IN_APP_SCAN_DELAY_MS,
+      });
       return ingestScan(payload, 'capture');
     } catch (e) {
       toast({ tone: 'danger', title: 'Scan failed', body: e instanceof Error ? e.message : String(e) });
@@ -99,7 +118,11 @@ export function useScanController() {
         const ocr = await platform.ocr.recognize(bytes);
         return ingestScan({ ocr, image: dataUrl ?? null }, source);
       } catch (e) {
-        toast({ tone: 'warning', title: 'Could not read that image', body: e instanceof Error ? e.message : String(e) });
+        toast({
+          tone: 'warning',
+          title: 'Could not read that image',
+          body: e instanceof Error ? e.message : String(e),
+        });
         return null;
       } finally {
         setScanning(false);

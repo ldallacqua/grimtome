@@ -11,9 +11,7 @@ pub struct CoreToc {
 }
 
 fn le32(d: &[u8], at: usize) -> Result<u32> {
-    d.get(at..at + 4)
-        .map(|s| u32::from_le_bytes([s[0], s[1], s[2], s[3]]))
-        .ok_or_else(|| fmt_err("CoreTOC truncated"))
+    d.get(at..at + 4).map(|s| u32::from_le_bytes([s[0], s[1], s[2], s[3]])).ok_or_else(|| fmt_err("CoreTOC truncated"))
 }
 
 impl CoreToc {
@@ -57,10 +55,7 @@ impl CoreToc {
     }
 
     pub fn group(&self, group: u32) -> impl Iterator<Item = (u32, &str)> {
-        self.groups
-            .get(&group)
-            .into_iter()
-            .flat_map(|m| m.iter().map(|(id, n)| (*id, n.as_str())))
+        self.groups.get(&group).into_iter().flat_map(|m| m.iter().map(|(id, n)| (*id, n.as_str())))
     }
 
     pub fn contains(&self, group: u32, id: u32) -> bool {

@@ -8,14 +8,26 @@ export function Corner({ className, style }: { className?: string; style?: CSSPr
     <svg className={clsx('gt-corner', className)} style={style} viewBox="0 0 40 40" aria-hidden>
       <path d="M1 26V7a6 6 0 0 1 6-6h19" fill="none" stroke="currentColor" strokeWidth="1.2" />
       <path d="M5 20V10a5 5 0 0 1 5-5h10" fill="none" stroke="currentColor" strokeWidth=".8" opacity=".55" />
-      <path d="M1 7c4 0 6 2 6 6M7 1c0 4 2 6 6 6" fill="none" stroke="currentColor" strokeWidth=".8" opacity=".7" />
+      <path
+        d="M1 7c4 0 6 2 6 6M7 1c0 4 2 6 6 6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth=".8"
+        opacity=".7"
+      />
       <path d="M26 1l3 0 1.6-1.6L32.2 1 30.6 2.6Z M1 26v3l-1.6 1.6L1 32.2l1.6-1.6Z" fill="currentColor" />
     </svg>
   );
 }
 
 /** Section rule. With the native skin it is drawn with the game's divider textures. */
-export function Divider({ variant = 'line', className }: { variant?: 'line' | 'ornate'; className?: string }) {
+export function Divider({
+  variant = 'line',
+  className,
+}: {
+  variant?: 'line' | 'ornate';
+  className?: string;
+}) {
   return (
     <div className={clsx('gt-divider', `gt-divider--${variant}`, className)} role="separator">
       <span className="gt-divider__line" />
@@ -49,7 +61,10 @@ export function Panel({
 }: PanelProps) {
   const hasHeader = title || eyebrow || actions || subtitle;
   return (
-    <Tag className={clsx('gt-panel', `gt-panel--${variant}`, `gt-panel--pad-${padding}`, className)} {...rest}>
+    <Tag
+      className={clsx('gt-panel', `gt-panel--${variant}`, `gt-panel--pad-${padding}`, className)}
+      {...rest}
+    >
       {variant === 'ornate' ? (
         <>
           <Corner className="gt-panel__corner gt-panel__corner--tl" />

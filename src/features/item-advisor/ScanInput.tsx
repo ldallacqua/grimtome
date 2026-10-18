@@ -37,11 +37,15 @@ export function usePasteDialog() {
         </>
       }
     >
-      <p style={{ marginBottom: 12 }}>One line per tooltip line: name, type (e.g. “Ancestral Legendary Gloves”), Item Power, then affixes.</p>
+      <p style={{ marginBottom: 12 }}>
+        One line per tooltip line: name, type (e.g. “Ancestral Legendary Gloves”), Item Power, then affixes.
+      </p>
       <TextArea
         aria-label="Tooltip text"
         value={text}
-        placeholder={'Gauntlets of Earthquakes\nAncestral Legendary Gloves\n800 Item Power\n+14.0% Critical Strike Chance\n+5.5% Movement Speed'}
+        placeholder={
+          'Gauntlets of Earthquakes\nAncestral Legendary Gloves\n800 Item Power\n+14.0% Critical Strike Chance\n+5.5% Movement Speed'
+        }
         onChange={(e) => setText(e.target.value)}
         rows={9}
       />
@@ -135,7 +139,8 @@ export function DropZone() {
       <p className="gt-dropzone__body">
         {platform.capture.available ? (
           <>
-            In game, hover an item and press <KeyCap keys={hotkeyParts(hotkey)} size="sm" />. Or drop a screenshot here.
+            In game, hover an item and press <KeyCap keys={hotkeyParts(hotkey)} size="sm" />. Or drop a
+            screenshot here.
           </>
         ) : (
           <>Drop a tooltip screenshot here, paste its text, or try one of the sample tooltips below.</>

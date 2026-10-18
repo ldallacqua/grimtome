@@ -29,7 +29,8 @@ async function fetchJson<T>(url: string): Promise<T | null> {
   }
 }
 
-const unsupported = (what: string) => () => Promise.reject(new Error(`${what} is only available in the Grimtome desktop app.`));
+const unsupported = (what: string) => () =>
+  Promise.reject(new Error(`${what} is only available in the Grimtome desktop app.`));
 
 export function createBrowserPlatform(): PlatformApi {
   return {
@@ -77,6 +78,7 @@ export function createBrowserPlatform(): PlatformApi {
       reveal: async () => undefined,
     },
     capture: {
+      configure: async () => {},
       available: false,
       scan: unsupported('Screen capture'),
     },
@@ -104,6 +106,7 @@ export function createBrowserPlatform(): PlatformApi {
       sendToOverlay: async () => undefined,
       onOverlayMessage: () => () => undefined,
       fitCurrent: async () => undefined,
+      exit: async () => {},
       hideCurrent: async () => undefined,
     },
     hotkeys: {

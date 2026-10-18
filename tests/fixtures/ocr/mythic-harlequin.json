@@ -1,0 +1,114 @@
+{
+  "lines": [
+    {
+      "text": "Harlequin Crest",
+      "bbox": {
+        "x": 20.5,
+        "y": 17.0,
+        "w": 146.0,
+        "h": 21.0
+      },
+      "color": "#b27dff"
+    },
+    {
+      "text": "Mythic Unique Helm",
+      "bbox": {
+        "x": 20.0,
+        "y": 44.0,
+        "w": 134.0,
+        "h": 14.0
+      },
+      "color": "#8a66c4"
+    },
+    {
+      "text": "925 Item Power",
+      "bbox": {
+        "x": 19.0,
+        "y": 85.5,
+        "w": 114.0,
+        "h": 11.5
+      },
+      "color": "#ece6dc"
+    },
+    {
+      "text": "1 ,402 Armor",
+      "bbox": {
+        "x": 20.0,
+        "y": 111.0,
+        "w": 86.5,
+        "h": 13.0
+      },
+      "color": "#a5a18a"
+    },
+    {
+      "text": "+2 to All Skills",
+      "bbox": {
+        "x": 44.0,
+        "y": 137.0,
+        "w": 99.0,
+        "h": 12.0
+      },
+      "color": "#d7d4c1",
+      "iconColor": "#f0a027"
+    },
+    {
+      "text": "+20.0% Cooldown Reduction",
+      "bbox": {
+        "x": 44.0,
+        "y": 163.0,
+        "w": 203.5,
+        "h": 12.5
+      },
+      "color": "#d7d4c3",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "+1,520 Maximum Life",
+      "bbox": {
+        "x": 44.0,
+        "y": 188.5,
+        "w": 152.0,
+        "h": 14.5
+      },
+      "color": "#cfd4c4",
+      "iconColor": "#bcb5a8"
+    },
+    {
+      "text": "Gain bonus damage reduction and additional ranks to",
+      "bbox": {
+        "x": 19.5,
+        "y": 222.0,
+        "w": 373.0,
+        "h": 16.0
+      },
+      "color": "#aa7df2"
+    },
+    {
+      "text": "all ofyour skills.",
+      "bbox": {
+        "x": 19.0,
+        "y": 245.0,
+        "w": 109.5,
+        "h": 16.0
+      },
+      "color": "#a97df1"
+    },
+    {
+      "text": "Requires Level 60",
+      "bbox": {
+        "x": 20.0,
+        "y": 274.0,
+        "w": 106.0,
+        "h": 13.0
+      },
+      "color": "#807d6c"
+    }
+  ],
+  "engine": "windows",
+  "language": "en-US",
+  "elapsedMs": 55,
+  "imageSize": {
+    "w": 422,
+    "h": 303
+  }
+}

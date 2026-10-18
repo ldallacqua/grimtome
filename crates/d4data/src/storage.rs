@@ -5,7 +5,7 @@
 
 use crate::blte;
 use crate::error::{Error, Result};
-use crate::keys::{Kind, KeyLayouts};
+use crate::keys::{KeyLayouts, Kind};
 use crate::tvfs::{Manifest, Span};
 use std::collections::HashMap;
 use std::fs::File;
@@ -30,20 +30,15 @@ pub(crate) fn parse_config(text: &str) -> HashMap<String, String> {
 }
 
 fn parse_key(hex_key: &str) -> Result<[u8; 16]> {
-    hex::decode(hex_key)
-        .ok()
-        .and_then(|v| v.try_into().ok())
-        .ok_or_else(|| Error::Layout(format!("bad key {hex_key}")))
+    hex::decode(hex_key).ok().and_then(|v| v.try_into().ok()).ok_or_else(|| Error::Layout(format!("bad key {hex_key}")))
 }
 
 impl StaticStorage {
     /// `data_dir` is the game's `Data` folder (the one containing `.build.config`).
     pub fn open(data_dir: &Path) -> Result<Self> {
         let cfg_path = data_dir.join(".build.config");
-        let text = std::fs::read_to_string(&cfg_path).map_err(|source| Error::IoAt {
-            path: cfg_path.clone(),
-            source,
-        })?;
+        let text =
+            std::fs::read_to_string(&cfg_path).map_err(|source| Error::IoAt { path: cfg_path.clone(), source })?;
         let cfg = parse_config(&text);
         let layouts = KeyLayouts::from_config(&cfg)?;
         let (root_key, root_esize) = {
@@ -64,10 +59,8 @@ impl StaticStorage {
             paylow: HashMap::new(),
             files: HashMap::new(),
         };
-        let root_bytes = storage.read_span(
-            &Span { ekey: root_key, encoded_size: root_esize, content_size: 0 },
-            Kind::Meta,
-        )?;
+        let root_bytes =
+            storage.read_span(&Span { ekey: root_key, encoded_size: root_esize, content_size: 0 }, Kind::Meta)?;
         let root = Manifest::parse(&root_bytes)?;
         let mut base_span = None;
         root.for_each_file(|path, spans| {

@@ -46,7 +46,8 @@ const FOOTER_RE =
 const SOCKET_RE = /(empty socket|engaste vazio|soquete vazio)/i;
 const ITEM_POWER_RE = /(\d[\d.,]*)\s*(?:\+\s*\d+\s*)?(item power|poder do item)/i;
 const LEVEL_RE = /(?:requires? level|requer n[ií]vel|n[ií]vel necess[aá]rio)\D{0,4}(\d{1,3})/i;
-const MASTERWORK_RE = /(masterwork(?:ed|ing)?|quality|qualidade|obra-?prima)\D{0,14}(\d{1,2})\s*\/\s*(\d{1,2})/i;
+const MASTERWORK_RE =
+  /(masterwork(?:ed|ing)?|quality|qualidade|obra-?prima)\D{0,14}(\d{1,2})\s*\/\s*(\d{1,2})/i;
 const BASE_STAT_RE =
   /^\[?\d[\d.,\s-]*\]?\s*(armor|armadura|damage per (second|hit)|dano por (segundo|golpe)|attacks? per second|ataques por segundo|block chance|chance de bloqueio)\b/i;
 const EQUIPPED_RE = /^(equipped|equipado|currently equipped)$/i;
@@ -114,7 +115,9 @@ function parseTypeLine(line: string): { rarity: Rarity; ancestral: boolean; type
   }
   if (!rarity || rest.length === 0 || rest.length > 5) return null;
   const original = line.split(/\s+/).filter((w) => {
-    const c = deaccent(w).toLowerCase().replace(/[^a-z-]/g, '');
+    const c = deaccent(w)
+      .toLowerCase()
+      .replace(/[^a-z-]/g, '');
     return c && c !== 'ancestral' && !RARITY_WORDS[c];
   });
   return { rarity, ancestral, type: original.join(' ') };
@@ -170,7 +173,11 @@ export function parseTooltip(input: readonly (OcrLine | string)[], options: Pars
     }
     return true;
   });
-  const name = headerLines.map((l) => l.text).join(' ').trim() || null;
+  const name =
+    headerLines
+      .map((l) => l.text)
+      .join(' ')
+      .trim() || null;
   let rarity = typeInfo?.rarity ?? null;
   const colorRarity = rarityFromColor(headerLines[0]?.color);
   if (!rarity && colorRarity) {
@@ -226,6 +233,12 @@ export function parseTooltip(input: readonly (OcrLine | string)[], options: Pars
     }
 
     const { text: stripped, bullet, hadBullet } = stripBullet(text);
+    // A bare number inside the power text is a highlighted value the OCR put on
+    // its own line ("…tremors that deal" / "1,420" / "Physical damage…").
+    if (power.length > 0 && !hadBullet && !/[a-z]/i.test(stripped)) {
+      power[power.length - 1] = `${power[power.length - 1]} ${stripped}`;
+      continue;
+    }
     const affixLike = hadBullet || looksLikeAffix(stripped);
     if (affixLike || !isSentenceLike(stripped)) {
       let match = dict.match(stripped);
@@ -298,7 +311,9 @@ export function parseTooltip(input: readonly (OcrLine | string)[], options: Pars
   }
   if (unknownAffixLines) {
     score -= Math.min(0.3, unknownAffixLines * 0.08);
-    issues.push(`${unknownAffixLines} affix line${unknownAffixLines > 1 ? 's were' : ' was'} not recognized.`);
+    issues.push(
+      `${unknownAffixLines} affix line${unknownAffixLines > 1 ? 's were' : ' was'} not recognized.`,
+    );
   }
   const fuzzy = affixes.filter((a) => a.method === 'fuzzy').length;
   if (fuzzy) score -= fuzzy * 0.03;
