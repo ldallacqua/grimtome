@@ -1,0 +1,171 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--gt-bg-app);
+  color: var(--gt-text-1);
+  font-family: var(--gt-font-ui);
+  font-size: var(--gt-text-md);
+  line-height: 1.5;
+  font-feature-settings: 'cv11', 'ss01', 'tnum' 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* The overlay window must stay fully transparent around its card. */
+html[data-window='overlay'],
+html[data-window='overlay'] body {
+  background: transparent;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--gt-gold-1);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--gt-focus-ring);
+}
+
+input,
+textarea,
+[contenteditable] {
+  user-select: text;
+}
+
+::selection {
+  background: rgba(214, 174, 107, 0.35);
+  color: var(--gt-text-1);
+}
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(214, 174, 107, 0.25) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(214, 174, 107, 0.18);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(214, 174, 107, 0.32);
+}
+
+.gt-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.gt-caps {
+  font-family: var(--gt-font-display);
+  text-transform: uppercase;
+  letter-spacing: var(--gt-tracking-caps);
+  font-weight: 600;
+}
+
+.gt-num {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes gt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes gt-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes gt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gt-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(214, 174, 107, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(214, 174, 107, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(214, 174, 107, 0);
+  }
+}

@@ -1,0 +1,279 @@
+.gt-meter {
+  --mc: var(--gt-gold-2);
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: #1c1815;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+    inset 0 1px 2px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+.gt-meter--arcane {
+  --mc: var(--gt-verdict-stash);
+}
+.gt-meter--success {
+  --mc: var(--gt-success);
+}
+.gt-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--mc) 55%, #000), var(--mc));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--mc) 60%, transparent);
+  transition: width var(--gt-dur-emphasis) var(--gt-ease);
+}
+
+.gt-ring {
+  --mc: var(--gt-gold-2);
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+}
+.gt-ring--arcane {
+  --mc: var(--gt-verdict-stash);
+}
+.gt-ring--success {
+  --mc: var(--gt-success);
+}
+.gt-ring svg {
+  position: absolute;
+  inset: 0;
+}
+.gt-ring__track {
+  fill: none;
+  stroke: #221d19;
+  stroke-width: 5;
+}
+.gt-ring__fill {
+  fill: none;
+  stroke: var(--mc);
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--mc) 70%, transparent));
+  transition: stroke-dashoffset var(--gt-dur-emphasis) var(--gt-ease);
+}
+.gt-ring__content {
+  position: relative;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.gt-spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid rgba(214, 174, 107, 0.2);
+  border-top-color: var(--gt-gold-1);
+  animation: gt-spin 0.8s linear infinite;
+}
+
+.gt-skeleton {
+  display: inline-block;
+  background: linear-gradient(90deg, #1a1613 0%, #262019 50%, #1a1613 100%);
+  background-size: 200% 100%;
+  animation: gt-shimmer 1.6s linear infinite;
+}
+
+/* Empty state */
+.gt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--gt-space-8) var(--gt-space-6);
+  gap: var(--gt-space-3);
+}
+.gt-empty--compact {
+  padding: var(--gt-space-5);
+}
+.gt-empty__art {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  margin-bottom: var(--gt-space-2);
+}
+.gt-empty--compact .gt-empty__art {
+  width: 96px;
+  height: 96px;
+}
+.gt-empty__svg {
+  width: 100%;
+  height: 100%;
+}
+.gt-empty__icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--gt-gold-1);
+  filter: drop-shadow(0 0 10px rgba(214, 174, 107, 0.5));
+}
+.gt-empty__title {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-xl);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.gt-empty__body {
+  max-width: 46ch;
+  color: var(--gt-text-2);
+}
+.gt-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gt-space-2);
+  margin-top: var(--gt-space-3);
+}
+
+/* Callout */
+.gt-callout {
+  --cc: var(--gt-info);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--gt-radius-sm);
+  background: color-mix(in srgb, var(--cc) 7%, var(--gt-surface-1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cc) 25%, transparent);
+  color: var(--gt-text-2);
+}
+.gt-callout > svg {
+  color: var(--cc);
+  margin-top: 1px;
+}
+.gt-callout--warning {
+  --cc: var(--gt-warning);
+}
+.gt-callout--danger {
+  --cc: var(--gt-danger);
+}
+.gt-callout--success {
+  --cc: var(--gt-success);
+}
+.gt-callout--arcane {
+  --cc: var(--gt-verdict-stash);
+}
+.gt-callout__title {
+  color: var(--gt-text-1);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.gt-callout__body {
+  font-size: var(--gt-text-sm);
+}
+
+/* Toasts */
+.gt-toasts {
+  position: fixed;
+  right: var(--gt-space-6);
+  bottom: var(--gt-space-6);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gt-space-2);
+  width: min(380px, calc(100vw - 32px));
+}
+.gt-toast {
+  --tc: var(--gt-info);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 12px 12px 14px;
+  border-radius: var(--gt-radius-md);
+  background: rgba(20, 17, 14, 0.96);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--tc) 35%, transparent),
+    var(--gt-shadow-3);
+  animation: gt-rise var(--gt-dur-base) var(--gt-ease);
+}
+.gt-toast > svg {
+  color: var(--tc);
+  margin-top: 1px;
+}
+.gt-toast--success {
+  --tc: var(--gt-success);
+}
+.gt-toast--warning {
+  --tc: var(--gt-warning);
+}
+.gt-toast--danger {
+  --tc: var(--gt-danger);
+}
+.gt-toast__title {
+  font-weight: 600;
+}
+.gt-toast__body {
+  color: var(--gt-text-2);
+  font-size: var(--gt-text-sm);
+  margin-top: 2px;
+}
+.gt-toast__close {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--gt-text-3);
+}
+.gt-toast__close:hover {
+  color: var(--gt-text-1);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Dialog */
+.gt-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  place-items: center;
+  padding: var(--gt-space-6);
+  background: rgba(4, 3, 3, 0.72);
+  backdrop-filter: blur(3px);
+  animation: gt-fade-in var(--gt-dur-base) var(--gt-ease);
+}
+.gt-dialog {
+  width: min(560px, 100%);
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--gt-radius-md);
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(214, 174, 107, 0.07), transparent 60%),
+    var(--gt-surface-2);
+  box-shadow:
+    inset 0 0 0 1px var(--gt-line-2),
+    var(--gt-shadow-3);
+  animation: gt-rise var(--gt-dur-base) var(--gt-ease);
+}
+.gt-dialog--danger {
+  box-shadow:
+    inset 0 0 0 1px rgba(239, 90, 76, 0.4),
+    var(--gt-shadow-3);
+}
+.gt-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--gt-space-5) var(--gt-space-6) var(--gt-space-3);
+}
+.gt-dialog__title {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-xl);
+  letter-spacing: 0.04em;
+}
+.gt-dialog__body {
+  padding: 0 var(--gt-space-6);
+  overflow: auto;
+  color: var(--gt-text-2);
+}
+.gt-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--gt-space-2);
+  padding: var(--gt-space-5) var(--gt-space-6);
+}

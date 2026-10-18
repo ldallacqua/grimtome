@@ -1,0 +1,171 @@
+.gt-btn {
+  --btn-h: 36px;
+  --btn-px: 16px;
+  --btn-fs: var(--gt-text-sm);
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--btn-h);
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: var(--gt-radius-sm);
+  font-family: var(--gt-font-display);
+  font-size: var(--btn-fs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    transform var(--gt-dur-micro) var(--gt-ease),
+    filter var(--gt-dur-base) var(--gt-ease),
+    opacity var(--gt-dur-base);
+}
+.gt-btn--sm {
+  --btn-h: 28px;
+  --btn-px: 11px;
+  --btn-fs: var(--gt-text-2xs);
+}
+.gt-btn--lg {
+  --btn-h: 46px;
+  --btn-px: 22px;
+  --btn-fs: var(--gt-text-md);
+}
+.gt-btn--block {
+  display: flex;
+  width: 100%;
+}
+.gt-btn__face {
+  position: relative;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 var(--btn-px);
+  border-radius: inherit;
+}
+.gt-btn__label {
+  padding-top: 1px;
+}
+.gt-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.gt-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* Primary: forged gold */
+.gt-btn--primary .gt-btn__face {
+  color: #1d1307;
+  background:
+    linear-gradient(180deg, rgba(255, 250, 235, 0.55), rgba(255, 250, 235, 0) 46%),
+    linear-gradient(180deg, #f1d18e 0%, #d4a85f 52%, #a87b3c 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 240, 200, 0.55),
+    inset 0 -2px 0 rgba(90, 55, 15, 0.45),
+    0 0 0 1px rgba(70, 45, 15, 0.9),
+    0 10px 24px -12px rgba(214, 160, 80, 0.6);
+  text-shadow: 0 1px 0 rgba(255, 245, 215, 0.4);
+}
+.gt-btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08) saturate(1.05);
+}
+
+/* Secondary: obsidian with bronze edge */
+.gt-btn--secondary .gt-btn__face {
+  color: var(--gt-text-1);
+  background: linear-gradient(180deg, #24201c, #171412);
+  box-shadow:
+    inset 0 0 0 1px var(--gt-line-2),
+    inset 0 1px 0 rgba(255, 240, 210, 0.06),
+    0 1px 0 rgba(0, 0, 0, 0.6);
+}
+.gt-btn--secondary:hover:not(:disabled) .gt-btn__face {
+  background: linear-gradient(180deg, #2c2722, #1c1815);
+  box-shadow:
+    inset 0 0 0 1px var(--gt-line-strong),
+    inset 0 1px 0 rgba(255, 240, 210, 0.08);
+  color: var(--gt-gold-1);
+}
+
+/* Ghost */
+.gt-btn--ghost .gt-btn__face {
+  color: var(--gt-text-2);
+}
+.gt-btn--ghost:hover:not(:disabled) .gt-btn__face {
+  color: var(--gt-text-1);
+  background: rgba(236, 228, 214, 0.05);
+}
+
+/* Danger: crimson */
+.gt-btn--danger .gt-btn__face {
+  color: #fff1ec;
+  background: linear-gradient(180deg, #a3271d, #6a150f);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 140, 120, 0.35),
+    inset 0 1px 0 rgba(255, 200, 190, 0.18),
+    0 0 0 1px rgba(40, 6, 4, 0.9);
+}
+.gt-btn--danger:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+/* Arcane: future-build violet */
+.gt-btn--arcane .gt-btn__face {
+  color: #f3eeff;
+  background: linear-gradient(180deg, #4b3a86, #2b2052);
+  box-shadow:
+    inset 0 0 0 1px rgba(190, 165, 255, 0.4),
+    inset 0 1px 0 rgba(230, 220, 255, 0.18),
+    0 0 0 1px rgba(15, 10, 30, 0.9);
+}
+.gt-btn--arcane:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.gt-btn__spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: gt-spin 0.8s linear infinite;
+}
+
+/* Icon buttons */
+.gt-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--gt-radius-sm);
+  background: transparent;
+  color: var(--gt-text-3);
+  transition:
+    color var(--gt-dur-micro) var(--gt-ease),
+    background var(--gt-dur-micro) var(--gt-ease);
+}
+.gt-icon-btn--sm {
+  width: 26px;
+  height: 26px;
+}
+.gt-icon-btn--lg {
+  width: 40px;
+  height: 40px;
+}
+.gt-icon-btn--secondary {
+  background: var(--gt-surface-2);
+  box-shadow: inset 0 0 0 1px var(--gt-line-1);
+}
+.gt-icon-btn:hover {
+  color: var(--gt-text-1);
+  background: rgba(236, 228, 214, 0.06);
+}
+.gt-icon-btn.is-active {
+  color: var(--gt-gold-1);
+  background: rgba(214, 174, 107, 0.1);
+}

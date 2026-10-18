@@ -1,0 +1,138 @@
+/*
+ * Grimtome design tokens.
+ * Warm obsidian surfaces, parchment text, gold/bronze accents, crimson for danger.
+ * Every component reads from these variables; never hard-code colors elsewhere.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces (warm near-blacks, darkest → lightest) */
+  --gt-bg-sunken: #060505;
+  --gt-bg-app: #0b0908;
+  --gt-surface-1: #12100e;
+  --gt-surface-2: #181513;
+  --gt-surface-3: #201c19;
+  --gt-surface-4: #2a2420;
+  --gt-overlay: rgba(9, 8, 7, 0.86);
+
+  /* Lines */
+  --gt-line-faint: rgba(214, 174, 107, 0.07);
+  --gt-line-1: rgba(214, 174, 107, 0.12);
+  --gt-line-2: rgba(214, 174, 107, 0.22);
+  --gt-line-strong: rgba(214, 174, 107, 0.42);
+  --gt-line-neutral: rgba(236, 228, 214, 0.08);
+
+  /* Text */
+  --gt-text-1: #ede4d3;
+  --gt-text-2: #b8ab95;
+  --gt-text-3: #847866;
+  --gt-text-4: #5b5247;
+  --gt-text-inverse: #140f0a;
+
+  /* Accents */
+  --gt-gold-1: #f4d89c;
+  --gt-gold-2: #d6ae6b;
+  --gt-gold-3: #a6824c;
+  --gt-bronze: #6f5333;
+  --gt-crimson-1: #ef5a4c;
+  --gt-crimson-2: #b5281f;
+  --gt-crimson-3: #4f120d;
+  --gt-ember: #ff8a3d;
+
+  /* Item rarity */
+  --gt-rarity-common: #d9d6cf;
+  --gt-rarity-magic: #7f9dff;
+  --gt-rarity-rare: #f2e166;
+  --gt-rarity-legendary: #f2963a;
+  --gt-rarity-unique: #dcc38b;
+  --gt-rarity-mythic: #c49cff;
+
+  /* Verdicts */
+  --gt-verdict-upgrade: #63d18e;
+  --gt-verdict-keep: #e3b867;
+  --gt-verdict-stash: #ad91ff;
+  --gt-verdict-salvage: #a39684;
+  --gt-verdict-review: #f0a43c;
+
+  /* Feedback */
+  --gt-success: #63d18e;
+  --gt-warning: #f0a43c;
+  --gt-danger: #ef5a4c;
+  --gt-info: #8fb4ff;
+
+  /* Typography */
+  --gt-font-display: 'Cinzel Variable', 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --gt-font-ui: 'Inter Variable', 'Inter', 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+  --gt-font-lore: 'Cormorant Garamond', 'Garamond', Georgia, serif;
+  --gt-font-mono: 'Cascadia Code', 'Consolas', ui-monospace, monospace;
+
+  --gt-text-2xs: 0.6875rem; /* 11 */
+  --gt-text-xs: 0.75rem; /* 12 */
+  --gt-text-sm: 0.8125rem; /* 13 */
+  --gt-text-md: 0.875rem; /* 14 */
+  --gt-text-lg: 1rem; /* 16 */
+  --gt-text-xl: 1.125rem; /* 18 */
+  --gt-text-2xl: 1.375rem; /* 22 */
+  --gt-text-3xl: 1.75rem; /* 28 */
+  --gt-text-4xl: 2.25rem; /* 36 */
+  --gt-text-5xl: 3rem; /* 48 */
+
+  --gt-tracking-caps: 0.14em;
+  --gt-tracking-display: 0.06em;
+
+  /* Spacing (4px base) */
+  --gt-space-1: 4px;
+  --gt-space-2: 8px;
+  --gt-space-3: 12px;
+  --gt-space-4: 16px;
+  --gt-space-5: 20px;
+  --gt-space-6: 24px;
+  --gt-space-7: 32px;
+  --gt-space-8: 40px;
+  --gt-space-9: 56px;
+  --gt-space-10: 72px;
+
+  /* Shape */
+  --gt-radius-xs: 2px;
+  --gt-radius-sm: 4px;
+  --gt-radius-md: 6px;
+  --gt-radius-lg: 10px;
+  --gt-radius-pill: 999px;
+
+  /* Elevation */
+  --gt-shadow-1: 0 1px 0 rgba(255, 240, 210, 0.03) inset, 0 8px 24px -12px rgba(0, 0, 0, 0.7);
+  --gt-shadow-2: 0 1px 0 rgba(255, 240, 210, 0.04) inset, 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+  --gt-shadow-3: 0 1px 0 rgba(255, 240, 210, 0.05) inset, 0 40px 90px -30px rgba(0, 0, 0, 0.95);
+  --gt-glow-gold: 0 0 0 1px rgba(214, 174, 107, 0.35), 0 0 24px -6px rgba(214, 174, 107, 0.35);
+
+  /* Motion */
+  --gt-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --gt-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --gt-dur-micro: 120ms;
+  --gt-dur-base: 200ms;
+  --gt-dur-emphasis: 360ms;
+
+  /* Layout */
+  --gt-titlebar-h: 40px;
+  --gt-sidebar-w: 248px;
+  --gt-content-max: 1360px;
+  --gt-focus-ring: 0 0 0 2px var(--gt-bg-app), 0 0 0 4px rgba(244, 216, 156, 0.75);
+
+  /* Game texture hooks (set at runtime when local assets are available) */
+  --gt-tex-stone: none;
+  --gt-tex-divider: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --gt-dur-micro: 0ms;
+    --gt-dur-base: 0ms;
+    --gt-dur-emphasis: 0ms;
+  }
+}
+
+:root[data-reduce-motion='true'] {
+  --gt-dur-micro: 0ms;
+  --gt-dur-base: 0ms;
+  --gt-dur-emphasis: 0ms;
+}

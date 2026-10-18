@@ -1,0 +1,66 @@
+.gt-splash {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--gt-space-6);
+  background:
+    radial-gradient(600px 400px at 50% 40%, rgba(140, 40, 25, 0.18), transparent 70%),
+    var(--gt-bg-app);
+}
+
+/* Shared screen layout helpers */
+.gt-grid {
+  display: grid;
+  gap: var(--gt-space-5);
+}
+.gt-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.gt-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.gt-grid--sidebar {
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+@media (max-width: 1180px) {
+  .gt-grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .gt-grid--sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 860px) {
+  .gt-grid--2,
+  .gt-grid--3 {
+    grid-template-columns: 1fr;
+  }
+}
+.gt-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gt-space-5);
+}
+.gt-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gt-space-3);
+}
+.gt-row--wrap {
+  flex-wrap: wrap;
+}
+.gt-muted {
+  color: var(--gt-text-3);
+}
+.gt-small {
+  font-size: var(--gt-text-sm);
+}
+.gt-section-label {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-2xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gt-text-3);
+}

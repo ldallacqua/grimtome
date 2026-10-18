@@ -1,0 +1,265 @@
+.gt-item-card {
+  --rc: var(--gt-rarity-common);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #0d0b0a;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 0 0 2px color-mix(in srgb, var(--rc) 30%, #2a221a),
+    0 30px 70px -30px rgba(0, 0, 0, 0.95),
+    0 0 60px -30px color-mix(in srgb, var(--rc) 60%, transparent);
+  user-select: text;
+}
+
+/* Header — CSS fallback */
+.gt-item-card__header {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 18px 16px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--rc) 34%, transparent) 0%, color-mix(in srgb, var(--rc) 10%, transparent) 70%, transparent),
+    linear-gradient(180deg, #1b1612, #120f0c);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--rc) 70%, white),
+    inset 0 -1px 0 color-mix(in srgb, var(--rc) 25%, transparent);
+}
+.gt-item-card.has-textures .gt-item-card__header {
+  background: var(--tt-header);
+  box-shadow: none;
+  min-height: 104px;
+  padding: 22px 26px 18px;
+}
+.gt-item-card__titles {
+  min-width: 0;
+}
+.gt-item-card__name {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-xl);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--rc) 92%, white);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.9),
+    0 0 18px color-mix(in srgb, var(--rc) 40%, transparent);
+}
+.gt-item-card__type {
+  margin-top: 3px;
+  font-size: var(--gt-text-sm);
+  color: color-mix(in srgb, var(--rc) 70%, var(--gt-text-2));
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.9);
+}
+
+/* Body */
+.gt-item-card__body {
+  position: relative;
+  padding: 14px 22px 20px;
+  background: linear-gradient(180deg, #110e0c, #0b0908);
+}
+.gt-item-card.has-textures .gt-item-card__body {
+  background: var(--tt-body);
+  padding: 12px 28px 26px;
+}
+.gt-item-card__power {
+  font-size: var(--gt-text-md);
+  font-weight: 600;
+  color: var(--gt-text-1);
+}
+.gt-item-card__base {
+  color: var(--gt-text-2);
+  font-size: var(--gt-text-sm);
+}
+.gt-item-card__sep {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 18px;
+  margin: 10px 0 8px;
+}
+.gt-item-card__sep > span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214, 174, 107, 0.4));
+}
+.gt-item-card__sep > span:last-child {
+  background: linear-gradient(90deg, rgba(214, 174, 107, 0.4), transparent);
+}
+.gt-item-card__sep > i {
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  border: 1px solid rgba(214, 174, 107, 0.65);
+}
+.gt-item-card__sep--tex {
+  gap: 0;
+}
+.gt-item-card__sep--tex > span {
+  height: 14px;
+  background: none;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: right center;
+  opacity: 0.9;
+}
+
+.gt-item-card__affixes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.gt-affix {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--gt-text-md);
+  color: var(--gt-text-1);
+  line-height: 1.35;
+}
+.gt-affix__bullet {
+  justify-self: center;
+  width: 11px;
+  height: 14px;
+  object-fit: contain;
+}
+.gt-affix__bullet--css {
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, #e9e2d4, #8d8577);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.gt-affix__bullet--ga {
+  width: 17px;
+  height: 17px;
+  filter: drop-shadow(0 0 4px rgba(255, 150, 40, 0.8));
+}
+.gt-affix__bullet--ga-css {
+  width: auto;
+  height: auto;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--gt-ember);
+  text-shadow: 0 0 8px rgba(255, 138, 61, 0.9);
+}
+.gt-affix__bullet--tempered {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  color: #8fc7ff;
+  filter: drop-shadow(0 0 4px rgba(143, 199, 255, 0.6));
+}
+.gt-affix.is-greater .gt-affix__value {
+  color: #ffb468;
+}
+.gt-affix__value {
+  font-weight: 600;
+  color: #f4ecdd;
+}
+.gt-affix__label {
+  color: var(--gt-text-1);
+}
+.gt-affix.is-unknown .gt-affix__label {
+  color: var(--gt-text-3);
+  font-style: italic;
+}
+.gt-affix__tags {
+  display: inline-flex;
+  gap: 4px;
+}
+.gt-affix__tag {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.gt-affix__tag--active {
+  color: var(--gt-verdict-upgrade);
+  background: rgba(99, 209, 142, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(99, 209, 142, 0.35);
+}
+.gt-affix__tag--future {
+  color: var(--gt-verdict-stash);
+  background: rgba(173, 145, 255, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(173, 145, 255, 0.35);
+}
+.gt-affix__tag--unknown {
+  color: var(--gt-warning);
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(240, 164, 60, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(240, 164, 60, 0.35);
+}
+
+.gt-item-card__lore {
+  font-family: var(--gt-font-lore);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--rc) 75%, var(--gt-text-1));
+}
+.gt-item-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  color: var(--gt-text-3);
+  font-size: var(--gt-text-xs);
+}
+.gt-item-card__socket {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #050404 45%, #1d1814 60%);
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 174, 107, 0.35),
+    0 0 0 1px rgba(0, 0, 0, 0.8);
+}
+.gt-item-card__mw {
+  color: #8fb4ff;
+}
+.gt-item-card__req {
+  margin-left: auto;
+}
+.gt-item-card__footer {
+  margin-top: 14px;
+}
+
+.gt-item-card--compact .gt-item-card__name {
+  font-size: var(--gt-text-lg);
+}
+.gt-item-card--compact .gt-affix {
+  font-size: var(--gt-text-sm);
+}
+
+.gt-affix__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin: 0 1px;
+}
+.gt-affix__dot--active {
+  background: var(--gt-verdict-upgrade);
+  box-shadow: 0 0 8px rgba(99, 209, 142, 0.7);
+}
+.gt-affix__dot--future {
+  background: var(--gt-verdict-stash);
+  box-shadow: 0 0 8px rgba(173, 145, 255, 0.7);
+}

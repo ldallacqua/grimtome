@@ -1,0 +1,153 @@
+.gt-paragon-path {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gt-space-4);
+}
+.gt-paragon-path::before {
+  content: '';
+  position: absolute;
+  left: 23px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gt-gold-3), rgba(214, 174, 107, 0.08));
+}
+.gt-board {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--gt-space-4);
+  align-items: start;
+}
+.gt-board__node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-top: 8px;
+}
+.gt-board__node::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  transform: rotate(45deg);
+  border-radius: 3px;
+  background: #15110e;
+  box-shadow:
+    inset 0 0 0 1px var(--gt-line-2),
+    0 0 0 4px var(--gt-surface-1);
+}
+.gt-board__node span {
+  position: relative;
+  font-family: var(--gt-font-display);
+  font-weight: 700;
+  color: var(--gt-text-3);
+}
+.gt-board.is-done .gt-board__node::before {
+  background: linear-gradient(135deg, #6b4d22, #3a2810);
+  box-shadow:
+    inset 0 0 0 1px rgba(244, 216, 156, 0.6),
+    0 0 0 4px var(--gt-surface-1);
+}
+.gt-board.is-done .gt-board__node span {
+  color: var(--gt-gold-1);
+}
+.gt-board.is-current .gt-board__node::before {
+  background: radial-gradient(circle, rgba(244, 216, 156, 0.3), #1a130c 70%);
+  box-shadow:
+    inset 0 0 0 1px var(--gt-gold-1),
+    0 0 0 4px var(--gt-surface-1),
+    0 0 24px rgba(244, 216, 156, 0.55);
+}
+.gt-board.is-current .gt-board__node span {
+  color: var(--gt-gold-1);
+}
+.gt-board__card {
+  padding: 16px 18px;
+  border-radius: var(--gt-radius-md);
+  background: var(--gt-bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--gt-line-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.gt-board.is-current .gt-board__card {
+  background:
+    radial-gradient(100% 120% at 0% 0%, rgba(214, 174, 107, 0.1), transparent 60%),
+    var(--gt-surface-2);
+  box-shadow: inset 0 0 0 1px var(--gt-line-2);
+}
+.gt-board.is-done .gt-board__card {
+  opacity: 0.78;
+}
+.gt-board__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+.gt-board__name {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-xl);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.gt-board__glyph {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gt-board__glyphname {
+  font-weight: 600;
+  color: #ffcf7a;
+}
+.gt-board__focus {
+  color: var(--gt-text-2);
+  font-size: var(--gt-text-sm);
+}
+
+.gt-paragon-level {
+  display: flex;
+  align-items: center;
+  gap: var(--gt-space-5);
+}
+.gt-paragon-level__value {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-2xl);
+  font-weight: 700;
+}
+.gt-paragon-level__label {
+  font-size: var(--gt-text-xs);
+  color: var(--gt-text-3);
+}
+.gt-paragon-glyphstrip {
+  display: block;
+  width: 100%;
+  opacity: 0.85;
+}
+.gt-glyph-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.gt-glyph-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--gt-radius-sm);
+  color: var(--gt-text-1);
+}
+.gt-glyph-row svg {
+  margin-left: auto;
+  color: var(--gt-success);
+}
+.gt-glyph-row.is-done span {
+  color: var(--gt-text-3);
+}

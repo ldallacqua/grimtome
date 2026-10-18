@@ -1,0 +1,212 @@
+/* Skill icons: stained-glass square */
+.gt-skill-icon {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #0c0a09;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 0 0 2px var(--gt-line-2),
+    0 6px 16px -8px rgba(0, 0, 0, 0.9);
+  transition:
+    filter var(--gt-dur-base) var(--gt-ease),
+    box-shadow var(--gt-dur-base) var(--gt-ease);
+}
+.gt-skill-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gt-skill-icon.is-fallback {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(244, 216, 156, 0.28), transparent 55%),
+    conic-gradient(from 210deg at 50% 50%, #3a2a1a, #23170e, #4a301a, #1b120b, #3a2a1a);
+}
+.gt-skill-icon.is-fallback::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(244, 216, 156, 0.25);
+}
+.gt-skill-icon__rune {
+  font-family: var(--gt-font-display);
+  font-weight: 700;
+  font-size: calc(var(--size) * 0.36);
+  letter-spacing: 0.04em;
+  color: var(--gt-gold-1);
+  text-shadow: 0 0 10px rgba(244, 216, 156, 0.45);
+}
+.gt-skill-icon.is-locked {
+  filter: grayscale(0.85) brightness(0.55);
+}
+.gt-skill-icon.is-learned {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 0 0 2px rgba(214, 174, 107, 0.55),
+    0 6px 16px -8px rgba(0, 0, 0, 0.9);
+}
+.gt-skill-icon.is-next {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 0 0 2px var(--gt-gold-1),
+    0 0 22px -4px rgba(244, 216, 156, 0.7);
+  animation: gt-pulse-ring 2.4s var(--gt-ease) infinite;
+}
+
+/* Rarity glyph */
+.gt-rarity-glyph {
+  display: inline-block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.gt-rarity-glyph--css {
+  transform: rotate(45deg);
+  border-radius: 1px;
+  background: var(--rc, var(--gt-rarity-common));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--rc, #fff) 60%, transparent);
+}
+[data-rarity='common'] {
+  --rc: var(--gt-rarity-common);
+}
+[data-rarity='magic'] {
+  --rc: var(--gt-rarity-magic);
+}
+[data-rarity='rare'] {
+  --rc: var(--gt-rarity-rare);
+}
+[data-rarity='legendary'] {
+  --rc: var(--gt-rarity-legendary);
+}
+[data-rarity='unique'] {
+  --rc: var(--gt-rarity-unique);
+}
+[data-rarity='mythic'] {
+  --rc: var(--gt-rarity-mythic);
+}
+
+/* Item icons: rarity well */
+.gt-item-icon {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 40%),
+    radial-gradient(circle at 50% 110%, color-mix(in srgb, var(--rc) 30%, transparent), transparent 70%),
+    #0d0b0a;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--rc) 45%, transparent),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.5),
+    inset 0 0 18px rgba(0, 0, 0, 0.8),
+    0 8px 22px -12px color-mix(in srgb, var(--rc) 60%, transparent);
+  overflow: hidden;
+}
+.gt-item-icon__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--rc) 14%, transparent), transparent 62%);
+}
+.gt-item-icon img {
+  position: relative;
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+}
+.gt-item-icon__glyph {
+  position: relative;
+  color: color-mix(in srgb, var(--rc) 85%, white);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--rc) 50%, transparent));
+}
+
+/* Class emblem medallion */
+.gt-class-emblem {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+}
+.gt-class-emblem.has-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(244, 216, 156, 0.14), transparent 60%),
+    radial-gradient(circle, #15110e 55%, #0a0807 72%);
+  box-shadow:
+    inset 0 0 0 1px rgba(214, 174, 107, 0.5),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 5px rgba(214, 174, 107, 0.18),
+    0 10px 24px -10px rgba(0, 0, 0, 0.95);
+}
+.gt-class-emblem__frame {
+  position: absolute;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
+  z-index: 2;
+  pointer-events: none;
+}
+.gt-class-emblem__img {
+  position: relative;
+  z-index: 3;
+  width: 66%;
+  height: 66%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8)) sepia(0.25) brightness(1.05);
+}
+.gt-class-emblem:not(.has-ring) .gt-class-emblem__img {
+  width: 100%;
+  height: 100%;
+}
+.gt-class-emblem__fallback {
+  position: relative;
+  z-index: 3;
+  font-family: var(--gt-font-display);
+  font-weight: 700;
+  font-size: calc(var(--size) * 0.32);
+  color: var(--gt-gold-1);
+  text-shadow: 0 0 12px rgba(244, 216, 156, 0.4);
+}
+
+/* Paragon glyph */
+.gt-glyph-icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+}
+.gt-glyph-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(1.55);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7));
+}
+.gt-glyph-icon.is-fallback {
+  background:
+    radial-gradient(circle at 40% 35%, rgba(255, 210, 120, 0.4), transparent 55%),
+    radial-gradient(circle, #5a3a14, #24160a 70%);
+  box-shadow:
+    inset 0 0 0 1px rgba(244, 216, 156, 0.5),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.4);
+  font-family: var(--gt-font-display);
+  font-weight: 700;
+  color: #ffd98a;
+  font-size: calc(var(--size) * 0.42);
+}

@@ -1,0 +1,241 @@
+[
+  {
+    "id": "rare-gloves-crit",
+    "title": "Rare gloves",
+    "image": "samples/rare-gloves-crit.png",
+    "sha256": "25c41f42903fe5c2051bb37cc8551f713e4cf3296da766ff5e3a9396c0825be6",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Grim Grasp",
+          "color": "#ffff64"
+        },
+        {
+          "text": "Ancestral Rare Gloves"
+        },
+        {
+          "text": "800 Item Power"
+        },
+        {
+          "text": "1,126 Armor"
+        },
+        {
+          "text": "◆ +12.5% Critical Strike Chance [10.0 - 15.0]%",
+          "iconColor": "#9a9a9a"
+        },
+        {
+          "text": "◆ +16.0% Attack Speed [12.0 - 18.0]%"
+        },
+        {
+          "text": "◆ +92 Strength [70 - 110]"
+        },
+        {
+          "text": "◆ +8.5% Lucky Hit Chance"
+        },
+        {
+          "text": "Requires Level 60"
+        },
+        {
+          "text": "Sell Value: 24,512"
+        },
+        {
+          "text": "Durability: 100/100"
+        }
+      ]
+    }
+  },
+  {
+    "id": "legendary-gloves-earthquakes",
+    "title": "Legendary gloves",
+    "image": "samples/legendary-gloves-earthquakes.png",
+    "sha256": "e58cb3a017c929d186004eb51ccf28c6dfd04a2bb6199b5c7c8fc72d740d83a5",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Gauntlets of Earthquakes",
+          "color": "#f08a2c"
+        },
+        {
+          "text": "Ancestral Legendary Gloves"
+        },
+        {
+          "text": "800 Item Power"
+        },
+        {
+          "text": "1,190 Armor"
+        },
+        {
+          "text": "★ +14.0% Critical Strike Chance",
+          "iconColor": "#f0a028"
+        },
+        {
+          "text": "◆ +5.5% Movement Speed"
+        },
+        {
+          "text": "◆ +120 Maximum Life"
+        },
+        {
+          "text": "◆ +21.0% Fire Resistance"
+        },
+        {
+          "text": "Ground Stomp and Leap leave behind tremors that deal 1,420"
+        },
+        {
+          "text": "Physical damage over 4 seconds."
+        },
+        {
+          "text": "Empty Socket"
+        },
+        {
+          "text": "Requires Level 60"
+        },
+        {
+          "text": "Sell Value: 31,002"
+        }
+      ]
+    }
+  },
+  {
+    "id": "unique-magnum-opus",
+    "title": "Unique mace",
+    "image": "samples/unique-magnum-opus.png",
+    "sha256": "68a96c68b7f2252734601ff1854b19d0712a24d62efe767b57fe13a440047e32",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Ramaladni's Magnum Opus",
+          "color": "#c7b377"
+        },
+        {
+          "text": "Unique Two-Handed Mace"
+        },
+        {
+          "text": "800 Item Power"
+        },
+        {
+          "text": "4,980 Damage Per Second"
+        },
+        {
+          "text": "◆ +22.0% Vulnerable Damage"
+        },
+        {
+          "text": "◆ +45.0% Critical Strike Damage"
+        },
+        {
+          "text": "◆ +98 Strength"
+        },
+        {
+          "text": "Skills deal additional damage for each point of Fury you have, but you no longer passively generate Fury."
+        },
+        {
+          "text": "Unique Equip"
+        },
+        {
+          "text": "Requires Level 60"
+        }
+      ]
+    }
+  },
+  {
+    "id": "mythic-harlequin",
+    "title": "Mythic helm",
+    "image": "samples/mythic-harlequin.png",
+    "sha256": "e7bd46d7654ec3b6fdf35c878da3a16fb299c6de8983923eaf128c598bc316de",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Harlequin Crest"
+        },
+        {
+          "text": "Mythic Unique Helm"
+        },
+        {
+          "text": "925 Item Power"
+        },
+        {
+          "text": "1,402 Armor"
+        },
+        {
+          "text": "★ +2 to All Skills"
+        },
+        {
+          "text": "◆ +20.0% Cooldown Reduction"
+        },
+        {
+          "text": "◆ +1,520 Maximum Life"
+        },
+        {
+          "text": "Gain bonus damage reduction and additional ranks to all of your skills."
+        },
+        {
+          "text": "Requires Level 60"
+        }
+      ]
+    }
+  },
+  {
+    "id": "rare-amulet-endgame",
+    "title": "Rare amulet",
+    "image": "samples/rare-amulet-endgame.png",
+    "sha256": "c5e947d5c5425e235efd553936357f216eecf01544ae162e0e948dc60fd1642d",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Sigil of Ashes"
+        },
+        {
+          "text": "Ancestral Rare Amulet"
+        },
+        {
+          "text": "800 Item Power"
+        },
+        {
+          "text": "◆ +9.0% Cooldown Reduction"
+        },
+        {
+          "text": "★ +11.5% Damage Reduction"
+        },
+        {
+          "text": "◆ +4.0% Movement Speed"
+        },
+        {
+          "text": "Requires Level 60"
+        }
+      ]
+    }
+  },
+  {
+    "id": "rare-ring-unknown",
+    "title": "Rare ring",
+    "image": "samples/rare-ring-unknown.png",
+    "sha256": "dda0d4c026fea7b2d2d5a6f3cf1ed0a3ca98192e2141ad5c768a9048325af83c",
+    "ocr": {
+      "engine": "fixture",
+      "lines": [
+        {
+          "text": "Ember Band"
+        },
+        {
+          "text": "Rare Ring"
+        },
+        {
+          "text": "750 Item Power"
+        },
+        {
+          "text": "◆ +18.0% Lightning Resistance"
+        },
+        {
+          "text": "◆ +7.5% Gold Drop Rate"
+        },
+        {
+          "text": "Requires Level 55"
+        }
+      ]
+    }
+  }
+]

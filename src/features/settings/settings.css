@@ -1,0 +1,70 @@
+.gt-settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gt-space-5);
+  max-width: 980px;
+}
+.gt-hotkey {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  height: 38px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--gt-radius-sm);
+  background: var(--gt-bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--gt-line-2);
+}
+.gt-hotkey:hover {
+  box-shadow: inset 0 0 0 1px var(--gt-line-strong);
+}
+.gt-hotkey.is-recording {
+  box-shadow:
+    inset 0 0 0 1px var(--gt-gold-1),
+    0 0 0 3px rgba(214, 174, 107, 0.2);
+}
+.gt-hotkey__hint {
+  color: var(--gt-gold-1);
+  font-size: var(--gt-text-sm);
+}
+.gt-num-input {
+  width: 92px;
+  text-align: right;
+}
+.gt-path {
+  padding: 6px 10px;
+  border-radius: var(--gt-radius-sm);
+  background: var(--gt-bg-sunken);
+  color: var(--gt-text-2);
+  font-family: var(--gt-font-mono);
+  font-size: var(--gt-text-xs);
+  user-select: text;
+  word-break: break-all;
+}
+.gt-installs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.gt-install {
+  padding: 10px 12px;
+  border-radius: var(--gt-radius-sm);
+  background: var(--gt-bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--gt-line-faint);
+}
+.gt-install__path {
+  font-family: var(--gt-font-mono);
+  font-size: var(--gt-text-xs);
+  color: var(--gt-text-1);
+  word-break: break-all;
+}
+.gt-consent {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  line-height: 1.5;
+}

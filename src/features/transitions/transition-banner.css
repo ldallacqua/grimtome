@@ -1,0 +1,40 @@
+.gt-tbanner {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: var(--gt-space-4);
+  padding: 10px var(--gt-space-8);
+  background:
+    linear-gradient(90deg, rgba(110, 80, 200, 0.28), rgba(110, 80, 200, 0.08) 60%, transparent),
+    rgba(14, 11, 20, 0.92);
+  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 -1px 0 rgba(173, 145, 255, 0.35),
+    0 10px 30px -20px rgba(110, 80, 200, 0.6);
+  animation: gt-rise var(--gt-dur-emphasis) var(--gt-ease);
+}
+.gt-tbanner__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #d9ccff;
+  background: rgba(173, 145, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(173, 145, 255, 0.45);
+}
+.gt-tbanner__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--gt-text-sm);
+  color: var(--gt-text-2);
+}
+.gt-tbanner__text strong {
+  font-family: var(--gt-font-display);
+  font-size: var(--gt-text-md);
+  letter-spacing: 0.06em;
+  color: #e7deff;
+}
