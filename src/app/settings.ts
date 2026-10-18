@@ -69,9 +69,36 @@ export type Settings = z.infer<typeof SettingsSchema>;
 
 export const defaultSettings = (): Settings => SettingsSchema.parse({});
 
+const isRecord = (v: unknown): v is Record<string, unknown> =>
+  typeof v === 'object' && v !== null && !Array.isArray(v);
+
+/**
+ * Validates stored settings. Every valid value is kept; only invalid ones fall
+ * back to their default, so one bad field never resets the user's hotkeys.
+ */
 export function parseSettings(raw: unknown): Settings {
-  const r = SettingsSchema.safeParse(raw ?? {});
-  return r.success ? r.data : defaultSettings();
+  const whole = SettingsSchema.safeParse(raw ?? {});
+  if (whole.success) return whole.data;
+  const input = isRecord(raw) ? raw : {};
+  const defaults = defaultSettings() as Record<string, unknown>;
+  const out: Record<string, unknown> = {};
+  for (const [key, schema] of Object.entries(SettingsSchema.shape) as [string, z.ZodType][]) {
+    const fallback = defaults[key];
+    const value = input[key];
+    if (isRecord(fallback) && isRecord(value)) {
+      let section: Record<string, unknown> = { ...fallback };
+      for (const field of Object.keys(fallback)) {
+        if (!(field in value)) continue;
+        const attempt = { ...section, [field]: value[field] };
+        if (schema.safeParse(attempt).success) section = attempt;
+      }
+      out[key] = schema.parse(section);
+    } else {
+      const r = schema.safeParse(value);
+      out[key] = r.success ? r.data : fallback;
+    }
+  }
+  return out as Settings;
 }
 
 /** Display form of an accelerator, e.g. `CommandOrControl+Shift+D` → ["Ctrl", "Shift", "D"]. */
