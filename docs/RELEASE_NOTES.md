@@ -22,7 +22,7 @@ The files are **not code-signed**: Windows SmartScreen will warn on first run (M
 
 ## Testing status
 
-Automated: 69 TypeScript unit/integration tests (including real Windows OCR fixtures), 32 Rust tests, web E2E, 22 visual baselines, and a desktop smoke test that runs the built app and reads a tooltip from the screen with real capture + OCR. **Not yet verified against a live Diablo IV session** — please report capture or recognition issues with your resolution and UI scale.
+Automated: 69 TypeScript unit/integration tests (including real Windows OCR fixtures), 32 Rust tests, web E2E, 22 visual baselines, and a desktop smoke test that runs the built app and reads a tooltip from the screen with real capture + OCR. These exact files were also checked by hand: silent per-user install of the NSIS build (no admin), the smoke test against the installed exe, and a clean uninstall that removes the program, shortcut and registry entry while keeping user data. **Not yet verified against a live Diablo IV session** — please report capture or recognition issues with your resolution and UI scale.
 
 ## Known limitations
 

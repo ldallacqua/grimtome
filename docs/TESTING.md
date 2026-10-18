@@ -10,7 +10,7 @@
 | Desktop smoke | Playwright over WebView2 CDP, real exe | `pnpm test:desktop` | `tests/desktop` |
 | Asset licensing | Node script | `pnpm check:assets` | `scripts/check-asset-licensing.mjs` |
 
-`pnpm test` runs unit + integration. CI (`.github/workflows/ci.yml`, Windows runners) runs everything above plus lint, Prettier, `tsc`, rustfmt and clippy (`-D warnings`), and builds the installers.
+`pnpm test` runs unit + integration. CI (`.github/workflows/ci.yml`, Windows runners) runs everything above plus lint, Prettier, `tsc`, rustfmt and clippy (`-D warnings`), and builds the installers. The desktop smoke test is **best effort** in CI: GitHub-hosted runners have no reliable interactive desktop, and WebView2 did not expose its debugging port there. It is required locally before every release.
 
 ## What is covered
 

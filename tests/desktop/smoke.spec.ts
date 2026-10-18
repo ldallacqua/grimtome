@@ -1,5 +1,5 @@
 import { spawn, type ChildProcess } from 'node:child_process';
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, openSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { chromium, expect, test, type Browser, type Page } from '@playwright/test';
 
@@ -20,7 +20,7 @@ let app: ChildProcess | undefined;
 let browser: Browser | undefined;
 
 async function waitForCdp(): Promise<void> {
-  const deadline = Date.now() + 30_000;
+  const deadline = Date.now() + 60_000;
   while (Date.now() < deadline) {
     try {
       const r = await fetch(`http://127.0.0.1:${PORT}/json/version`);
@@ -58,9 +58,11 @@ test.skip(process.platform !== 'win32', 'Windows only');
 test.skip(!existsSync(EXE), `build the app first (${EXE} not found)`);
 
 test.beforeAll(async () => {
+  mkdirSync('test-results/desktop', { recursive: true });
+  const log = openSync('test-results/desktop/app.log', 'w');
   app = spawn(EXE, [], {
     env: { ...process.env, WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${PORT}` },
-    stdio: 'ignore',
+    stdio: ['ignore', log, log],
   });
   await waitForCdp();
   browser = await chromium.connectOverCDP(`http://127.0.0.1:${PORT}`);

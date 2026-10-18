@@ -26,12 +26,12 @@ Status legend: **Done** (implemented and verified by the listed evidence) · **F
 | No unauthorized assets committed or packaged | Done | `pnpm check:assets` (hash comparison with local cache) |
 | Settings persist | Done | Persistence and settings tests; close handshake flushes state |
 | Unit and integration tests pass | Done | 69 Vitest tests, 32 Rust tests |
-| Applicable E2E tests pass | Done | 2 web E2E + desktop smoke |
+| Applicable E2E tests pass | Done | 2 web E2E (CI) + desktop smoke (local: built exe and installed app) |
 | Visual regression implemented | Done | 22 baselines (3 sizes + overlay) |
 | Windows build artifact | Done | NSIS, MSI, portable exe |
-| CI configured and passing | See CI badge / Actions tab | Workflow on Windows runners; status reported after the first push |
+| CI configured and passing | Done (desktop smoke is best effort in CI) | Lint, format, types, TS + Rust tests, clippy, asset check, web E2E and visual pass on Windows runners; installers build in CI. The desktop smoke test cannot start WebView2 on hosted runners, so it runs locally before releases |
 | Comprehensive documentation | Done | README, AGENTS, docs/, ADRs |
-| Published under ldallacqua | See release | Repository and release created by the publishing step |
+| Published under ldallacqua | Done | https://github.com/ldallacqua/grimtome — release v0.1.0 (pre-release) with NSIS, MSI, portable exe and checksums |
 
 ## Milestones
 
